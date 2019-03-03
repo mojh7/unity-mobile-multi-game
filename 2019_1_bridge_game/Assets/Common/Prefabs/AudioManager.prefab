@@ -233,7 +233,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0e97b4aa5164ac47bc34b3837c117df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  commonSfxList: []
+  commonSfxList:
+  - {fileID: 8300000, guid: b5bda7894e00e4e4da9949ce37a3c340, type: 3}
   uiSfxList:
   - {fileID: 8300000, guid: bc8ba3d31bf20a14d8f08c7fc6009fce, type: 3}
 --- !u!82 &3560977558471945664

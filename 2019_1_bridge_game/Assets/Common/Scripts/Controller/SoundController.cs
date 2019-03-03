@@ -10,6 +10,12 @@ using UnityEngine.Serialization;
  * 3. Play 함수에서 switch안에 내용 추가 하기
  */
 
+ /* Play 호출 방식 2가지
+  * 1. index 기반
+  * 2. 파일 명 string key로 사용하여 호출
+  */
+  
+
 public enum SFX_TYPE
 {
     COMMON,
@@ -95,20 +101,20 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     /// <summary>
     /// 사운드 재생, index 기반
     /// </summary>
-    public void Play(int soundIndex, SFX_TYPE soundType)
+    public void Play(int sfxIndex, SFX_TYPE sfxType)
     {
-        if (soundIndex < 0)
+        if (sfxIndex < 0)
             return;
 
         AudioClip _clip = null;
 
-        switch (soundType)
+        switch (sfxType)
         {
             case SFX_TYPE.COMMON:
-                //
+                _clip = commonSfxList[sfxIndex];
                 break;
             case SFX_TYPE.UI:
-                _clip = uiSfxList[soundIndex];
+                _clip = uiSfxList[sfxIndex];
                 break;
             default:
                 break;
@@ -123,16 +129,20 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     /// <summary>
     /// 사운드 재생, string key
     /// </summary>
-    public void Play(string soundName, SFX_TYPE soundType)
+    public void Play(string sfxName, SFX_TYPE sfxType)
     {
-        if ("" == soundName || "NONE" == soundName)
+        Debug.Log(sfxName);
+        if ("" == sfxName || "NONE" == sfxName)
             return;
-
+        Debug.Log(1);
         AudioClip _clip = null;
-        switch (soundType)
+        switch (sfxType)
         {
+            case SFX_TYPE.COMMON:
+                _clip = commonSfxDictionary[sfxName];
+                break;
             case SFX_TYPE.UI:
-                _clip = uiSfxDictionary[soundName];
+                _clip = uiSfxDictionary[sfxName];
                 break;
             default:
                 break;

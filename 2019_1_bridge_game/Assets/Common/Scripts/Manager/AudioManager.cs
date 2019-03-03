@@ -37,6 +37,7 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     {
         musicController = MusicController.Instance;
         soundController = SoundController.Instance;
+        sfxVolume = 1f;
     }
     #endregion
 
