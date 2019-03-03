@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     public bool GetLoadsGameData() { return loadsGameData; }
     public GameScene GetGameScene() { return gameScene; }
     //public GameMode GetMode() { return gameMode; }
+    public string GetNextScene() { return GAME_SCENE[(int)nextScene]; }
 
     // 인게임씬에서 바로 시작할 때 설정해줄 디버깅 용
     public void SetGameScene(GameScene gameScene) { this.gameScene = gameScene; }
