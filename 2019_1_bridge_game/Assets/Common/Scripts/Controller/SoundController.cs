@@ -16,7 +16,7 @@ using UnityEngine.Serialization;
   */
   
 
-public enum SFX_TYPE
+public enum SFXType
 {
     COMMON,
     UI,
@@ -101,7 +101,7 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     /// <summary>
     /// 사운드 재생, index 기반
     /// </summary>
-    public void Play(int sfxIndex, SFX_TYPE sfxType)
+    public void Play(int sfxIndex, SFXType sfxType)
     {
         if (sfxIndex < 0)
             return;
@@ -110,10 +110,10 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
 
         switch (sfxType)
         {
-            case SFX_TYPE.COMMON:
+            case SFXType.COMMON:
                 _clip = commonSfxList[sfxIndex];
                 break;
-            case SFX_TYPE.UI:
+            case SFXType.UI:
                 _clip = uiSfxList[sfxIndex];
                 break;
             default:
@@ -129,7 +129,7 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     /// <summary>
     /// 사운드 재생, string key
     /// </summary>
-    public void Play(string sfxName, SFX_TYPE sfxType)
+    public void Play(string sfxName, SFXType sfxType)
     {
         Debug.Log(sfxName);
         if ("" == sfxName || "NONE" == sfxName)
@@ -138,10 +138,10 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
         AudioClip _clip = null;
         switch (sfxType)
         {
-            case SFX_TYPE.COMMON:
+            case SFXType.COMMON:
                 _clip = commonSfxDictionary[sfxName];
                 break;
-            case SFX_TYPE.UI:
+            case SFXType.UI:
                 _clip = uiSfxDictionary[sfxName];
                 break;
             default:

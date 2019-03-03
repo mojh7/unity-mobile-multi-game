@@ -9,21 +9,23 @@ using UnityEngine.SceneManagement;
  * logo -> title -> loading -> ingame
  * 
  */
+public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, IN_GAME = 3, BOSS_RUSH = 4 }
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     #region variables
     private enum GameState { NOT_STARTED, GAME_OVER, PLAYING, CLEAR, ENDING }
     //public enum GameMode { NORMAL, RUSH }
-    public enum GameScene { LOGO = 0, TITLE = 1, LOBBY = 2, IN_GAME = 3, BOSS_RUSH = 4 }
+    
+
+    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "IngameScene" };
 
     private GameState gameState = GameState.NOT_STARTED;
     //[SerializeField]
     //private GameMode gameMode = GameMode.NORMAL;
     [SerializeField]
     private GameScene gameScene = GameScene.LOGO;
-
-    private string nextScene;
+    private GameScene nextScene;
 
     // 새 게임, 로드 게임 구분
     private bool loadsGameData = false;
@@ -61,42 +63,60 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     }
     #endregion
 
-
     #region func
     //public bool IsInGame()
     //{
     //    return gameScene == GameScene.IN_GAME || gameScene == GameScene.BOSS_RUSH;
     //}
 
+    public void LoadNextScene()
+    {
+        gameScene = nextScene;
+        SceneManager.LoadScene(GAME_SCENE[(int)nextScene]);
+    }
 
-    public void LoadInGame()
+    public void LoadNextScene(GameScene nextScene, bool goThroughLoading)
     {
-        //if (!GameDataManager.Instance.isFirst)
-        //{
-        //    SceneDataManager.SetNextScene("TutorialScene");
-        //    SceneManager.LoadScene("LoadingScene");
-        //    return;
-        //}
-        //if (GameMode.NORMAL == gameMode)
-        //{
-        //    gameScene = GameScene.IN_GAME;
-        //    SceneDataManager.SetNextScene("InGameScene");
-        //}
-        //else if (GameMode.RUSH == gameMode)
-        //{
-        //    gameScene = GameScene.BOSS_RUSH;
-        //    SceneDataManager.SetNextScene("BossRushScene");
-        //}
-        nextScene = "IngameScene";
-        SceneManager.LoadScene("LoadingScene");
+        if (false == goThroughLoading)
+        {
+            gameScene = nextScene;
+            SceneManager.LoadScene(GAME_SCENE[(int)nextScene]);
+        }
+        else
+        {
+            this.nextScene = nextScene;
+            SceneManager.LoadScene(GAME_SCENE[(int)GameScene.LOADING]);
+        }
     }
-    public void LoadTitle()
-    {
-        gameScene = GameScene.TITLE;
-        SceneManager.LoadScene("TitleScene");
-        //SceneDataManager.SetNextScene("TitleScene");
-        //SceneManager.LoadScene("LoadingScene");
-    }
+
+    //public void LoadInGame()
+    //{
+    //    //if (!GameDataManager.Instance.isFirst)
+    //    //{
+    //    //    SceneDataManager.SetNextScene("TutorialScene");
+    //    //    SceneManager.LoadScene("LoadingScene");
+    //    //    return;
+    //    //}
+    //    //if (GameMode.NORMAL == gameMode)
+    //    //{
+    //    //    gameScene = GameScene.IN_GAME;
+    //    //    SceneDataManager.SetNextScene("InGameScene");
+    //    //}
+    //    //else if (GameMode.RUSH == gameMode)
+    //    //{
+    //    //    gameScene = GameScene.BOSS_RUSH;
+    //    //    SceneDataManager.SetNextScene("BossRushScene");
+    //    //}
+    //    nextScene = "IngameScene";
+    //    SceneManager.LoadScene("LoadingScene");
+    //}
+    //public void LoadTitle()
+    //{
+    //    gameScene = GameScene.TITLE;
+    //    SceneManager.LoadScene("TitleScene");
+    //    //SceneDataManager.SetNextScene("TitleScene");
+    //    //SceneManager.LoadScene("LoadingScene");
+    //}
     //public void LoadLobby()
     //{
     //    gameScene = GameScene.LOBBY;

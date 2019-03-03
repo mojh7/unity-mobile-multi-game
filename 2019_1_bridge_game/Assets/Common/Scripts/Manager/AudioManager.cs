@@ -136,14 +136,14 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     /// </summary>
     /// <param name="soundIndex">0이상의 사운드 인덱스</param>
     /// <param name="soundtype">출력할 사운드 타입</param>
-    public void PlaySound(int soundIndex, SFX_TYPE soundtype)
+    public void PlaySound(int sfxIndex, SFXType sfxtype)
     {
-        soundController.Play(soundIndex, soundtype);
+        soundController.Play(sfxIndex, sfxtype);
     }
 
-    public void PlaySound(string soundName, SFX_TYPE soundtype)
+    public void PlaySound(string sfxName, SFXType soundtype)
     {
-        soundController.Play(soundName, soundtype);
+        soundController.Play(sfxName, soundtype);
     }
     #endregion
 }
