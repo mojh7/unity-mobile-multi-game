@@ -7,16 +7,20 @@ using UnityEngine.SceneManagement;
 public class Loading : MonoBehaviour
 {
     #region variables
+    private static readonly string[] LOADING_TEXT = new string[]{"로딩중", "로딩중.", "로딩중..", "로딩중..."};
+
     [SerializeField]
     private float minTime = 0f; //로딩씬이 유지되는 최소 시간
     [SerializeField]
-    private Slider loadingSliderbar = null; //하단 슬라이더바
-    [SerializeField]
-    private Text tipText = null; //팁 텍스트
-    //[SerializeField]
-    //private Transform wheel = null;//중앙 회전 이미지
+    private Text loadingTxt;
     [SerializeField]
     private Image image = null;
+    [SerializeField]
+    private Text tipTxt = null; //팁 텍스트
+    [SerializeField]
+    private Slider loadingSliderbar = null; //하단 슬라이더바
+    //[SerializeField]
+    //private Transform wheel = null;//중앙 회전 이미지
     [SerializeField]
     private string[] tips = null;//팁 텍스트 모음
     [SerializeField]
@@ -68,14 +72,28 @@ public class Loading : MonoBehaviour
         /*StringBuilder sb = new StringBuilder("팁 : ");
         sb.Append(Tips[loc]); //배열 내 무작위 요소를 출력한다.
         Tip.text = sb.ToString();*/
-        tipText.text = tips[tipIndex];
+        tipTxt.text = tips[tipIndex];
         totalGage = minTime;
         Time.timeScale = 1;
+
+        StartCoroutine(ShowLoadingText());
         StartCoroutine(LoadingNextScene());
     }
     #endregion
 
     #region coroutine
+
+    IEnumerator ShowLoadingText()
+    {
+        int index = 0;
+        while(true)
+        {
+            loadingTxt.text = LOADING_TEXT[index];
+            index = (index + 1) % LOADING_TEXT.Length;
+            yield return YieldInstructionCache.WaitForSeconds(0.05f * Random.Range(1, 6));
+        }
+    }
+
     // 비동기 scene 로딩처리와 진행바 progress bar
     IEnumerator LoadingNextScene()
     {

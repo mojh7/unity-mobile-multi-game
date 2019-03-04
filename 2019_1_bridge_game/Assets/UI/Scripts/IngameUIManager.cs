@@ -3,22 +3,31 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class IngameUIManager : MonoBehaviourSingleton<IngameUIManager>
+public class InGameUIManager : MonoBehaviourSingleton<InGameUIManager>
 {
     #region variables
+    private bool active;
     #endregion
 
     #region get / set
     public bool GetActived()
     {
-        return true;
+        return active;
     }
     #endregion
 
     #region unityFunc
+    private void Awake()
+    {
+        InitIngameUI();
+    }
     #endregion
 
     #region func
+    private void InitIngameUI()
+    {
+        active = true;
+    }
     #endregion
 
 

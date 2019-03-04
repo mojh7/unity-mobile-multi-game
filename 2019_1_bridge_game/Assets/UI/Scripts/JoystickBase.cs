@@ -10,7 +10,7 @@ using System;
 //
 
 
-public class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+public abstract class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
 
     #region variables
@@ -72,7 +72,7 @@ public class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
     // 드래그 중
     public virtual void OnDrag(PointerEventData ped)
     {
-        if (IngameUIManager.Instance.GetActived())
+        if (false == InGameUIManager.Instance.GetActived())
         {
             inputVector = Vector3.zero;
             return;
@@ -95,8 +95,8 @@ public class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoi
             {
                 recentNormalInputVector = inputVector.normalized;
             }
-            joystickImage.rectTransform.anchoredPosition = new Vector3(inputVector.x * (backgroundImage.rectTransform.sizeDelta.x / 2.5f)
-                , inputVector.y * (backgroundImage.rectTransform.sizeDelta.y / 2.5f));
+            joystickImage.rectTransform.anchoredPosition = new Vector3(inputVector.x * (backgroundImage.rectTransform.sizeDelta.x / 3f)
+                , inputVector.y * (backgroundImage.rectTransform.sizeDelta.y / 3f));
         }
     }
 

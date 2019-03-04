@@ -131,10 +131,8 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     /// </summary>
     public void Play(string sfxName, SFXType sfxType)
     {
-        Debug.Log(sfxName);
         if ("" == sfxName || "NONE" == sfxName)
             return;
-        Debug.Log(1);
         AudioClip _clip = null;
         switch (sfxType)
         {
