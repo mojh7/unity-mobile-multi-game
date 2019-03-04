@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
 
     public void SpawnPlayer()
     {
-        playerObj = Instantiate(playerPrefab, new Vector3(6f, 3f), Quaternion.identity);
+        playerObj = Instantiate(playerPrefab, new Vector3(0.3f, 0.4f), Quaternion.identity);
         player = playerObj.GetComponent<Player>();
         player.Init();
         //// 저장된 데이터 없이 새로운 게임을 시작할 때

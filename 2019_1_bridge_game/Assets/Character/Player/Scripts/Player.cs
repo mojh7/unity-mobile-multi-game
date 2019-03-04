@@ -25,25 +25,13 @@ public class Player : Character
         objTransform = GetComponent<Transform>();
         scaleVector = new Vector3(1f, 1f, 1f);
         isRightDirection = true;
-        Debug.Log(objTransform);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (-90 <= directionDegree && directionDegree < 90)
-        {
-            isRightDirection = true;
-            scaleVector.x = 1f;
-            spriteTransform.localScale = scaleVector;
-        }
-        else
-        {
-            isRightDirection = false;
-            scaleVector.x = -1f;
-            spriteTransform.localScale = scaleVector;
-        }
-    }
+    //// Update is called once per frame
+    //void Update()
+    //{
+        
+    //}
 
     void FixedUpdate()
     {
@@ -108,14 +96,26 @@ public class Player : Character
 
     private void Move()
     {
-        Debug.Log(1);
         if (rgbody)
         {
-            Debug.Log(objTransform.position + ", " + controller.GetMoveInputVector() + ", " + movingSpeed + ", " + Time.fixedDeltaTime);
             rgbody.MovePosition(objTransform.position
-            + controller.GetMoveInputVector() * (movingSpeed) * Time.fixedDeltaTime);
+            + controller.GetMovingInputVector() * (movingSpeed) * Time.fixedDeltaTime);
         }
 
+        directionDegree = controller.GetMovingInputDegree();
+
+        if (-90 <= directionDegree && directionDegree < 90)
+        {
+            isRightDirection = true;
+            scaleVector.x = 1f;
+            spriteTransform.localScale = scaleVector;
+        }
+        else
+        {
+            isRightDirection = false;
+            scaleVector.x = -1f;
+            spriteTransform.localScale = scaleVector;
+        }
         //if (controller.GetMoveInputVector().sqrMagnitude > 0.1f)
         //{
         //    animationHandler.Walk();
