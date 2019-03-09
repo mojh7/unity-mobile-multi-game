@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d066ba4e89e7048a6fc5f2320422c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minTime: 2.5
+  minTime: 1.5
   loadingTxt: {fileID: 109908162}
   image: {fileID: 1446992260}
   tipTxt: {fileID: 938895483}
