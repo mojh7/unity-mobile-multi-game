@@ -1,0 +1,85 @@
+KEY,KO,EN
+Month,월 ,M 
+Day,일,D
+Seed,씨앗,Seed
+Pot,화분,Pot
+Soil,토양,Soil
+Gold,골드,Gold
+Jewel,보석,Jewel
+
+
+SpeechBubble,키워줘 !_나 어때 !_뭘 봐 !_안녕 !_말하는씨앗 처음보냐_난 관심종.자야_난 자라고 싶지 않아.., 키워줘 !_나 어때 !_뭘 봐 !_안녕 !_말하는씨앗 처음보냐_난 관심종.자야_난 자라고 싶지 않아..
+SelectQuestion, 새 식물을 키우시겠습니까 ?, 새 식물을 키우시겠습니까 ?
+Confirm,확인,Confirm
+Cancel,취소,Cancel
+DiseaseWaterHigher,"물이 많습니다","물이 많습니다"
+DiseaseWaterLower,"물이 부족합니다","물이 부족합니다"
+DiseaseTempHigher,"공기의 온도가 높습니다","공기의 온도가 높습니다"
+DiseaseTempLower,"공기의 온도가 낮습니다","공기의 온도가 낮습니다"
+DiseaseLightHigher,"식물이 빛에 과다하게 노출되었습니다","식물이 빛에 과다하게 노출되었습니다"
+DiseaseLightLower,"식물이 빛을 받지 못하고 있습니다","식물이 빛을 받지 못하고 있습니다"
+
+GoldInfo, 를(을) 구매합니다, 를(을) 구매합니다
+JewelInfo, 를(을) 구매합니다, 를(을) 구매합니다
+
+DefaultItemName,-,-
+DefaultItemInfo,아이템을 선택해주세요,Select the item
+SeedInfo, 를(을) 심을 수 있는 씨앗, 를(을) 심을 수 있는 씨앗
+
+Clover,클로버,Clover
+Cactus,선인장,Cactus
+LillyOfValley,은방울꽃,Lily of the Valley
+Rose,장미,Rose
+Dahlia,달리아,Dahlia
+
+CloverSeed,클로버 씨앗,Clover Seed
+CactusSeed,선인장 씨앗,Cactus Seed
+LillyOfValleySeed,은방울꽃 씨앗,Lily of the Valley Seed
+RoseSeed,장미 씨앗,Rose Seed
+DahliaSeed,달리아 씨앗,Dahlia Seed
+
+CloverInfo,한국에서는 흔히 토끼풀이라고 불리는 식물.\n극지 정글 사막을 제외한 곳이라면 어디서도 잘 퍼지는 엄청난 적응력을 가지고 있는 식물입니다.\n식물성장에 필요한 질소를 토양에 공급해서 다른 식물들이 잘 자랄수 있게 해주는 유익한 식물입니다.\n대부분 3개의 작은 잎으로 구성되어있지만 때로는 4개 혹은 그 이상의 이파리를 가지기도 합니다.\n네잎클로버는 가지고 다니면 행운을 가져다 준다던데 사실일까요? ,
+CactusInfo,지구에서 가장 척박한 사막에서 살아남는 식물.\n잎을 가시로 변화시켜서 물이 없는 건조한 곳에서도 잘 자랍니다.\n오히려 물을 많이주면 뿌리가 썩어서 죽을 수도 있습니다. \n선인장의 수명은 100~200년으로 잘만 기른다면 인생의 또다른 동반자가 될 수도 있습니다. \n선인장의 꽃은 1년에 하루정도만 피므로 꽃을 보기 힘들수도 있습니다. ,
+LillyOfValleyInfo,꽃모양이 은방울을 닮았다고 하여 은방울꽃이라 불리는 식물\n향긋한 향기가 매력적이어서 향수화라고 불리기도 하는 꽃입니다.\n야생에서는 큰 나무 아래 그늘에 옹기종기 모여서 꽃을 피웁니다.\n하지만 독을 지니고 있으므로 집에 아이나 애완동물을 키우고 있다면 특별히 주의해주시기 바랍니다.\n5월의 은방울꽃으로 만든 꽃다발은 사랑하는 연인들에게 행운을 가져다준다고 합니다. ,
+RoseInfo,꽃은 아름답지만 가시를 조심해야하는 식물.\n따사로운 햇빛 아래에서 장미는 가장 예쁜 꽃을 피운다고 합니다.\n그 어떤꽃보다 화려해서 꽃들의 여왕이라고도 불리고 세계의 많은 전설 속에서도 등장합니다.\n장미의 꽃은 빨간색 하양색 노랑색, 파랑색 등 다양한 색깔을 가지며 각 색깔마다 꽃말이 다릅니다.\n장미앞에서 말한 비밀들은 꼭 지켜진다고 하니 장미에게 다른이에게 말못할 고충을 털어놔보시는게 어떨까요? ,
+DahliaInfo,'화려 정열 우아 위엄' 다양한 꽃말을 가진 식물.\n달리아의 꽃은 다른 꽃들에비해 크기가 크고 모양도 다양합니다.\n초여름부터 늦가을까지 화려한 꽃을 피워내지만 너무 더운 여름에는 꽃도 지친다고 합니다.\n나폴레옹의 아내 조세핀의 이야기처럼 달리아를 가둬두고 혼자만 소유하려한다면 달리아는 불행할거에요.\n예쁘게 꽃피운 달리아를 주변사람들에게 자랑해 보시는건 어떠신가요? ,
+
+CloverNormal,일반,Normal
+
+NormalPot,일반 화분,Normal Pot
+LogPot,통나무 화분,Log Pot
+ShoePot,신발 화분,Shoe Pot
+
+NormalPotInfo,일반적인 화분,Normal Pot
+LogPotInfo,일반적인 통나무 화분,Log Pot
+ShoePotInfo,일반적인 신발 화분,Shoe Pot
+
+NormalSoil,일반 토양,Normal Soil
+MudSoil,진흙,MudSoil
+SandSoil,모래,SandSoil
+PooSoil,똥,PooSoil
+
+NormalSoilInfo,일반적인 토양,Normal Soil
+MudSoilInfo,일반적인 진흙,Normal Soil
+PooSoilInfo,일반적인 똥,Normal Soil
+SandSoilInfo,일반적인 모레,Normal Soil
+
+LoadingTip_1,꽃을 키우려면 정성이 필요합니다.,꽃을 키우려면 정성이 필요합니다.
+LoadingTip_2,꽃들은 다양한 종류로 성장합니다.,꽃들은 다양한 종류로 성장합니다.
+LoadingTip_3,도감을 확인하면 성장과정을 확인할 수 있어요 !,도감을 확인하면 성장과정을 확인할 수 있어요 !
+
+GreenHouse,온실,온실
+GrowthEnhancer,촉진제,촉진제
+PlantFood,예방주사,예방주사
+Stand,스탠드,스탠드
+Thermometer,온도계,온도계
+Vaccine,영양제,영양제
+Waterer,급수기,급수기
+
+GreenHouseInfo,꽃의 한 단계동안 일정한 온도/빛/물을 유지시켜줍니다.,꽃의 한 단계동안 일정한 온도/빛/물을 유지시켜줍니다.
+GrowthEnhancerInfo,꽃의 한 단계동안 꽃이 30%더 빠르게 자라납니다.,꽃의 한 단계동안 꽃이 30%더 빠르게 자라납니다.
+PlantFoodInfo,꽃의 한 단계동안 질병에 걸리지 않게 해줍니다.,꽃의 한 단계동안 질병에 걸리지 않게 해줍니다.
+StandInfo,꽃의 한 단계동안 일정한 빛을 유지시켜줍니다.,꽃의 한 단계동안 일정한 빛을 유지시켜줍니다.
+ThermometerInfo,꽃의 한 단계동안 일정한 온도를 유지시켜줍니다.,꽃의 한 단계동안 일정한 온도를 유지시켜줍니다.
+VaccineInfo,현재 꽃이 걸린 질병을 즉시 치료해줍니다.,현재 꽃이 걸린 질병을 즉시 치료해줍니다.
+WatererInfo,꽃의 한 단계동안 일정한 물을 유지시켜줍니다.,꽃의 한 단계동안 일정한 물을 유지시켜줍니다.
