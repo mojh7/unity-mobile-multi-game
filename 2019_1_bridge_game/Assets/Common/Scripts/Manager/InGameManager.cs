@@ -10,6 +10,8 @@ using UnityEngine;
 public class InGameManager : MonoBehaviourSingleton<InGameManager>
 {
     #region variables
+    // 이후 랜덤한 위치를 유동적으로 대입
+    [SerializeField] private Transform baseTowns;
     #endregion
 
     #region get / set
@@ -37,6 +39,7 @@ public class InGameManager : MonoBehaviourSingleton<InGameManager>
 
 
     #region Func
+    public Transform GetBaseTown() { return baseTowns; }
     //public int GetFloor()
     //{
     //    return GameDataManager.Instance.GetFloor();

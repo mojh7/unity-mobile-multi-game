@@ -55,6 +55,10 @@ public class Player : Character
         damageImmune = CharacterInfo.DamageImmune.NONE;
         abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
 
+        textMesh.text = GameDataManager.Instance.userData.GetNickname();
+
+        Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
+
         //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
 
         directionVector = new Vector3(1, 0, 0);

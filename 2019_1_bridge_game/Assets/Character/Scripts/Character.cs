@@ -66,6 +66,8 @@ public abstract class Character : MonoBehaviour
     protected Transform shadowTransform;
     protected Transform bodyTransform;
 
+    protected TextMesh textMesh;
+
     public SpriteRenderer SpriteRenderer
     {
         get
@@ -159,6 +161,7 @@ public abstract class Character : MonoBehaviour
         shadowTransform = Components.ShadowTransform;
         bodyTransform = GetComponent<Transform>();
 
+        textMesh = Components.TextMesh;
         spawnType = CharacterInfo.SpawnType.NORMAL;
     }
 

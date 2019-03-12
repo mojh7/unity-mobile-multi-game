@@ -48,10 +48,14 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     {
         Application.targetFrameRate = 60;
     }
+
     private void Start()
     {
         DontDestroyOnLoad(this);
+
+        GameDataManager.Instance.Initialize();
     }
+
     private void Update()
     {
         if (Application.platform == RuntimePlatform.Android)

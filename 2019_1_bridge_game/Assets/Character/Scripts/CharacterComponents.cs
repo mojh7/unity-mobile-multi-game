@@ -7,22 +7,17 @@ public class CharacterComponents : MonoBehaviour
     #region components
     //[SerializeField]
     //private WeaponManager weaponManager;
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private Transform spriteTransform;
-    [SerializeField]
-    private Animator animator;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Transform spriteTransform;
+    [SerializeField] private Animator animator;
     //[SerializeField]
     //private AnimationHandler animationHandler;
-    [SerializeField]
-    private CircleCollider2D interactiveCollider2D;
-    [SerializeField]
-    private CircleCollider2D circleCollider2D;
-    [SerializeField]
-    private BoxCollider2D hitBox;
-    [SerializeField]
-    private Transform shadowTransform;
+    [SerializeField] private CircleCollider2D interactiveCollider2D;
+    [SerializeField] private CircleCollider2D circleCollider2D;
+    [SerializeField] private BoxCollider2D hitBox;
+    [SerializeField] private Transform shadowTransform;
+
+    [SerializeField] private TextMesh nickTextMesh;
 
     #endregion
     #region parameter
@@ -89,9 +84,18 @@ public class CharacterComponents : MonoBehaviour
             return shadowTransform;
         }
     }
+    public TextMesh TextMesh
+    {
+        get
+        {
+            return nickTextMesh;
+        }
+    }
+
 
     //public BuffManager BuffManager { get; private set; }
     public Rigidbody2D Rigidbody2D { get; private set; }
+    public DirectionArrow DirectionArrow { get; private set; }
     //public AIController AIController { get; private set; }
     #endregion
     #region Func
@@ -99,6 +103,7 @@ public class CharacterComponents : MonoBehaviour
     {
         //BuffManager = GetComponent<BuffManager>();
         Rigidbody2D = GetComponent<Rigidbody2D>();
+        DirectionArrow = GetComponent<DirectionArrow>();
         //AIController = GetComponent<AIController>();
     }
     #endregion

@@ -35,6 +35,70 @@ using Newtonsoft.Json.Bson;
 
 public class GameDataManager : MonoBehaviourSingleton<GameDataManager>
 {
+    private string userDataPath;
+
+    [HideInInspector] public UserData userData;
+
+    public void Initialize()
+    {
+        userDataPath = Path.Combine(Application.persistentDataPath, "UserData.dat");
+
+        LoadData();
+    }
+
+    public void LoadData()
+    {
+        // PlayerPrefs 대신 init boolean 값으로 변경 대체 가능..
+        //데이터 갱신용 / 첫시작 후 주석처리하면됨
+        //PlayerPrefs.DeleteKey("FirstRun");
+
+        //첫시작시
+        if (!PlayerPrefs.HasKey("FirstRun"))
+        {
+            PlayerPrefs.SetInt("FirstRun", 1);
+            PlayerPrefs.Save();
+
+            InitializeUserData();
+        }
+        //첫 시작 이후
+        else
+        {
+            LoadUserData();
+        }
+    }
+
+    //첫 시작시 플레이 데이터 초기화
+    private void InitializeUserData()
+    {
+        userData = new UserData();
+        SaveUserData();
+    }
+
+
+    public void LoadUserData()
+    {
+        using (var fs = File.OpenRead(userDataPath))
+        {
+            using (var reader = new BsonReader(fs))
+            {
+                var serializer = new JsonSerializer();
+                userData = serializer.Deserialize<UserData>(reader);
+            }
+        }
+    }
+
+    public void SaveUserData()
+    {
+        using (var fs = File.Open(userDataPath, FileMode.Create))
+        {
+            using (var writer = new BsonWriter(fs))
+            {
+                var serializer = new JsonSerializer();
+                serializer.Serialize(writer, userData);
+            }
+        }
+    }
+
     /*
     #region variables
     public enum UserDataType { USER, INGAME, SETTING }
@@ -465,6 +529,7 @@ public class GameDataManager : MonoBehaviourSingleton<GameDataManager>
                 }
                 ResetData(UserDataType.INGAME);
                 break;
+
             case UserDataType.SETTING:
                 if (gameSettingData != null)
                     gameSettingData = null;
@@ -490,69 +555,5 @@ public class GameDataManager : MonoBehaviourSingleton<GameDataManager>
 
 
 
-    /*
-    private string userDataPath;
-    public UserData userData;
-
-    public void Initialize()
-    {
-        userDataPath = Path.Combine(Application.persistentDataPath, "UserData.dat");
-
-        LoadData();
-    }
-
-    public void LoadData()
-    {
-        // PlayerPrefs 대신 init boolean 값으로 변경 대체 가능..
-        //데이터 갱신용 / 첫시작 후 주석처리하면됨
-        //PlayerPrefs.DeleteKey("FirstRun");
-
-        //첫시작시
-        if (!PlayerPrefs.HasKey("FirstRun"))
-        {
-            PlayerPrefs.SetInt("FirstRun", 1);
-            PlayerPrefs.Save();
-
-            InitializeUserData();
-        }
-        //첫 시작 이후
-        else
-        {
-            LoadUserData();
-        }
-    }
-
-    //첫 시작시 플레이 데이터 초기화
-    private void InitializeUserData()
-    {
-        userData = new UserData();
-        SaveUserData();
-    }
-
-
-    public void LoadUserData()
-    {
-        using (var fs = File.OpenRead(userDataPath))
-        {
-            using (var reader = new BsonReader(fs))
-            {
-                var serializer = new JsonSerializer();
-                userData = serializer.Deserialize<UserData>(reader);
-            }
-        }
-    }
-
-    public void SaveUserData()
-    {
-        using (var fs = File.Open(userDataPath, FileMode.Create))
-        {
-            using (var writer = new BsonWriter(fs))
-            {
-                var serializer = new JsonSerializer();
-                serializer.Serialize(writer, userData);
-            }
-        }
-    }
-    */
 }
 
