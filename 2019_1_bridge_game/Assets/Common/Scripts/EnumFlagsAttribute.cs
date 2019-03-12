@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 /* 예시
- *
+ * 다중 enum 사용
+ * 
  * enum 작성할 때
  * public enum TestEnum
    {

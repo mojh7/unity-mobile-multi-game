@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class CommonConstants : MonoBehaviourSingleton<CommonConstants>
 {
-    public Color[] RATING_TXT_COLOR;
+    //public Color[] RATING_TXT_COLOR;
 }

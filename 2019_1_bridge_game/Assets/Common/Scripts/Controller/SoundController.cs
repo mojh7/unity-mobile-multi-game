@@ -80,23 +80,7 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     public bool IsEnableSound()
     {
         return true;
-        //return PlayerPrefs.GetInt(saveKey, 1) == 1 ? true : false;
     }
-
-    /*
-    // 사운드 설정 저장
-    public void EnableSound(bool enable)
-    {
-        PlayerPrefs.SetInt(saveKey, enable ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    // 사운드 On/Off 토글
-    public void ToggleSound()
-    {
-        EnableSound(!IsEnableSound());
-    }*/
-
 
     /// <summary>
     /// 사운드 재생, index 기반

@@ -30,6 +30,17 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     {
         return sfxVolume;
     }
+
+    public void SetMusicVolume(float volume)
+    {
+        musicController.SetVolume(volume);
+    }
+
+    public void SetSoundVolume(float volume)
+    {
+        sfxVolume = volume;
+        soundController.SetVolume(volume);
+    }
     #endregion
 
     #region unityFunc
@@ -50,42 +61,11 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
         return musicController.IsEnableMusic();
     }
 
-    /*
-    public void EnableMusic(bool enable)
-    {
-        musicController.EnableMusic(enable);
-    }
-
-    public void ToggleMusic()
-    {
-        musicController.ToggleMusic();
-    }
-    */
-
-    /*
-    // 일반 사운드 설정
-    */
     public bool IsEnableSound()
     {
         return soundController.IsEnableSound();
     }
 
-    /*
-    public void EnableSound(bool enable)
-    {
-        soundController.EnableSound(enable);
-    }
-
-    public void ToggleSound()
-    {
-        soundController.ToggleSound();
-    }
-    */
-
-
-    /*
-    // 음악 재생 제어
-    */
     public void PauseMusic()
     {
         musicController.Pause();
@@ -101,26 +81,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
         musicController.Stop();
     }
 
-    public void PlayMusic()
-    {
-        if (false == canPlayMusic)
-            return;
-        musicController.Play();
-    }
-
-    public void SetMusicVolume(float volume)
-    {
-        musicController.SetVolume(volume);
-    }
-
-    public void SetSoundVolume(float volume)
-    {
-        sfxVolume = volume;
-        soundController.SetVolume(volume);
-    }
-
     /// <summary>
-    /// 배경음악 실행
+    /// 배경음악 index로 실행
     /// </summary>
     /// <param name="clipindex"></param>
     /// <param name="ignoresame"></param>
@@ -131,8 +93,10 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
         musicController.Play(musicIndex, ignoresame);
     }
 
+    //TODO : string을 key로 하여 배경음악 실행 만들기
+
     /// <summary>
-    /// 사운드(효과음) 실행
+    /// 사운드(효과음) index로 실행
     /// </summary>
     /// <param name="soundIndex">0이상의 사운드 인덱스</param>
     /// <param name="soundtype">출력할 사운드 타입</param>
@@ -141,6 +105,11 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
         soundController.Play(sfxIndex, sfxtype);
     }
 
+    /// <summary>
+    /// 사운드(효과음) string을 key로 사용하여 실행
+    /// </summary>
+    /// <param name="soundIndex">0이상의 사운드 인덱스</param>
+    /// <param name="soundtype">출력할 사운드 타입</param>
     public void PlaySound(string sfxName, SFXType soundtype)
     {
         soundController.Play(sfxName, soundtype);

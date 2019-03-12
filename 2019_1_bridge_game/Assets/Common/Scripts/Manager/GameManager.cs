@@ -23,8 +23,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     private GameState gameState = GameState.NOT_STARTED;
     //[SerializeField]
     //private GameMode gameMode = GameMode.NORMAL;
-    [SerializeField]
-    private GameScene gameScene = GameScene.LOGO;
+    [SerializeField] private GameScene gameScene = GameScene.LOGO;
     private GameScene nextScene;
 
     // 새 게임, 로드 게임 구분

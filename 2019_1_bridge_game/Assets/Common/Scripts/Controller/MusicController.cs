@@ -5,21 +5,18 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviourSingleton<MusicController>
 {
-    //[Header("[PlayerPrefs Key]")]
-    //[SerializeField] private string saveKey = "Option_Music";
-
     [Header("[Clips]")]
     [SerializeField] private AudioClip[] clips;
 
-    AudioSource audioSource;
+    private AudioSource audioSource;
     private float volume = 1f;
+    private int currentClipIndex = -1;
 
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    private int currentClipIndex = -1;
 
     public void SetVolume(float volume)
     {
@@ -31,24 +28,7 @@ public class MusicController : MonoBehaviourSingleton<MusicController>
     public bool IsEnableMusic()
     {
         return true;
-        //return PlayerPrefs.GetInt(saveKey, 1) == 1 ? true : false;
     }
-
-    /*
-    // 음악 설정 저장
-    public void EnableMusic(bool enable)
-    {
-        PlayerPrefs.SetInt(saveKey, enable ? 1 : 0);
-        PlayerPrefs.Save();
-    }
-
-    // 음악 On/Off 토글
-    public void ToggleMusic()
-    {
-        EnableMusic(!IsEnableMusic());
-    }*/
-
-
 
     // 일시 정지
     public void Pause()

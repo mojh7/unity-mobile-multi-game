@@ -8,8 +8,7 @@ public class Player : Character
     #endregion
 
     #region components
-    [SerializeField]
-    private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
+    [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
     #endregion
 
     #region variables
@@ -19,7 +18,7 @@ public class Player : Character
     #region get / set
     #endregion
 
-    #region UnityFunc
+    #region unityFunc
     void Awake()
     {
         objTransform = GetComponent<Transform>();
@@ -97,7 +96,6 @@ public class Player : Character
     //    return bestCollider.GetComponent<CustomObject>();
     //}
 
-
     private void Move()
     {
         if (rgbody)
@@ -151,7 +149,6 @@ public class Player : Character
 
     #endregion
 
- 
     #region coroutine
     
 

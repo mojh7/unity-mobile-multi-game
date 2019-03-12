@@ -235,6 +235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   commonSfxList:
   - {fileID: 8300000, guid: b5bda7894e00e4e4da9949ce37a3c340, type: 3}
+  - {fileID: 8300000, guid: d14765b029770754e9e13ce2b88ea8be, type: 3}
   uiSfxList:
   - {fileID: 8300000, guid: bc8ba3d31bf20a14d8f08c7fc6009fce, type: 3}
 --- !u!82 &3560977558471945664

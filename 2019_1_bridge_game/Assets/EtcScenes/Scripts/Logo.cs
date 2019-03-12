@@ -39,7 +39,7 @@ public class Logo : MonoBehaviourSingleton<Logo>
     private void ShowLogo()
     {
         StartCoroutine(FadeLogo(bridgeLogoImage));
-        AudioManager.Instance.PlaySound("bridgeOpeningSound", SFXType.COMMON);
+        AudioManager.Instance.PlaySound("logo", SFXType.COMMON);
     }
     #endregion
 

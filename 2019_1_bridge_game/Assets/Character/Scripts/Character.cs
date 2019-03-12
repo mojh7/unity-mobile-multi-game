@@ -4,10 +4,6 @@ using UnityEngine;
 
 namespace CharacterInfo
 {
-    public enum SpawnType
-    {
-        NORMAL, SERVANT
-    }
     public enum OwnerType
     {
         PLAYER, ENEMY, OBJECT, PET
@@ -44,14 +40,12 @@ public abstract class Character : MonoBehaviour
     #endregion
 
     #region Status
-    [SerializeField]
-    protected float movingSpeed;     // Character move Speed
+    [SerializeField] protected float movingSpeed;     // Character move Speed
     protected CharacterInfo.DamageImmune damageImmune;
     protected CharacterInfo.AbnormalImmune abnormalImmune;
     protected CharacterInfo.AimType aimType;
     protected CharacterInfo.State characterState;
     protected CharacterInfo.OwnerType ownerType;
-    protected CharacterInfo.SpawnType spawnType;
     #endregion
 
     #region componets
@@ -79,10 +73,8 @@ public abstract class Character : MonoBehaviour
 
     #region variables
 
-    [SerializeField]
-    protected Sprite sprite;
+    [SerializeField] protected Sprite sprite;
 
-    protected bool isAutoAiming;    // 오토에임 적용 유무
     protected Vector3 directionVector;
     protected float directionDegree;  // 바라보는 각도(총구 방향)
     protected bool isRightDirection;    // character 방향이 우측이냐(true) 아니냐(flase = 좌측)
@@ -98,10 +90,6 @@ public abstract class Character : MonoBehaviour
     //public CharacterComponents GetCharacterComponents()
     //{
     //    return Components;
-    //}
-    //public AbnormalComponents GetAbnormalComponents()
-    //{
-    //    return abnormalComponents;
     //}
     public virtual bool GetRightDirection()
     {
@@ -123,10 +111,6 @@ public abstract class Character : MonoBehaviour
     {
         return bodyTransform;
     }
-    //public virtual WeaponManager GetWeaponManager()
-    //{
-    //    return weaponManager;
-    //}
     //public BuffManager GetBuffManager()
     //{
     //    return buffManager;
@@ -135,15 +119,6 @@ public abstract class Character : MonoBehaviour
     {
         return ownerType;
     }
-
-    //public bool GetIsAcitveAttack()
-    //{
-    //    return isActiveAttack;
-    //}
-    //public bool GetIsAcitveMove()
-    //{
-    //    return isActiveMove;
-    //}
     #endregion
 
     #region func
@@ -162,7 +137,6 @@ public abstract class Character : MonoBehaviour
         bodyTransform = GetComponent<Transform>();
 
         textMesh = Components.TextMesh;
-        spawnType = CharacterInfo.SpawnType.NORMAL;
     }
 
     #endregion
@@ -173,36 +147,6 @@ public abstract class Character : MonoBehaviour
     //    //TODO : 만약에 Enemy를 조종하게 될 경우 Enemy Class에 재정의 필요
     //    return null;
     //}
-
-
-    #region Abnormal
-    /// <summary> 상태 이상 효과 적용 </summary>
-    protected bool AbnormalChance(float appliedChance)
-    {
-        float chance = Random.Range(0, 1f);
-        if (chance < appliedChance)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    
-    
-    #endregion
-
-
-
-    public void SetSpawnType(CharacterInfo.SpawnType spawnType)
-    {
-        this.spawnType = spawnType;
-    }
-
-
-
 }
 
 

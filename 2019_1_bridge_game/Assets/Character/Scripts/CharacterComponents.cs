@@ -5,13 +5,10 @@ using UnityEngine;
 public class CharacterComponents : MonoBehaviour
 {
     #region components
-    //[SerializeField]
-    //private WeaponManager weaponManager;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform spriteTransform;
     [SerializeField] private Animator animator;
-    //[SerializeField]
-    //private AnimationHandler animationHandler;
+    //[SerializeField] private AnimationHandler animationHandler;
     [SerializeField] private CircleCollider2D interactiveCollider2D;
     [SerializeField] private CircleCollider2D circleCollider2D;
     [SerializeField] private BoxCollider2D hitBox;
@@ -20,14 +17,8 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private TextMesh nickTextMesh;
 
     #endregion
+
     #region parameter
-    //public WeaponManager WeaponManager
-    //{
-    //    get
-    //    {
-    //        return weaponManager;
-    //    }
-    //}
     public SpriteRenderer SpriteRenderer
     {
         get
@@ -98,7 +89,8 @@ public class CharacterComponents : MonoBehaviour
     public DirectionArrow DirectionArrow { get; private set; }
     //public AIController AIController { get; private set; }
     #endregion
-    #region Func
+
+    #region func
     public void Init()
     {
         //BuffManager = GetComponent<BuffManager>();
@@ -107,5 +99,4 @@ public class CharacterComponents : MonoBehaviour
         //AIController = GetComponent<AIController>();
     }
     #endregion
-
 }
