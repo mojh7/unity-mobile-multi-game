@@ -5,22 +5,22 @@ using UnityEngine.SceneManagement;
 
 /* 게임 상태와 씬 등 전반을 관리하는 매니저 클래스
  * 
- * 19.03.03 Scene 흐름
- * logo -> title -> loading -> ingame
+ * 19.03.16 Scene 흐름
+ * logo -> title -> loading -> MainLobbyScene -> Loading -> ingame
  * 
  */
-public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, IN_GAME = 3, BOSS_RUSH = 4 }
+public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, MAIN_LOBBY = 3, IN_GAME = 4}
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     #region variables
-    private enum GameState { NOT_STARTED, GAME_OVER, PLAYING, CLEAR, ENDING }
+    //private enum GameState { NOT_STARTED, GAME_OVER, PLAYING, CLEAR, ENDING }
     //public enum GameMode { NORMAL, RUSH }
     
 
-    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "IngameScene" };
+    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "MainLobbyScene", "IngameScene" };
 
-    private GameState gameState = GameState.NOT_STARTED;
+    //private GameState gameState = GameState.NOT_STARTED;
     //[SerializeField]
     //private GameMode gameMode = GameMode.NORMAL;
     [SerializeField] private GameScene gameScene = GameScene.LOGO;
@@ -79,6 +79,11 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         SceneManager.LoadScene(GAME_SCENE[(int)nextScene]);
     }
 
+    /// <summary>
+    /// 씬 이동
+    /// </summary>
+    /// <param name="nextScene">이동할 씬</param>
+    /// <param name="goThroughLoading">로딩 씬을 거쳐갈 것인가?</param>
     public void LoadNextScene(GameScene nextScene, bool goThroughLoading)
     {
         if (false == goThroughLoading)

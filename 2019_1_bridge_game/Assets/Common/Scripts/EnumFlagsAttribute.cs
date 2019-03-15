@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 /* 예시
- * 다중 enum 사용
+ * 다중 enum inspector 표시 해줌.
  * 
  * enum 작성할 때
  * public enum TestEnum

@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/* Setting도 좋지만 Option라는 이름으로 써도 좋을 것 같음.
+ * 
+ * 유저 환경 설정 데이터(음악 볼륨, 각종 on / off 등)
+ */ 
+
 [System.Serializable]
 class GameSettingData
 {
