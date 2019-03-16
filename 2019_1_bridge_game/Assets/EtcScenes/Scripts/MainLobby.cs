@@ -15,10 +15,6 @@ public class MainLobby : MonoBehaviour
     #endregion
 
     #region func
-    private void InitTitle()
-    {
-    }
-
     public void LoadInGame()
     {
         GameManager.Instance.LoadNextScene(GameScene.IN_GAME, true);

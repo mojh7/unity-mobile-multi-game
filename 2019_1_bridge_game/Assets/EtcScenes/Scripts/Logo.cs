@@ -7,8 +7,11 @@ using UnityEngine.SceneManagement;
 public class Logo : MonoBehaviourSingleton<Logo>
 {
     #region variables
-    [SerializeField]
-    private Image bridgeLogoImage;
+    [SerializeField] private Image bridgeLogoImage;
+    [SerializeField] private Image teamLogoImage;
+    [SerializeField] private Sprite[] teamLogoSprites;
+    [SerializeField] private float logoDisplayDuration;
+    [SerializeField] private float teamLogoAnimationInterval;
     //public Image backGround;
     //public Image teamLogoImage;
     //[SerializeField] private Sprite[] logoSprite;
@@ -38,62 +41,38 @@ public class Logo : MonoBehaviourSingleton<Logo>
     }
     private void ShowLogo()
     {
-        StartCoroutine(FadeLogo(bridgeLogoImage));
-        AudioManager.Instance.PlaySound("logo", SFXType.COMMON);
+        StartCoroutine(FadeLogo());
+        StartCoroutine(TeamLogoAnimation());
     }
     #endregion
 
     #region coroutine
-    IEnumerator FadeLogo(Image image)
+    IEnumerator FadeLogo()
     {
-        if (image != null)
+        yield return YieldInstructionCache.WaitForSeconds(0.1f);
+        for (int i = 0; i <= 15; i++)
         {
-            for (int i = 0; i <= 30; i++)
-            {
-                image.color = new Color(1, 1, 1, (float)i / 10);
-                yield return YieldInstructionCache.WaitForSeconds(0.05f);
-            }
-            for (int i = 10; i >= 0; i--)
-            {
-                image.color = new Color(1, 1, 1, (float)i / 10);
-                yield return YieldInstructionCache.WaitForSeconds(0.05f);
-            }
-
-            //if (image != teamLogoImage)
-            //{
-            //    StartCoroutine(AnimationLogo(teamLogoImage));
-            //}
-            //else
-            LoadTitle();
+            bridgeLogoImage.color = new Color(1, 1, 1, (float)i / 15);
+            teamLogoImage.color = new Color(1, 1, 1, (float)i / 15);
+            yield return YieldInstructionCache.WaitForSeconds(0.02f);
         }
+        AudioManager.Instance.PlaySound("logo", SFXType.COMMON);
     }
 
-    // team logo
-    //IEnumerator AnimationLogo(Image image)
-    //{
-    //    if (image != null)
-    //    {
-    //        for (int i = 0; i < 10; i++)
-    //        {
-    //            backGround.color = new Color(0, 0, 0, (float)i / 10);
-    //            yield return YieldInstructionCache.WaitForSeconds(0.05f);
-    //        }
-    //        image.gameObject.SetActive(true);
-    //        backGround.color = new Color(0, 0, 0);
-    //        for (int i = 0; i < logoSprite.Length; i++)
-    //        {
-    //            image.sprite = logoSprite[i];
-    //            yield return YieldInstructionCache.WaitForSeconds(0.1f);
-    //        }
-    //        image.gameObject.SetActive(false);
-    //        for (int i = 10; i >= 0; i--)
-    //        {
-    //            backGround.color = new Color(0, 0, 0, (float)i / 10);
-    //            yield return YieldInstructionCache.WaitForSeconds(0.05f);
-    //        }
-    //    }
-    //    if (image == teamLogoImage)
-    //        LoadTitle();
-    //}
+    IEnumerator TeamLogoAnimation()
+    {
+        float time = 0;
+        int spriteIndex = 0;
+        
+        while(time < logoDisplayDuration)
+        {
+            teamLogoImage.sprite = teamLogoSprites[spriteIndex];
+            spriteIndex = (spriteIndex + 1) % teamLogoSprites.Length;
+            time += teamLogoAnimationInterval;
+            yield return YieldInstructionCache.WaitForSeconds(teamLogoAnimationInterval);
+        }
+        LoadTitle();
+    }
+
     #endregion
 }
