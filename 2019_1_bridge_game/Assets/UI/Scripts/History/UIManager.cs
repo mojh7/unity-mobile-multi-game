@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 사용법 
-// --- 현재 위치 Title Scene (Logo Scene에서 exit 키를 누를 필요가 없다 생각)
+// --- 현재 위치 Title Scene (이후 LogoScene에서부터 실행)
 // --- 각 UI에 맞게 네이밍 UIxxxx.cs (상속 : UIControl) 
 public class UIManager : MonoBehaviourSingleton<UIManager>
 {

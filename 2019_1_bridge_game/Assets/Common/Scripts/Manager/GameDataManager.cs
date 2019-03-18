@@ -44,6 +44,8 @@ public class GameDataManager : MonoBehaviourSingleton<GameDataManager>
         userDataPath = Path.Combine(Application.persistentDataPath, "UserData.dat");
 
         LoadData();
+
+        Debug.Log("Initialize UserData Manager ");
     }
 
     public void LoadData()

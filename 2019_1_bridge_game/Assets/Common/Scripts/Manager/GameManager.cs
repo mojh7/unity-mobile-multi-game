@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
         DontDestroyOnLoad(this);
 
         GameDataManager.Instance.Initialize();
+        DatabaseManager.Instance.Initialize();
     }
 
     private void Update()
