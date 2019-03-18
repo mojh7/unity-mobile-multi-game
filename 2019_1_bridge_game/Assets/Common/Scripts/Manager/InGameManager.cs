@@ -15,6 +15,7 @@ public class InGameManager : MonoBehaviourSingleton<InGameManager>
     #endregion
 
     #region get / set
+    public Transform GetBaseTown() { return baseTowns; }
     #endregion
 
     #region unityFunc
@@ -37,9 +38,7 @@ public class InGameManager : MonoBehaviourSingleton<InGameManager>
     //}
     #endregion
 
-
     #region Func
-    public Transform GetBaseTown() { return baseTowns; }
     //public int GetFloor()
     //{
     //    return GameDataManager.Instance.GetFloor();

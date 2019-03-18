@@ -5,11 +5,13 @@ using UnityEngine.SceneManagement;
 
 /* 게임 상태와 씬 등 전반을 관리하는 매니저 클래스
  * 
- * 19.03.16 Scene 흐름
- * logo -> title -> loading -> MainLobbyScene -> Loading -> ingame
+ * 19.03.18 Scene 흐름
+ * logo -> title -> loading -> MainLobby -> Loading -> Room -> Loading -> ingame
+ * 
+ * loading 중간 중간에 있는 건 언제든지 바뀔 수도 있음.
  * 
  */
-public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, MAIN_LOBBY = 3, IN_GAME = 4}
+public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, MAIN_LOBBY = 3, ROOM = 4, IN_GAME = 5}
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -18,7 +20,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     //public enum GameMode { NORMAL, RUSH }
     
 
-    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "MainLobbyScene", "IngameScene" };
+    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "MainLobbyScene", "RoomScene", "IngameScene" };
 
     //private GameState gameState = GameState.NOT_STARTED;
     //[SerializeField]

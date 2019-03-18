@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 742788724}
   - component: {fileID: 742788723}
   m_Layer: 5
-  m_Name: Ingame_btn
+  m_Name: room_btn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -583,7 +583,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1138956927}
-        m_MethodName: LoadInGame
+        m_MethodName: LoadRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1019,9 +1019,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Ingame
-
-'
+  m_Text: "Room \uC785\uC7A5"
 --- !u!222 &1353849103
 CanvasRenderer:
   m_ObjectHideFlags: 0

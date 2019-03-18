@@ -33,24 +33,12 @@ public class PauseMenu : MonoBehaviour
         pauseUIObj.SetActive(!pauseUIObj.activeSelf);
     }
 
-    public void ReturnTitle()
+    public void ReturnMainLobby()
     {
-        GameManager.Instance.LoadNextScene(GameScene.TITLE, true);
+        GameManager.Instance.LoadNextScene(GameScene.MAIN_LOBBY, true);
     }
     #endregion
 
     #region coroutine
     #endregion
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
