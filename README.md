@@ -2,7 +2,7 @@
 ==
 Bridge(대학생 게임 개발 연합 동아리)에서 활동하는 언바지(UBZ)팀 프로젝트 입니다.
 
-## Game Name : 
+## Game Name : 음악이다! 전쟁이다!
 --
 
 ## About Team
