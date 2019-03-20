@@ -6,13 +6,6 @@ using UnityEngine;
 [System.Serializable]
 public class UserData
 {
-    private string nickname = "";
-
-
-    public void SetNickname (string str) { this.nickname = str; }
-
-
-    public string GetNickname() { return nickname; }
     /*
     private int gold;
     private Dictionary<string, bool> characterUnLockState;

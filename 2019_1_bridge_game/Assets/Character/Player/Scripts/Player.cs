@@ -44,6 +44,7 @@ public class Player : Character
         ControllerUI.Instance.SetPlayer(this, ref controller);
     }
 
+    // FIXME : 이제 로컬이 아닌 서버에서 닉네임을 받아드릴 것임.
     public override void Init()
     {
         base.Init();
@@ -54,7 +55,7 @@ public class Player : Character
         damageImmune = CharacterInfo.DamageImmune.NONE;
         abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
 
-        textMesh.text = GameDataManager.Instance.userData.GetNickname();
+        //textMesh.text = GameDataManager.Instance.userData.GetNickname();
 
         Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
 

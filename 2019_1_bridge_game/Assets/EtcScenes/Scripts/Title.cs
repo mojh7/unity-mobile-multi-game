@@ -33,11 +33,6 @@ public class Title : MonoBehaviour
     {
         //AudioManager.Instance.StopMusic();
 
-        // TO DO 
-        // --- 특수문자, 길이, 공백 체크
-        // --- 경고 팝업 또는 생성 확인 팝업
-        GameDataManager.Instance.userData.SetNickname(nicknameText.text);
-
         GameManager.Instance.LoadNextScene(GameScene.MAIN_LOBBY, true);
     }
     #endregion
