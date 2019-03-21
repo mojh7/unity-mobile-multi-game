@@ -5,8 +5,10 @@
 // 추가 하지 않을시에는 빌드후 로그가 나오지 않음.
 using UnityEngine;
 
+
 #if !UNITY_EDITOR
-public static class Debug
+
+public static class DebugForBuild
 {
     public static bool isDebugBuild
     {

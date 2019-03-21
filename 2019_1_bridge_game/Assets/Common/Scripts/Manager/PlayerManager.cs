@@ -12,9 +12,7 @@ public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
     private Player player;
 
     #endregion
-    #region components
-    public RuntimeAnimatorController runtimeAnimator;
-    #endregion
+
     #region getter
     public Player GetPlayer()
     {

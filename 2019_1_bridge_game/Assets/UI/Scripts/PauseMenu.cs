@@ -24,11 +24,11 @@ public class PauseMenu : MonoBehaviour
     {
         if (pauseUIObj.activeSelf)
         {
-            TimeController.Instance.StartTime();
+            //TimeController.Instance.StartTime();
         }
         else
         {
-            TimeController.Instance.StopTime();
+            //TimeController.Instance.StopTime();
         }
         pauseUIObj.SetActive(!pauseUIObj.activeSelf);
     }
