@@ -102,4 +102,14 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
         }
     }
 
+    //모든 UIControl 숨김
+    public void HIdeAll()
+    {
+        if(uiHistory.Count != 0)
+        {
+            while (uiHistory.Count != 0)
+                uiHistory.Pop().OnHide();
+        }
+    }
+
 }
