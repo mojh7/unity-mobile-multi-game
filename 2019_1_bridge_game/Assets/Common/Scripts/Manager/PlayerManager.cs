@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UBZ.Owner;
 
 public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
 {
-    #region variables
+    #region variable
     [SerializeField]
     private GameObject playerPrefab;
     private GameObject playerObj;
