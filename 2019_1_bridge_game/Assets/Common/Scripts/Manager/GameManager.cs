@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
  * loading 중간 중간에 있는 건 언제든지 바뀔 수도 있음.
  * 
  */
-public enum GameScene { LOGO = 0, TITLE = 1, LOADING = 2, MAIN_LOBBY = 3, ROOM = 4, IN_GAME = 5}
+public enum GameScene { LOGO, TITLE, LOADING, MAIN_LOBBY, ROOM, IN_GAME, TEMP_LOBBY, TEMP_GAME }
 
 public class GameManager : MonoBehaviourSingleton<GameManager>
 {
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
     //public enum GameMode { NORMAL, RUSH }
     
 
-    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "MainLobbyScene", "RoomScene", "IngameScene" };
+    private static readonly string[] GAME_SCENE = new string[] { "LogoScene", "TitleScene", "LoadingScene", "MainLobbyScene", "RoomScene", "IngameScene", "TempLobbyScene", "TempGameScene" };
 
     //private GameState gameState = GameState.NOT_STARTED;
     //[SerializeField]

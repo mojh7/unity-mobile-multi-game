@@ -35,6 +35,11 @@ public class Title : MonoBehaviour
 
         GameManager.Instance.LoadNextScene(GameScene.MAIN_LOBBY, true);
     }
+
+    public void LoadTempLobby()
+    {
+        GameManager.Instance.LoadNextScene(GameScene.TEMP_LOBBY, false);
+    }
     #endregion
 
     #region coroutine
