@@ -42,10 +42,50 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 2b4fe9a2c4c37154db1fc346fdb6e663, type: 3}
-    totalSpriteSurfaceArea: 0
+    totalSpriteSurfaceArea: 46583
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
+  m_PackedSprites:
+  - {fileID: 21300008, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300010, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300012, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300014, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300000, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300002, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300004, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300006, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300016, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300018, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300038, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300036, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300034, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300032, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300030, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300028, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300026, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300024, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300022, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300020, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 03_Castle_Tiles_4
+  - 03_Castle_Tiles_5
+  - 03_Castle_Tiles_6
+  - 03_Castle_Tiles_7
+  - 03_Castle_Tiles_0
+  - 03_Castle_Tiles_1
+  - 03_Castle_Tiles_2
+  - 03_Castle_Tiles_3
+  - 03_Castle_Tiles_8
+  - 03_Castle_Tiles_9
+  - 03_Castle_Tiles_19
+  - 03_Castle_Tiles_18
+  - 03_Castle_Tiles_17
+  - 03_Castle_Tiles_16
+  - 03_Castle_Tiles_15
+  - 03_Castle_Tiles_14
+  - 03_Castle_Tiles_13
+  - 03_Castle_Tiles_12
+  - 03_Castle_Tiles_11
+  - 03_Castle_Tiles_10
   m_Tag: Map
   m_IsVariant: 0

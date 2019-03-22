@@ -13,7 +13,6 @@
 #define SUPPORTED_UNITY
 #endif
 
-
 namespace Photon.Realtime
 {
     using System;

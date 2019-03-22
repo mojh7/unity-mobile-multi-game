@@ -44,7 +44,6 @@ namespace Photon.Pun.Demo.Asteroids
         public void Awake()
         {
             photonView = GetComponent<PhotonView>();
-
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
             renderer = GetComponent<Renderer>();

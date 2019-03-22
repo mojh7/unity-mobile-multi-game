@@ -30,6 +30,8 @@ namespace Photon.Realtime
     using SupportClass = ExitGames.Client.Photon.SupportClass;
     #endif
 
+    // User 개념이 더 강한 듯
+
 
     /// <summary>
     /// Summarizes a "player" within a room, identified (in that room) by ID (or "actorNumber").
@@ -39,6 +41,7 @@ namespace Photon.Realtime
     /// </remarks>
     public class Player
     {
+
         /// <summary>
         /// Used internally to identify the masterclient of a room.
         /// </summary>

@@ -1094,7 +1094,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 1860083801054866, guid: 1057712be87f53146b2a566da3756cec,
     type: 3}
-  runtimeAnimator: {fileID: 0}
 --- !u!1 &1395464099
 GameObject:
   m_ObjectHideFlags: 0
@@ -1337,6 +1336,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PauseMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 739143797987704533, guid: 7c2455add34a49b4ab1c964b9b810336,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 739143797987704534, guid: 7c2455add34a49b4ab1c964b9b810336,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1445,7 +1449,7 @@ PrefabInstance:
     - target: {fileID: 739143797081353018, guid: 7c2455add34a49b4ab1c964b9b810336,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 739143798402812674, guid: 7c2455add34a49b4ab1c964b9b810336,
         type: 3}

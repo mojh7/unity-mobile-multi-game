@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace UBZ.Owner
 {
@@ -15,6 +17,11 @@ namespace UBZ.Owner
 
         #region variables
         private Transform objTransform;
+
+        private PhotonView photonView;
+        private new Rigidbody rigidbody;
+        private new Collider collider;
+        private new Renderer renderer;
         #endregion
 
         #region get / set
@@ -23,9 +30,21 @@ namespace UBZ.Owner
         #region unityFunc
         void Awake()
         {
+            photonView = photonView = GetComponent<PhotonView>();
+            rigidbody = GetComponent<Rigidbody>();
+            collider = GetComponent<Collider>();
+            renderer = GetComponent<Renderer>();
             objTransform = GetComponent<Transform>();
             scaleVector = new Vector3(1f, 1f, 1f);
             isRightDirection = true;
+        }
+
+        private void Start()
+        {
+            foreach (Renderer r in GetComponentsInChildren<Renderer>())
+            {
+                //r.material.color = InGame.GetPlayerColor(photonView.Owner.GetPlayerNumber());
+            }
         }
 
         //// Update is called once per frame
