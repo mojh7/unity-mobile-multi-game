@@ -21,20 +21,26 @@ namespace Photon.Pun.UtilityScripts
 {
     /// <summary>
     /// Implements consistent numbering in a room/game with help of room properties. Access them by Player.GetPlayerNumber() extension.
+    /// 실내 속성을 사용하여 실내 / 게임에서 일관된 번호 매기기를 구현합니다. Player.GetPlayerNumber () 확장 프로그램을 통해 액세스하십시오.
     /// </summary>
     /// <remarks>
     /// indexing ranges from 0 to the maximum number of Players.
     /// indexing remains for the player while in room.
-	/// If a Player is numbered 2 and player numbered 1 leaves, numbered 1 become vacant and will assigned to the future player joining (the first available vacant number is assigned when joining)
+    /// If a Player is numbered 2 and player numbered 1 leaves, numbered 1 become vacant and will assigned to the future player joining (the first available vacant number is assigned when joining)
+    /// 인덱싱 범위는 0에서 최대 수까지입니다.
+    /// 실내에서 플레이어는 인덱싱을 유지합니다.
+    /// 플레이어의 번호가 2이고 플레이어의 번호가 1 번인 경우 1 번 번호는 비어 있고 향후 플레이어가 참여할 수 있도록 할당됩니다 (가입 할 때 첫 번째로 사용 가능한 빈 번호가 할당 됨)
     /// </remarks>
     public class PlayerNumbering : MonoBehaviourPunCallbacks
     {
         //TODO: Add a "numbers available" bool, to allow easy access to this?!
+        //이것에 쉽게 접근 할 수 있도록 "숫자 이용 가능"bool을 추가하십시오!
 
         #region Public Properties
 
         /// <summary>
-        /// The instance. EntryPoint to query about Room Indexing.
+        /// The instance. EntryPoint to query about Room Indexing. 
+        /// 인스턴스.EntryPoint가 룸 인덱싱에 대해 쿼리합니다.
         /// </summary>
         public static PlayerNumbering instance;
 
@@ -42,19 +48,23 @@ namespace Photon.Pun.UtilityScripts
 
         /// <summary>
         /// OnPlayerNumberingChanged delegate. Use
+        /// OnPlayerNumberingChanged 대리자입니다.용도
         /// </summary>
         public delegate void PlayerNumberingChanged();
         /// <summary>
         /// Called everytime the room Indexing was updated. Use this for discrete updates. Always better than brute force calls every frame.
+        /// 객실 인덱싱이 업데이트 될 때마다 호출됩니다. 이산 업데이트에 사용하십시오. 모든 프레임에 무차별 적 호출보다 항상 좋습니다.
         /// </summary>
         public static event PlayerNumberingChanged OnPlayerNumberingChanged;
 
 
         /// <summary>Defines the room custom property name to use for room player indexing tracking.</summary>
+        /// room 플레이어 색인 추적에 사용할 방 사용자 정의 속성 이름을 정의합니다.
         public const string RoomPlayerIndexedProp = "pNr";
 
         /// <summary>
         /// dont destroy on load flag for this Component's GameObject to survive Level Loading.
+        /// 레벨 로딩에서 생존하기 위해이 컴포넌트의 GameObject에 대한로드 플래그를 파괴하지 마십시오.
         /// </summary>
         public bool dontDestroyOnLoad = false;
 

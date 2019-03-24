@@ -34,15 +34,22 @@ namespace Photon.Pun
 
 
 
-    /// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>
+    //// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>
+    /// <summary> RPC 속성을 다른 이름으로 대체합니다. 메소드를 원격 호출 가능으로 플래그 지정하는 데 사용됩니다. </summary>
     public class PunRPC : Attribute
     {
     }
-
-    /// <summary>Defines the OnPhotonSerializeView method to make it easy to implement correctly for observable scripts.</summary>
+    /*
+    /// <summary>Defines the OnPhotonSeri
+    /// alizeView method to make it easy to implement correctly for observable scripts.</summary>
     /// \ingroup callbacks
+    */
+    /// <summary> OnPhotonSeri를 정의합니다.
+    /// alizeView 메소드를 사용하여 관찰 가능한 스크립트에 대해 올바르게 구현할 수 있습니다. </summary>
+    /// \ ingroup 콜백
     public interface IPunObservable
     {
+        /*
         /// <summary>
         /// Called by PUN several times per second, so that your script can write and read synchronization data for the PhotonView.
         /// </summary>
@@ -68,10 +75,37 @@ namespace Photon.Pun
         /// any update. This can't be used as "x-times per second Update()".
         /// </remarks>
         /// \ingroup publicApi
+        /// 
+         */
+        /// <summary>
+        /// PUN이 초당 여러 번 호출하므로 스크립트에서 PhotonView의 동기화 데이터를 읽고 쓸 수 있습니다.
+        /// </summary>
+        /// <remarks>
+        /// 이 메소드는 PhotonView의 Observed 구성 요소로 지정된 스크립트에서 호출됩니다.<br/>
+        /// PhotonNetwork.SerializationRate는이 메서드가 호출되는 빈도에 영향을줍니다.<br/>
+        /// PhotonNetwork.SendRate는이 클라이언트가 패키지를 보내는 빈도에 영향을줍니다.<br/>
+        ///
+        /// 이 방법을 구현하면 PhotonView가 정기적으로 동기화 할 데이터를 사용자 정의 할 수 있습니다.
+        /// 귀하의 코드는 전송되는 내용 (내용)과 수신하는 클라이언트가 귀하의 데이터를 사용하는 방법을 정의합니다.
+        ///
+        /// 다른 콜백과 달리 <i> OnPhotonSerializeView는 할당되었을 때만 호출됩니다.
+        /// PhotonView.observed 스크립트로 PhotonView </i>로 이동하십시오.
+        ///
+        /// 이 방법을 사용하려면 PhotonStream이 필수적입니다. 그것은 "쓰기"모드에있을 것입니다.
+        /// 클라이언트는 PhotonView (PhotonStream.IsWriting == true)를 제어하고
+        /// 제어 클라이언트가 보내는 것을 수신 한 원격 클라이언트.
+        ///
+        /// 스트림에 값을 쓰지 않으면 PUN이 업데이트를 건너 뜁니다. 주의 깊게 사용하면
+        /// 대역폭과 메시지를 보존합니다 (1 회의실 / 초당 제한이 있음).
+        ///
+        /// OnPhotonSerializeView는 보낸 사람이 보내지 않을 때 원격 클라이언트에서 호출되지 않습니다.
+        /// 모든 업데이트. 이것은 "초당 x 번 업데이트 ()"로 사용할 수 없습니다.
+        /// </remarks>
+        /// \ingroup publicApi
         void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info);
     }
 
-
+    /*
     /// <summary>
     /// This interface is used as definition of all callback methods of PUN, except OnPhotonSerializeView. Preferably, implement them individually.
     /// </summary>
@@ -88,26 +122,49 @@ namespace Photon.Pun
     /// OnPhotonSerializeView is NOT called like these callbacks! It's usage frequency is much higher and it is implemented in: IPunObservable.
     /// </remarks>
     /// \ingroup callbacks
+    */
+
+
+    /// <summary>
+    ///이 인터페이스는 OnPhotonSerializeView를 제외한 PUN의 모든 콜백 메소드 정의로 사용됩니다. 바람직하게는 개별적으로 구현하십시오.
+    /// </summary>
+    /// <remarks>
+    ///이 인터페이스는 게임에서 실제로 구현하는 것 이상으로 완벽하게 사용할 수 있습니다.
+    /// IPunCallbacks를 구현하지 않고 MonoMehaviour에서 개별적으로 각 메서드를 구현할 수 있습니다.
+    ///
+    /// PUN은 모든 콜백을 이름으로 호출합니다. 정규화 된 이름으로 구현 콜백을 사용하지 마십시오.
+    /// 예제 : IPunCallbacks.OnConnected는 Unity의 SendMessage ()에 의해 호출되지 않습니다.
+    ///
+    /// PUN은 유니티의 이벤트와 콜백과 유사하게 그것들을 구현하는 모든 스크립트에서이 메소드를 호출 할 것입니다.
+    /// 호출을 트리거하는 상황은 메소드별로 설명됩니다.
+    ///
+    /// OnPhotonSerializeView는 이러한 콜백처럼 호출되지 않습니다! 사용 빈도는 훨씬 높으며 IPunObservable에서 구현됩니다.
+    /// </remarks>
+    /// \ingroup 콜백
     public interface IPunOwnershipCallbacks
     {
         /// <summary>
+        /// 다른 플레이어가 당신 (현재 소유자)의 PhotonView 소유권을 요청하면 호출됩니다.
         /// Called when another player requests ownership of a PhotonView from you (the current owner).
         /// </summary>
         /// <remarks>
+        /// viewAndPlayer 매개 변수는 다음을 포함합니다.
         /// The parameter viewAndPlayer contains:
         ///
         /// PhotonView view = viewAndPlayer[0] as PhotonView;
         ///
         /// Player requestingPlayer = viewAndPlayer[1] as Player;
         /// </remarks>
-        /// <param name="targetView">PhotonView for which ownership gets requested.</param>
-        /// <param name="requestingPlayer">Player who requests ownership.</param>
+        /// <param name="targetView">소유권이 요청 된 PhotonView. PhotonView for which ownership gets requested.</param>
+        /// <param name="requestingPlayer">소유권을 요청하는 플레이어. Player who requests ownership.</param>
         void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer);
 
         /// <summary>
+        /// PhotonView의 소유권이 다른 플레이어에게 이전 될 때 호출됩니다.
         /// Called when ownership of a PhotonView is transfered to another player.
         /// </summary>
         /// <remarks>
+        /// viewAndPlayers 매개 변수에는 다음이 포함됩니다.
         /// The parameter viewAndPlayers contains:
         ///
         /// PhotonView view = viewAndPlayers[0] as PhotonView;
@@ -117,8 +174,8 @@ namespace Photon.Pun
         /// Player oldOwner = viewAndPlayers[2] as Player;
         /// </remarks>
         /// <example>void OnOwnershipTransfered(object[] viewAndPlayers) {} //</example>
-        /// <param name="targetView">PhotonView for which ownership changed.</param>
-        /// <param name="previousOwner">Player who was the previous owner (or null, if none).</param>
+        /// <param name="targetView">소유권이 변경된 PhotonView. PhotonView for which ownership changed.</param>
+        /// <param name="previousOwner">이전 소유자 인 플레이어 (없으면 null). Player who was the previous owner (or null, if none).</param>
         void OnOwnershipTransfered(PhotonView targetView, Player previousOwner);
     }
 
@@ -128,6 +185,7 @@ namespace Photon.Pun
         void OnPhotonInstantiate(PhotonMessageInfo info);
     }
 
+    /*
     /// <summary>
     /// Defines an interface for object pooling, used in PhotonNetwork.Instantiate and PhotonNetwork.Destroy.
     /// </summary>
@@ -150,9 +208,31 @@ namespace Photon.Pun
     /// PUN will optimize the instantiation and no longer looks up IPunInstantiateMagicCallback
     /// via GetComponents.
     /// </remarks>
+     */
+
+    /// <summary>
+    /// PhotonNetwork.Instantiate 및 PhotonNetwork.Destroy에 사용되는 개체 풀링을위한 인터페이스를 정의합니다.
+    /// </summary>
+    /// <remarks>
+    /// 사용자 지정 IPunPrefabPool을 적용하려면 PhotonNetwork.PrefabPool을 설정하십시오.
+    /// PUN이 Instantiate를 호출 할 때 풀에서 유효하지 않은 GameObject를 반환해야합니다.
+    /// 또한 위치와 회전을 적용해야합니다.
+    /// Awake와 Start는 Unity에 한 번만 호출되므로 재사용 된 GameObjects의 스크립트
+    /// OnEnable 및 / 또는 OnDisable을 사용해야합니다. OnEnable이 호출되면 PhotonView 가 이미 새 값으로 업데이트되었습니다.
+    ///
+    /// GameObject를 활성화하려면 Instantiate가 비활성 객체를 반환해야합니다.
+    ///
+    /// PUN이 GameObjects를 "파괴"하기 전에, PUN이 게임 오브젝트를 비활성화시킵니다.
+    ///
+    /// 구성 요소가 IPunInstantiateMagicCallback을 구현하면 PUN은 OnPhotonInstantiate
+    /// 네트워크 객체가 인스턴스화되면. 프리 패브에서 이것을 구현하는 컴포넌트가 없다면,
+    /// PUN은 인스턴스화를 최적화하고 더 이상 IPunInstantiateMagicCallback을 찾지 않습니다.
+    /// GetComponents를 통해.
+    /// </remarks>
     public interface IPunPrefabPool
     {
         /// <summary>
+        /// 프리 패브의 인스턴스를 가져 오기 위해 호출됩니다.PhotonView로 유효한, 비활성화 된 GameObject를 반환해야합니다.
         /// Called to get an instance of a prefab. Must return valid, disabled GameObject with PhotonView.
         /// </summary>
         /// <param name="prefabId">The id of this prefab.</param>
@@ -162,6 +242,7 @@ namespace Photon.Pun
         GameObject Instantiate(string prefabId, Vector3 position, Quaternion rotation);
 
         /// <summary>
+        /// 프리 패브의 인스턴스를 파괴 (또는 방금 반환)하기 위해 호출됩니다. 사용할 수 없으며 풀이 재설정되어 나중에 인스턴스화에 사용할 수 있도록 캐시 할 수 있습니다.
         /// Called to destroy (or just return) the instance of a prefab. It's disabled and the pool may reset and cache it for later use in Instantiate.
         /// </summary>
         /// <remarks>
@@ -174,6 +255,7 @@ namespace Photon.Pun
 
 
     /// <summary>
+    /// 이 클래스는 photonView 속성을 추가하고 게임에서 여전히 networkView를 사용할 때 경고를 기록합니다.
     /// This class adds the property photonView, while logging a warning when your game still uses the networkView.
     /// </summary>
     public class MonoBehaviourPun : MonoBehaviour
@@ -181,8 +263,12 @@ namespace Photon.Pun
         /// <summary>Cache field for the PhotonView on this GameObject.</summary>
         private PhotonView pvCache;
 
-        /// <summary>A cached reference to a PhotonView on this GameObject.</summary>
+        /// <summary>이 GameObject의 PhotonView에 대한 캐시 된 참조.</summary>
         /// <remarks>
+        /// 스크립트에서 PhotonView로 작업하려면 보통 this.photonView를 쓰는 것이 더 쉽습니다.
+        ///
+        /// GameObject에서 PhotonView 구성 요소를 제거하지만이 Photon.MonoBehaviour를 유지하려는 경우,
+        /// 이 참조를 피하거나 대신이 코드를 수정하여 PhotonView.Get (obj)를 사용하십시오.
         /// If you intend to work with a PhotonView in a script, it's usually easier to write this.photonView.
         ///
         /// If you intend to remove the PhotonView component from the GameObject but keep this Photon.MonoBehaviour,
@@ -201,14 +287,17 @@ namespace Photon.Pun
         }
     }
 
+    /* 이 클래스는.photonView와 PUN이 호출 할 수있는 모든 콜백 / 이벤트를 제공합니다. 사용할 이벤트 / 메소드를 재정의하십시오.
+     * 이 클래스를 확장하면 개별 메서드를 재정의로 구현할 수 있습니다.
+     * Visual Studio 및 MonoDevelop는 "재정의"를 시작할 때 메서드 목록을 제공해야합니다.
+     */ 
 
     /// <summary>
     /// This class provides a .photonView and all callbacks/events that PUN can call. Override the events/methods you want to use.
     /// </summary>
     /// <remarks>
     /// By extending this class, you can implement individual methods as override.
-    ///
-    /// Visual Studio and MonoDevelop should provide the list of methods when you begin typing "override".
+    /// Visual Studio and MonoDevelop should provide the list of methods when you begin typing "override". 
     /// <b>Your implementation does not have to call "base.method()".</b>
     ///
     /// This class implements all callback interfaces and extends <see cref="Photon.Pun.MonoBehaviourPun"/>.
@@ -226,6 +315,14 @@ namespace Photon.Pun
         {
             PhotonNetwork.RemoveCallbackTarget(this);
         }
+
+        /* 원시 연결이 설정되었지만 클라이언트가 서버에서 작업을 호출하기 전에 신호를 보내도록 호출되었습니다.
+         * (낮은 수준의 전송) 연결이 설정된 후 클라이언트는 자동으로 인증 작업. 클라이언트가 다른 작업을 호출하기 전에 응답을 받아야합니다.
+         * 논리는 OnRegionListReceived 또는 OnConnectedToMaster 중 하나를 기다려야합니다.
+         * 이 콜백은 서버에 전혀 도달 할 수 있는지 (기술적으로) 감지하는 데 유용합니다.
+         * OnDisconnected ()를 구현하는 것으로 충분합니다.
+         * 마스터 서버에서 게임 서버로 전환 할 때 호출되지 않습니다.
+         */
 
         /// <summary>
         /// Called to signal that the raw connection got established but before the client can call operation on the server.
@@ -258,6 +355,11 @@ namespace Photon.Pun
         {
         }
 
+        /* 로컬 사용자 / 클라이언트가 방을 떠날 때 호출되므로 게임 논리가 내부 상태를 정리할 수 있습니다.
+         * 방을 떠날 때, LoadBalancingClient는 게임 서버를 분리하고 마스터 서버에 연결합니다.
+         * 여러 내부 동작을 마무리합니다.
+         * 로비를 사용하고 회의실에 참여하거나 회의실을 만들기 전에 콜백 OnConnectedToMaster를 기다립니다.
+         */
         /// <summary>
         /// Called after switching to a new MasterClient when the current one leaves.
         /// </summary>
@@ -268,6 +370,10 @@ namespace Photon.Pun
         public virtual void OnMasterClientSwitched(Player newMasterClient)
         {
         }
+
+        /* 서버가 공간을 생성 할 수 없을 때 호출됩니다 (OpCreateRoom 실패).
+         * <비고> 방을 만드는 데 실패하는 가장 일반적인 원인은 제목이 고정 된 방 이름에 의존하고 방이 이미있는 경우입니다.
+         */
 
         /// <summary>
         /// Called when the server couldn't create a room (OpCreateRoom failed).
@@ -281,8 +387,14 @@ namespace Photon.Pun
         {
         }
 
+        /* 이전 OpJoinRoom 호출이 서버에서 실패한 경우 호출됩니다.
+         * 
+         * 
+         */
+
         /// <summary>
         /// Called when a previous OpJoinRoom call failed on the server.
+        /// 가장 일반적인 원인은 방이 가득 찼거나 존재하지 않는다는 것입니다 (누군가 다른 사람이 더 빠르거나 방을 닫았 기 때문에).
         /// </summary>
         /// <remarks>
         /// The most common causes are that a room is full or does not exist (due to someone else being faster or closing the room).
@@ -292,6 +404,14 @@ namespace Photon.Pun
         public virtual void OnJoinRoomFailed(short returnCode, string message)
         {
         }
+
+        /* 이 클라이언트가 방을 만들고 입력 할 때 호출됩니다. OnJoinedRoom ()도 호출됩니다.
+         * 이 콜백은 방을 만든 클라이언트에서만 호출됩니다 (OpCreateRoom 참조).
+         * 모든 클라이언트가 언제든지 연결을 끊을 수 있기 때문에 (또는 연결이 끊어 질 수 있습니다.)
+         * 방의 작성자는 OnCreatedRoom을 실행하지 않습니다.
+         * 특정 객실 속성 또는 "시작 신호"가 필요한 경우 OnMasterClientSwitched ()를 구현하십시오.
+         * 각각의 새로운 MasterClient가 방의 상태를 확인하도록하십시오.
+         */
 
         /// <summary>
         /// Called when this client created a room and entered it. OnJoinedRoom() will be called as well.
@@ -309,6 +429,12 @@ namespace Photon.Pun
         {
         }
 
+
+        /* 마스터 서버의 로비에 입장 할 때 호출됩니다. 실제 룸 목록 업데이트는 OnRoomListUpdate를 호출합니다.
+         * 로비에있는 동안 룸 목록은 고정 된 간격으로 자동 업데이트됩니다 (공개 클라우드에서는 수정할 수 없음).
+         * 방 목록은 OnRoomListUpdate를 통해 사용할 수 있습니다.
+         */
+
         /// <summary>
         /// Called on entering a lobby on the Master Server. The actual room-list updates will call OnRoomListUpdate.
         /// </summary>
@@ -320,8 +446,14 @@ namespace Photon.Pun
         {
         }
 
+        /* 로비를 떠난 후 호출됩니다.
+         * 로비를 나갈 때 [OpCreateRoom] (@ref OpCreateRoom) 및 [OpJoinRandomRoom] (@ref OpJoinRandomRoom)
+         * 자동으로 기본 로비를 참조하십시오.
+         * 
+         */
+
         /// <summary>
-        /// Called after leaving a lobby.
+        /// 로비를 떠난 후 호출됩니다.
         /// </summary>
         /// <remarks>
         /// When you leave a lobby, [OpCreateRoom](@ref OpCreateRoom) and [OpJoinRandomRoom](@ref OpJoinRandomRoom)
@@ -331,8 +463,13 @@ namespace Photon.Pun
         {
         }
 
+        /* Photon 서버와의 연결을 끊은 후에 호출됩니다. 실패이거나 의도적 일 수 있습니다.
+         * 이 연결 끊기 이유는 DisconnectCause로 제공됩니다.
+         * 
+         */
+
         /// <summary>
-        /// Called after disconnecting from the Photon server. It could be a failure or intentional
+        /// Photon 서버와의 연결을 끊은 후에 호출됩니다.실패이거나 의도적 일 수 있습니다.
         /// </summary>
         /// <remarks>
         /// The reason for this disconnect is provided as DisconnectCause.
@@ -341,14 +478,24 @@ namespace Photon.Pun
         {
         }
 
+        /* 이름 서버가 귀하의 제목에 대한 지역 목록을 제공했을 때 호출됩니다.
+         * 제공된 값을 사용하려면 RegionHandler 클래스 설명을 확인하십시오.
+         * 
+         */
+
         /// <summary>
-        /// Called when the Name Server provided a list of regions for your title.
+        /// 이름 서버가 귀하의 제목에 대한 지역 목록을 제공했을 때 호출됩니다.
         /// </summary>
         /// <remarks>Check the RegionHandler class description, to make use of the provided values.</remarks>
         /// <param name="regionHandler">The currently used RegionHandler.</param>
         public virtual void OnRegionListReceived(RegionHandler regionHandler)
         {
         }
+
+        /* 마스터 서버의 로비 (InLobby)에있는 동안 객실 목록 업데이트가 필요합니다.
+         * 각 항목은 사용자 정의 속성을 포함 할 수있는 RoomInfo입니다 (방을 만들 때 로비 목록으로 정의 된 항목이 제공됨).
+         * 모든 종류의 로비가 고객에게 객실 목록을 제공하는 것은 아닙니다. 일부는 침묵하고 서버 쪽 매치 메이킹을 전문으로합니다.
+         */
 
         /// <summary>
         /// Called for any update of the room-listing while in a lobby (InLobby) on the Master Server.
@@ -361,6 +508,11 @@ namespace Photon.Pun
         {
         }
 
+        /* LoadBalancingClient가 방을 입력 할 때 호출됩니다.이 클라이언트가 방을 작성했거나 간단하게 합류 한 경우에도 상관 없습니다.
+         * 이 메서드를 호출하면 Room.Players의 기존 플레이어, 해당 사용자 지정 속성 및 Room.CustomProperties에 액세스 할 수 있습니다.
+         * 이 콜백에서 플레이어 개체를 만들 수 있습니다. 예를 들어 Unity에서 플레이어의 프리 패브를 인스턴스화합니다.
+         * 일치 항목을 "적극적으로"시작하려면 사용자가 OpRaiseEvent 또는 사용자 정의 속성을 사용하여 "준비"신호를 보냅니다.
+         */
         /// <summary>
         /// Called when the LoadBalancingClient entered a room, no matter if this client created it or simply joined.
         /// </summary>
@@ -375,6 +527,16 @@ namespace Photon.Pun
         {
         }
 
+        /* 
+        /// 원격 플레이어가 방에 들어 왔을 때 호출됩니다. 이 플레이어는 이미 playerlist에 추가되었습니다.
+        /// </ summary>
+        /// <비고>
+        /// 게임이 특정 수의 플레이어로 시작한다면,이 콜백은
+        /// Room.playerCount를 시작하고 시작할 수 있는지 확인하십시오.
+        /// </ remarkarks>
+         * 
+         * 
+         */
         /// <summary>
         /// Called when a remote player entered the room. This Player is already added to the playerlist.
         /// </summary>
@@ -385,7 +547,23 @@ namespace Photon.Pun
         public virtual void OnPlayerEnteredRoom(Player newPlayer)
         {
         }
+        
 
+        /*
+        /// <summary>
+        /// 원격 플레이어가 방을 떠났거나 비활성 상태가되었을 때 호출됩니다. otherPlayer.IsInactive를 확인하십시오.
+        /// </ summary>
+        /// <비고>
+        /// 다른 플레이어가 방을 나가거나 연결이 끊어진 것으로 서버가 감지하면이 콜백은
+        /// 게임 논리를 알리는 데 사용됩니다.
+        ///
+        /// 실내 설정에 따라 플레이어가 비활성 상태가되어 다시 돌아올 수 있습니다.
+        /// 그들 방에있는 그들의 자리. 이 경우 Player는 Room.Players 사전에 있습니다.
+        ///
+        /// 플레이어가 단지 비활성 상태가 아니라면 Room.Players 사전에서 제거됩니다.
+        /// 콜백이 호출됩니다.
+        /// </ remarkarks>
+         */ 
         /// <summary>
         /// Called when a remote player left the room or became inactive. Check otherPlayer.IsInactive.
         /// </summary>
@@ -403,6 +581,19 @@ namespace Photon.Pun
         {
         }
 
+
+        /*
+        /// <summary>
+        /// 이전 OpJoinRandom 호출이 서버에서 실패한 경우 호출됩니다.
+        /// </ summary>
+        /// <비고>
+        /// 가장 일반적인 원인은 방이 가득 찼거나 존재하지 않는다는 것입니다 (누군가 다른 사람이 더 빠르거나 방을 닫음으로 인해).
+        ///
+        /// 여러 로비 (OpJoinLobby 또는 TypedLobby 매개 변수를 통해)를 사용하는 경우 다른 로비에 더 / 피팅 룸이있을 수 있습니다. <br/>
+        /// </ remarkarks>
+        /// <param name = "returnCode"> 서버의 Operation ReturnCode </ param>
+        /// <param name = "message"> 오류에 대한 디버그 메시지입니다. </ param>
+         */
         /// <summary>
         /// Called when a previous OpJoinRandom call failed on the server.
         /// </summary>
@@ -418,7 +609,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Called when the client is connected to the Master Server and ready for matchmaking and other tasks.
+        /// 클라이언트가 마스터 서버에 연결되어 있고 중매 및 기타 작업 준비가 완료되면 호출됩니다.
         /// </summary>
         /// <remarks>
         /// The list of available rooms won't become available unless you join a lobby via LoadBalancingClient.OpJoinLobby.
@@ -429,7 +620,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Called when a room's custom properties changed. The propertiesThatChanged contains all that was set via Room.SetCustomProperties.
+        /// 방의 사용자 정의 속성이 변경되면 호출됩니다. PropertyThatChanged는 Room.SetCustomProperties를 통해 설정된 모든 것을 포함합니다.
         /// </summary>
         /// <remarks>
         /// Since v1.25 this method has one parameter: Hashtable propertiesThatChanged.<br/>
@@ -441,7 +632,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
-        /// Called when custom player-properties are changed. Player and the changed properties are passed as object[].
+        /// 사용자 정의 플레이어 속성이 변경되면 호출됩니다. 플레이어와 변경된 속성은 object []로 전달됩니다.
         /// </summary>
         /// <remarks>
         /// Changing properties must be done by Player.SetCustomProperties, which causes this callback locally, too.
@@ -454,6 +645,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 서버가 FindFriends 요청에 응답을 보낼 때 호출됩니다.
         /// Called when the server sent the response to a FindFriends request.
         /// </summary>
         /// <remarks>
@@ -467,6 +659,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 사용자 정의 인증 서비스가 추가 데이터로 응답 할 때 호출됩니다.
         /// Called when your Custom Authentication service responds with additional data.
         /// </summary>
         /// <remarks>
@@ -483,6 +676,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 사용자 지정 인증에 실패하면 호출됩니다. 연결 해제!
         /// Called when the custom authentication failed. Followed by disconnect!
         /// </summary>
         /// <remarks>
@@ -500,12 +694,15 @@ namespace Photon.Pun
         {
         }
 
+
+        // 이것을 구현해야하는지 확인하십시오.
         //TODO: Check if this needs to be implemented
         // in: IOptionalInfoCallbacks
         public virtual void OnWebRpcResponse(OperationResponse response)
         {
         }
 
+        // 이것을 구현해야하는지 확인하십시오.
         //TODO: Check if this needs to be implemented
         // in: IOptionalInfoCallbacks
         public virtual void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics)
@@ -515,13 +712,14 @@ namespace Photon.Pun
 
 
     /// <summary>
+    /// 특정 메시지, RPC 또는 업데이트에 대한 정보를 담는 Container 클래스입니다.
     /// Container class for info about a particular message, RPC or update.
     /// </summary>
     /// \ingroup publicApi
     public struct PhotonMessageInfo
     {
         private readonly int timeInt;
-        /// <summary>The sender of a message / event. May be null.</summary>
+        /// <summary> 메시지 / 이벤트의 발신자입니다.null의 경우가 있습니다. The sender of a message / event. May be null.</summary>
         public readonly Player Sender;
         public readonly PhotonView photonView;
 
@@ -566,7 +764,7 @@ namespace Photon.Pun
 
 
 
-    /// <summary>Defines Photon event-codes as used by PUN.</summary>
+    /// <summary>PUN에서 사용되는 Photon 이벤트 코드를 정의합니다. Defines Photon event-codes as used by PUN.</summary>
     internal class PunEvent
     {
         public const byte RPC = 200;
@@ -575,14 +773,14 @@ namespace Photon.Pun
         public const byte CloseConnection = 203;
         public const byte Destroy = 204;
         public const byte RemoveCachedRPCs = 205;
-        public const byte SendSerializeReliable = 206; // TS: added this but it's not really needed anymore
+        public const byte SendSerializeReliable = 206; // TS: 이것을 추가했지만 더 이상 필요하지 않습니다. added this but it's not really needed anymore 
         public const byte DestroyPlayer = 207; // TS: added to make others remove all GOs of a player
         public const byte OwnershipRequest = 209;
         public const byte OwnershipTransfer = 210;
         public const byte VacantViewIds = 211;
     }
 
-
+    /*
     /// <summary>
     /// This container is used in OnPhotonSerializeView() to either provide incoming data of a PhotonView or for you to provide it.
     /// </summary>
@@ -597,28 +795,46 @@ namespace Photon.Pun
     /// write methods but do about the same work as Serialize(). It's a matter of preference which methods you use.
     /// </remarks>
     /// \ingroup publicApi
+     * 
+     */
+
+    /// <summary>
+    /// 이 컨테이너는 OnPhotonSerializeView ()에서 PhotonView의 들어오는 데이터를 제공하거나 사용자가 제공하기 위해 사용됩니다.
+    /// </summary>
+    /// <remarks>
+    /// IsWriting 속성은이 클라이언트가 PhotonView (따라서 GameObject)의 "소유자"이면 참이됩니다.
+    /// 스트림에 데이터를 추가하면 서버를 통해 방의 다른 플레이어에게 전송됩니다.
+    /// 수신 측에서는 IsWriting이 거짓이고 데이터를 읽어야합니다.
+    ///
+    /// 가능한 한 데이터를 보내서 연결 품질을 높입니다. 빈 PhotonStream은 전송되지 않습니다.
+    ///
+    /// Serialize ()를 사용하여 읽기 및 쓰기를 수행하거나 SendNext () 및 ReceiveNext ()를 사용합니다. 후자의 두 가지는 단지 명시 적 읽기 및
+    /// 메서드를 작성하지만 Serialize ()와 동일한 작업을 수행합니다. 당신이 사용하는 방법이 선호하는 문제입니다.
+    /// </remarks>
+    /// \ingroup publicApi
     public class PhotonStream
     {
         private List<object> writeData;
         private object[] readData;
-        private byte currentItem; //Used to track the next item to receive.
+        private byte currentItem; //수신 할 다음 항목을 추적하는 데 사용됩니다. Used to track the next item to receive.
 
-        /// <summary>If true, this client should add data to the stream to send it.</summary>
+        /// <summary> true의 경우, 이 클라이언트는 스트림에 데이터를 추가하여 전송해야합니다. If true, this client should add data to the stream to send it.</summary>
         public bool IsWriting { get; private set; }
 
-        /// <summary>If true, this client should read data send by another client.</summary>
+        /// <summary> true이면이 클라이언트는 다른 클라이언트가 보내는 데이터를 읽어야합니다. If true, this client should read data send by another client.</summary>
         public bool IsReading
         {
             get { return !this.IsWriting; }
         }
 
-        /// <summary>Count of items in the stream.</summary>
+        /// <summary>스트림의 항목 수입니다. Count of items in the stream.</summary>
         public int Count
         {
             get { return this.IsWriting ? this.writeData.Count : this.readData.Length; }
         }
 
         /// <summary>
+        /// 스트림을 작성해, 초기화합니다. PUN에서 내부적으로 사용합니다.
         /// Creates a stream and initializes it. Used by PUN internally.
         /// </summary>
         public PhotonStream(bool write, object[] incomingData)
@@ -661,7 +877,8 @@ namespace Photon.Pun
             this.writeData.Clear();
         }
 
-        /// <summary>Read next piece of data from the stream when IsReading is true.</summary>
+        /// <summary> IsReading가 true 일 때 스트림에서 다음 데이터 조각을 읽습니다.
+        /// Read next piece of data from the stream when IsReading is true.</summary>
         public object ReceiveNext()
         {
             if (this.IsWriting)
@@ -675,7 +892,8 @@ namespace Photon.Pun
             return obj;
         }
 
-        /// <summary>Read next piece of data from the stream without advancing the "current" item.</summary>
+        /// <summary> 스트림에서 다음 데이터 조각을 읽지 않고 "현재"
+        /// Read next piece of data from the stream without advancing the "current" item.</summary>
         public object PeekNext()
         {
             if (this.IsWriting)
@@ -689,7 +907,8 @@ namespace Photon.Pun
             return obj;
         }
 
-        /// <summary>Add another piece of data to send it when IsWriting is true.</summary>
+        /// <summary>IsWriting이 참일 때 보낼 다른 데이터를 추가하십시오.
+        /// Add another piece of data to send it when IsWriting is true.</summary>
         public void SendNext(object obj)
         {
             if (!this.IsWriting)
@@ -719,6 +938,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref bool myBool)
@@ -776,6 +996,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref char value)
@@ -795,6 +1016,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref short value)
@@ -814,6 +1036,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref float obj)
@@ -833,6 +1056,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref Player obj)
@@ -852,6 +1076,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref Vector3 obj)
@@ -871,6 +1096,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref Vector2 obj)
@@ -890,6 +1116,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// 스트림의 IsWriting 값에 따라 값을 읽거나 씁니다.
         /// Will read or write the value, depending on the stream's IsWriting value.
         /// </summary>
         public void Serialize(ref Quaternion obj)
@@ -938,20 +1165,31 @@ namespace Photon.Pun
 
 
     /// <summary>
+    /// GameObj PUN을위한 PrefabPool의 기본 구현입니다.실제로 게임 객체를 인스턴스화하고 소멸 시키지만 resource.ect를 풀어 제거합니다.
     /// The default implementation of a PrefabPool for PUN, which actually Instantiates and Destroys GameObjects but pools a resource.
     /// </summary>
     /// <remarks>
+    /// 
+    /// 이 풀은 나중에 재사용하기 위해 실제로 GameObjects를 저장하지 않습니다.대신, 그것은 중고 GameObjects를 파괴하고 있습니다.
+    /// 그러나 프리 팹은 리소스 폴더에서로드되어 캐시되며, 인스턴스화 속도가 약간 빨라집니다.
     /// This pool is not actually storing GameObjects for later reuse. Instead, it's destroying used GameObjects.
     /// However, prefabs will be loaded from a Resources folder and cached, which speeds up Instantiation a bit.
     ///
+    /// ResourceCache는 공개되어 있으므로 Resources 폴더에 의존하지 않고 채울 수 있습니다.
     /// The ResourceCache is public, so it can be filled without relying on the Resources folders.
     /// </remarks>
     public class DefaultPool : IPunPrefabPool
     {
-        /// <summary>Contains a GameObject per prefabId, to speed up instantiation.</summary>
+        /// <summary>
+        /// 인스턴스화 속도를 높이기 위해 프리 패드마다 GameObject를 포함합니다.
+        /// Contains a GameObject per prefabId, to speed up instantiation.
+        /// </summary>
         public readonly Dictionary<string, GameObject> ResourceCache = new Dictionary<string, GameObject>();
-        
-        /// <summary>Returns an inactive instance of a networked GameObject, to be used by PUN.</summary>
+
+        /// <summary>
+        /// PUN이 사용할 네트워크 게임 객체의 비활성 인스턴스를 반환합니다.
+        /// Returns an inactive instance of a networked GameObject, to be used by PUN.
+        /// </summary>
         /// <param name="prefabId">String identifier for the networked object.</param>
         /// <param name="position">Location of the new object.</param>
         /// <param name="rotation">Rotation of the new object.</param>
@@ -982,7 +1220,7 @@ namespace Photon.Pun
             return instance;
         }
 
-        /// <summary>Simply destroys a GameObject.</summary>
+        /// <summary>단순 파괴 Simply destroys a GameObject.</summary>
         /// <param name="gameObject">The GameObject to get rid of.</param>
         public void Destroy(GameObject gameObject)
         {
@@ -991,7 +1229,9 @@ namespace Photon.Pun
     }
 
 
-    /// <summary>Small number of extension methods that make it easier for PUN to work cross-Unity-versions.</summary>
+    /// <summary>
+    /// PUN이 교차 유니티 버전을 쉽게 작업 할 수있게 해주는 확장 메소드의 수가 적습니다.
+    /// Small number of extension methods that make it easier for PUN to work cross-Unity-versions.</summary>
     public static class PunExtensions
     {
         public static Dictionary<MethodInfo, ParameterInfo[]> ParametersOfMethods = new Dictionary<MethodInfo, ParameterInfo[]>();
@@ -1020,28 +1260,32 @@ namespace Photon.Pun
             return go.GetComponent<PhotonView>() as PhotonView;
         }
 
-        /// <summary>compares the squared magnitude of target - second to given float value</summary>
+        /// <summary>주어진 float 값에 대한 target-second의 제곱 크기를 비교합니다.</summary>
         public static bool AlmostEquals(this Vector3 target, Vector3 second, float sqrMagnitudePrecision)
         {
             return (target - second).sqrMagnitude < sqrMagnitudePrecision; // TODO: inline vector methods to optimize?
         }
 
-        /// <summary>compares the squared magnitude of target - second to given float value</summary>
+        /// <summary>주어진 float 값에 대한 target-second의 제곱 크기를 비교합니다.</summary>
         public static bool AlmostEquals(this Vector2 target, Vector2 second, float sqrMagnitudePrecision)
         {
             return (target - second).sqrMagnitude < sqrMagnitudePrecision; // TODO: inline vector methods to optimize?
         }
 
-        /// <summary>compares the angle between target and second to given float value</summary>
+        /// <summary>주어진 float 값에 대해 target과 second 사이의 각도를 비교합니다.</summary>
         public static bool AlmostEquals(this Quaternion target, Quaternion second, float maxAngle)
         {
             return Quaternion.Angle(target, second) < maxAngle;
         }
 
-        /// <summary>compares two floats and returns true of their difference is less than floatDiff</summary>
+        /// <summary>는 두 개의 float를 비교하여 그 차이의 true를 반환합니다. </summary>
         public static bool AlmostEquals(this float target, float second, float floatDiff)
         {
             return Mathf.Abs(target - second) < floatDiff;
         }
     }
 }
+ 
+ 
+ 
+ 

@@ -40,6 +40,7 @@ namespace Photon.Pun
         /// </summary>
         /// <remarks>
         /// This is an expensive operation as it returns a copy of the internal list.
+        /// 내부 목록의 복사본을 반환하므로 값 비싼 작업입니다.
         /// </remarks>
         /// <value>The photon views.</value>
         public static PhotonView[] PhotonViews
@@ -52,21 +53,26 @@ namespace Photon.Pun
         }
 
         /// <summary>Parameters: PhotonView for which ownership changed, previous owner of the view.</summary>
+        /// 소유권이 변경된 PhotonView, 뷰의 이전 소유자.
         private static event Action<PhotonView, Player> OnOwnershipRequestEv;
         /// <summary>Parameters: PhotonView for which ownership was requested, player who requests ownership.</summary>
+        /// 소유권이 요청 된 PhotonView, 소유권을 요청한 플레이어.
         private static event Action<PhotonView, Player> OnOwnershipTransferedEv;
 
 
         /// <summary>
         /// Registers an object for callbacks for the implemented callback-interfaces.
+        /// 구현 된 콜백 인터페이스에 대한 콜백 객체를 등록합니다.
         /// </summary>
         /// <remarks>
         /// The covered callback interfaces are: IConnectionCallbacks, IMatchmakingCallbacks,
         /// ILobbyCallbacks, IInRoomCallbacks, IOnEventCallback and IWebRpcCallback.
-        ///
+        /// 적용 되는 콜백 인터페이스들
+        /// 
         /// See: <a href="https://doc.photonengine.com/en-us/pun/v2/getting-started/dotnet-callbacks">.Net Callbacks</a>
         /// </remarks>
-        /// <param name="target">The object that registers to get callbacks from PUN's LoadBalancingClient.</param>
+        /// <param name="target">The object that registers to get callbacks from PUN's LoadBalancingClient.
+        /// PUN의 LoadBalancingClient에서 콜백을 받기 위해 등록하는 개체입니다.</param>
         public static void AddCallbackTarget(object target)
         {
             if (target is PhotonView)

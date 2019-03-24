@@ -129,7 +129,7 @@ namespace Photon.Pun.Demo.Asteroids
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
             {
-                StartCoroutine(SpawnAsteroid());
+                //StartCoroutine(SpawnAsteroid());
             }
         }
 
@@ -178,7 +178,7 @@ namespace Photon.Pun.Demo.Asteroids
 
             if (PhotonNetwork.IsMasterClient)
             {
-                StartCoroutine(SpawnAsteroid());
+                //StartCoroutine(SpawnAsteroid());
             }
         }
 
