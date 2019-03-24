@@ -52,16 +52,17 @@ namespace Photon.Pun
 
         }
 
-        /// <summary>Parameters: PhotonView for which ownership changed, previous owner of the view.</summary>
-        /// 소유권이 변경된 PhotonView, 뷰의 이전 소유자.
+        // Parameters: PhotonView for which ownership changed, previous owner of the view.
+        /// <summary> Parameters : 소유권이 변경된 PhotonView, 뷰의 이전 소유자. </summary>
         private static event Action<PhotonView, Player> OnOwnershipRequestEv;
-        /// <summary>Parameters: PhotonView for which ownership was requested, player who requests ownership.</summary>
-        /// 소유권이 요청 된 PhotonView, 소유권을 요청한 플레이어.
+        /// <summary> 매개 변수 : 소유권이 요청 된 PhotonView, 소유권을 요청한 플레이어.
+        /// Parameters: PhotonView for which ownership was requested, player who requests ownership.</summary>
         private static event Action<PhotonView, Player> OnOwnershipTransferedEv;
 
+        
+        /// Registers an object for callbacks for the implemented callback-interfaces.
 
         /// <summary>
-        /// Registers an object for callbacks for the implemented callback-interfaces.
         /// 구현 된 콜백 인터페이스에 대한 콜백 객체를 등록합니다.
         /// </summary>
         /// <remarks>
@@ -92,6 +93,7 @@ namespace Photon.Pun
 
 
         /// <summary>
+        /// 구현 된 콜백 인터페이스에 대한 콜백에서 대상 객체를 제거합니다.
         /// Removes the target object from callbacks for its implemented callback-interfaces.
         /// </summary>
         /// <remarks>
@@ -126,18 +128,26 @@ namespace Photon.Pun
 
         internal static byte currentLevelPrefix = 0;
 
-        /// <summary>Internally used to flag if the message queue was disabled by a "scene sync" situation (to re-enable it).</summary>
+        /// <summary>
+        /// "장면 동기화"상황(다시 활성화)으로 인해 메시지 대기열이 비활성화 된 경우 내부적으로 플래그하는 데 사용됩니다.
+        /// Internally used to flag if the message queue was disabled by a "scene sync" situation (to re-enable it).</summary>
         internal static bool loadingLevelAndPausedNetwork = false;
 
-        /// <summary>For automatic scene syncing, the loaded scene is put into a room property. This is the name of said prop.</summary>
+        /// <summary>
+        /// 자동 장면 동기화의 경우로드 된 장면은 room 속성에 저장됩니다. 이것이 그 소품의 이름입니다.
+        /// For automatic scene syncing, the loaded scene is put into a room property. This is the name of said prop.</summary>
         internal const string CurrentSceneProperty = "curScn";
         internal const string CurrentScenePropertyLoadAsync = "curScnLa";
 
 
         /// <summary>
+        /// 오브젝트 풀은 인스턴스화 된 오브젝트 인스턴스를 유지하고 재사용하는 데 사용될 수 있습니다.Unity의 기본 Instantiate 및 Destroy 메소드를 대체합니다.
         /// An Object Pool can be used to keep and reuse instantiated object instances. Replaces Unity's default Instantiate and Destroy methods.
         /// </summary>
         /// <remarks>
+        /// 기본값은 DefaultPool 유형입니다.
+        /// GameObject 풀을 사용하려면 IPunPrefabPool을 구현하고 여기에 할당합니다.
+        /// Prefab은 이름으로 식별됩니다.
         /// Defaults to the DefaultPool type.
         /// To use a GameObject pool, implement IPunPrefabPool and assign it here.
         /// Prefabs are identified by name.
@@ -165,6 +175,7 @@ namespace Photon.Pun
         private static IPunPrefabPool prefabPool;
 
         /// <summary>
+        /// 이 기능을 사용하는 동안 값 비싼 GetComponents&lt;MonoBehaviour&gt;() 호출을 피하면서 RPC라고하는 MonoBehaviour가 캐시됩니다.
         /// While enabled, the MonoBehaviours on which we call RPCs are cached, avoiding costly GetComponents&lt;MonoBehaviour&gt;() calls.
         /// </summary>
         /// <remarks>
@@ -186,11 +197,19 @@ namespace Photon.Pun
 
         private static float _levelLoadingProgress = 0f;
 
+        /*
+         * Gets the networked level loading progress. Value will be be zero until the first loading, and remain at one in between loadings
+         * Use PhotonNetwork.LoadLevel() to initiate a networked level Loading
+         * 
+         * The level loading progress. Ranges from 0 to 1
+         */
+
         /// <summary>
-        /// Gets the networked level loading progress. Value will be be zero until the first loading, and remain at one in between loadings
-        /// Use PhotonNetwork.LoadLevel() to initiate a networked level Loading
+        /// 네트워크 수준로드 진행률을 가져옵니다. 값은 첫 번째로드가 완료 될 때까지 0이 될 것이고로드 사이에 1이 남을 것입니다.
+        /// PhotonNetwork.LoadLevel ()을 사용하여 네트워크 수준로드 시작
+        /// 
         /// </summary>
-        /// <value>The level loading progress. Ranges from 0 to 1</value>
+        /// <value>레벨로드 진행률입니다. 0에서 1까지의 범위</value>
         public static float LevelLoadingProgress
         {
             get
@@ -209,6 +228,7 @@ namespace Photon.Pun
         }
 
         /// <summary>
+        /// "이 클라이언트"가 정리할 방을 나왔을 때 호출됩니다.
         /// Called when "this client" left a room to clean up.
         /// </summary>
         /// <remarks>
@@ -240,6 +260,7 @@ namespace Photon.Pun
 
 
         /// <summary>
+        /// 게임 내에서 인스턴스화 된 모든 것을 정리합니다(장면이로드되지 않음).
         /// Cleans up anything that was instantiated in-game (not loaded with the scene).
         /// </summary>
         internal static void LocalCleanupAnythingInstantiated(bool destroyInstantiatedGameObjects)
@@ -270,15 +291,22 @@ namespace Photon.Pun
 
             // photonViewList is cleared of anything instantiated (so scene items are left inside)
             // any other lists can be
+            // photonViewList가 인스턴스화 된 모든 항목에서 지워집니다 (그래서 장면 항목은 내부에 남아 있습니다).
+            // 다른 목록도 될 수 있습니다.
             PhotonNetwork.lastUsedViewSubId = 0;
             PhotonNetwork.lastUsedViewSubIdStatic = 0;
         }
 
-
+        /*
         /// <summary>
         /// Resets the PhotonView "lastOnSerializeDataSent" so that "OnReliable" synched PhotonViews send a complete state to new clients (if the state doesnt change, no messages would be send otherwise!).
         /// Note that due to this reset, ALL other players will receive the full OnSerialize.
         /// </summary>
+        */ 
+        /// <summary>
+        /// PhotonView "lastOnSerializeDataSent"를 재설정하여 "OnReliable"동기화 된 PhotonViews가 새 클라이언트에 완전한 상태를 보냅니다 (상태가 변경되지 않으면 별도의 메시지가 전송되지 않습니다).
+        ///이 재설정으로 인해 다른 모든 플레이어는 전체 OnSerialize를 받게됩니다.
+        /// </ summary>
         private static void ResetPhotonViewsOnSerialize()
         {
             foreach (PhotonView photonView in photonViewList.Values)
@@ -289,8 +317,9 @@ namespace Photon.Pun
 
         // PHOTONVIEW/RPC related
 
+        // Executes a received RPC event
         /// <summary>
-        /// Executes a received RPC event
+        /// 받은 RPC 이벤트를 실행합니다.
         /// </summary>
         internal static void ExecuteRpc(Hashtable rpcData, Player sender)
         {
@@ -433,6 +462,7 @@ namespace Photon.Pun
                 }
 
                 // Check cache for valid methodname+arguments
+                // 캐시에서 유효한 methodname + 인수를 확인하십시오.
                 for (int index = 0; index < cachedRPCMethods.Count; index++)
                 {
                     MethodInfo mInfo = cachedRPCMethods[index];
@@ -465,9 +495,11 @@ namespace Photon.Pun
 
 
                     // if there are any arguments (in the incoming call check if the method is compatible
+                    // 인수가있는 경우(수신 호출에서 메소드가 호환 가능한지 확인)
                     if (parameters.Length == arguments.Length)
                     {
                         // Normal, PhotonNetworkMessage left out
+                        // Normal, PhotonNetworkMessage가 생략되었습니다.
                         if (CheckTypeMatch(parameters, argumentsTypes))
                         {
                             receivers++;
@@ -479,6 +511,7 @@ namespace Photon.Pun
                     if (parameters.Length == arguments.Length + 1)
                     {
                         // Check for PhotonNetworkMessage being the last
+                        // 마지막으로 PhotonNetworkMessage를 확인하십시오.
                         if (parameters[parameters.Length - 1].ParameterType == typeof(PhotonMessageInfo) && CheckTypeMatch(parameters, argumentsTypes))
                         {
                             int sendTime = (int)rpcData[(byte)2];
@@ -541,12 +574,21 @@ namespace Photon.Pun
             }
         }
 
+        /*
         /// <summary>
         /// Check if all types match with parameters. We can have more paramters then types (allow last RPC type to be different).
         /// </summary>
         /// <param name="methodParameters"></param>
         /// <param name="callParameterTypes"></param>
         /// <returns>If the types-array has matching parameters (of method) in the parameters array (which may be longer).</returns>
+        */
+
+        /// <summary>
+        /// 모든 유형이 매개 변수와 일치하는지 확인하십시오. 더 많은 매개 변수를 입력 할 수 있습니다 (마지막 RPC 유형이 다를 수 있음).
+        /// </summary>
+        /// <param name = "methodParameters"> </param>
+        /// <param name = "callParameterTypes"> </param>
+        /// <returns> types-array가 매개 변수 배열에서 (메서드의) 일치하는 매개 변수를 갖는 경우 (더 길 수도 있음) </returns>
         private static bool CheckTypeMatch(ParameterInfo[] methodParameters, Type[] callParameterTypes)
         {
             if (methodParameters.Length < callParameterTypes.Length)
@@ -575,10 +617,11 @@ namespace Photon.Pun
 
             return true;
         }
-        
+
+        // Destroys all Instantiates and RPCs locally and (if not localOnly) sends EvDestroy(player) and clears related events in the server buffer.
 
         /// <summary>
-        /// Destroys all Instantiates and RPCs locally and (if not localOnly) sends EvDestroy(player) and clears related events in the server buffer.
+        /// 모든 인스턴스 및 RPC를 로컬에서 삭제하고(localOnly가 아닌 경우) EvDestroy(플레이어)를 보내고 서버 버퍼에서 관련 이벤트를 지 웁니다.
         /// </summary>
         public static void DestroyPlayerObjects(int playerId, bool localOnly)
         {
@@ -591,10 +634,12 @@ namespace Photon.Pun
             if (!localOnly)
             {
                 // clean server's Instantiate and RPC buffers
+                // 서버의 인스턴스화 및 RPC 버퍼 정리
                 OpRemoveFromServerInstantiationsOfPlayer(playerId);
                 OpCleanActorRpcBuffer(playerId);
 
                 // send Destroy(player) to anyone else
+                // 다른 사람에게 Destroy (플레이어)를 보냅니다.
                 SendDestroyOfPlayer(playerId);
             }
 
@@ -1229,9 +1274,9 @@ namespace Photon.Pun
             }
         }
 
-
-
-        /// <summary>Enable/disable sending on given groups (applied to PhotonViews)</summary>
+        /*
+        /// <summary>
+        /// Enable/disable sending on given groups (applied to PhotonViews)</summary>
         /// <remarks>
         /// This does not interact with the Photon server-side.
         /// It's just a client-side setting to suppress updates, should they be sent to one of the blocked groups.
@@ -1240,6 +1285,20 @@ namespace Photon.Pun
         /// Use with care.
         /// <param name="enableGroups">The interest groups to enable sending on (or null).</param>
         /// <param name="disableGroups">The interest groups to disable sending on (or null).</param>
+        /// */
+
+        /// <summary>
+        /// 주어진 그룹에서 전송을 활성화 / 비활성화합니다 (PhotonViews에 적용됨).
+        /// </summary>
+        /// <remarks>
+        /// Photon 서버 측과 상호 작용하지 않습니다.
+        /// 차단 된 그룹 중 하나에 업데이트를 보내야하는 클라이언트 쪽 설정입니다.
+        ///
+        /// 이 설정은 업데이트가 문자 그대로 서버 나 다른 사람에게 도달하지 못한다는 것을 의미하므로 특히 유용하지 않습니다.
+        /// 주의해서 사용하십시오.
+        /// </remarks>
+        /// <param name="enableGroups"> 전송을 가능하게하는 관심 그룹(또는 null). The interest groups to enable sending on (or null).</param>
+        /// <param name="disableGroups"> 전송을 금지하는 관심 그룹 (또는 null). The interest groups to disable sending on (or null).</param>
         public static void SetSendingEnabled(byte[] disableGroups, byte[] enableGroups)
         {
             // TODO: check can use network
@@ -1304,9 +1363,11 @@ namespace Photon.Pun
 
 
         /// <summary>
+        /// OnPhotonSerialize() - 호출이 한 메시지에 요약 될 수있는 빈도를 정의합니다.
         /// Defines how many OnPhotonSerialize()-calls might get summarized in one message.
         /// </summary>
         /// <remarks>
+        /// 낮은 숫자는 오버 헤드를 증가시키고 높은 숫자는 조각화를 의미 할 수 있습니다.
         /// A low number increases overhead, a high number might mean fragmentation.
         /// </remarks>
         public static int ObjectsInOneUpdate = 10;
@@ -1316,7 +1377,9 @@ namespace Photon.Pun
         private static readonly PhotonStream serializeStreamIn = new PhotonStream(false, null);
 
 
-        ///<summary> cache the RaiseEventOptions to prevent redundant Memory Allocation</summary>
+        ///<summary> 
+        /// 중복 메모리 할당을 방지하기 위해 RaiseEventOptions를 캐시하십시오.
+        ///cache the RaiseEventOptions to prevent redundant Memory Allocation</summary>
         private static RaiseEventOptions serializeRaiseEvOptions = new RaiseEventOptions();
 
     private struct RaiseEventBatch: IEquatable<RaiseEventBatch>
@@ -1343,7 +1406,7 @@ namespace Photon.Pun
         private int defaultSize = 20;
         private int offset;
 
-
+        // 오프셋을 사용하면 ObjectUpdate의 첫 번째 X 항목을 건너 뛸 수 있으며 보내기 및 수준 접두사의 타임 스탬프(예 :)를 남겨 둘 수 있습니다.
         // the offset enables us to skip the first X entries in the ObjectUpdate(s), leaving room for (e.g.) timestamp of sending and level prefix
         public SerializeViewBatch(RaiseEventBatch batch, int offset)
         {
@@ -1396,7 +1459,8 @@ namespace Photon.Pun
         private static readonly Dictionary<RaiseEventBatch, SerializeViewBatch> serializeViewBatches = new Dictionary<RaiseEventBatch, SerializeViewBatch>();
 
 
-        /// <summary>Calls all locally controlled PhotonViews to write their updates in OnPhotonSerializeView. Called by a PhotonHandler.</summary>
+        /// <summary> 로컬로 제어되는 모든 PhotonView를 호출하여 업데이트를 OnPhotonSerializeView에 씁니다.PhotonHandler에 의해 호출됩니다.
+        /// Calls all locally controlled PhotonViews to write their updates in OnPhotonSerializeView. Called by a PhotonHandler.</summary>
         internal static void RunViewUpdate()
         {
             if (PhotonNetwork.OfflineMode || CurrentRoom == null || CurrentRoom.Players == null)
@@ -1776,6 +1840,8 @@ namespace Photon.Pun
         // returns the incomingData with modified content. any object being null (means: value unchanged) gets replaced with a previously sent value. incomingData is being modified
 
 
+        // startIndex는 첫 번째 실제 데이터 값(PUN의 경우 3, 0 = viewId, 1 = (bool) 압축, 2 = (int[]) 현재 null 인 값)의 인덱스 여야합니다.
+        // 수정 된 내용으로 incomingData를 반환합니다. null 인 모든 객체 (의미 : 값이 변경되지 않음)는 이전에 전송 된 값으로 대체됩니다. incomingData가 수정 중입니다.
         private static bool AlmostEquals(IList<object> lastData, IList<object> currentContent)
         {
             if (lastData == null && currentContent == null)
@@ -1801,9 +1867,15 @@ namespace Photon.Pun
             return true;
         }
 
+        /*
         /// <summary>
         /// Returns true if both objects are almost identical.
         /// Used to check whether two objects are similar enough to skip an update.
+        /// </summary>
+         */
+        /// <summary>
+        /// 두 객체가 거의 동일하면 true를 반환합니다.
+        /// 두 개체가 업데이트를 건너 뛰기에 충분히 유사한 지 여부를 확인하는 데 사용됩니다.
         /// </summary>
         static bool AlmostEquals(object one, object two)
         {
@@ -1859,6 +1931,7 @@ namespace Photon.Pun
             return true;
         }
 
+        // 참고 : SupportClass의 해당 메서드 대신 사용할 수 있습니다.
         // NOTE: Might be used as replacement for the equivalent method in SupportClass.
         internal static bool GetMethod(MonoBehaviour monob, string methodType, out MethodInfo mi)
         {
@@ -1883,7 +1956,8 @@ namespace Photon.Pun
             return false;
         }
 
-        /// <summary>Internally used to detect the current scene and load it if PhotonNetwork.AutomaticallySyncScene is enabled.</summary>
+        // <summary>Internally used to detect the current scene and load it if PhotonNetwork.AutomaticallySyncScene is enabled.</summary>
+        /// <summary> PhotonNetwork.AutomaticallySyncScene이 활성화 된 경우 현재 장면을 탐지하고 로드하기 위해 내부적으로 사용됩니다. </summary>
         internal static void LoadLevelIfSynced()
         {
             if (!PhotonNetwork.AutomaticallySyncScene || PhotonNetwork.IsMasterClient || PhotonNetwork.CurrentRoom == null)
@@ -1891,12 +1965,15 @@ namespace Photon.Pun
                 return;
             }
 
+            // "현재 수준"이 소품에 설정되어 있는지 확인합니다.
             // check if "current level" is set in props
             if (!PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(CurrentSceneProperty))
             {
                 return;
             }
 
+
+            // 로드 된 레벨이 props에서 master에 의해 정의 된 레벨이 아닌 경우 해당 레벨로드
             // if loaded level is not the one defined by master in props, load that level
             object sceneId = PhotonNetwork.CurrentRoom.CustomProperties[CurrentSceneProperty];
             if (sceneId is int)
@@ -1927,6 +2004,7 @@ namespace Photon.Pun
                 return;
             }
 
+            // 기존로드 취소가 이미 수행 중입니다.
             // Cancel existing loading is already taking place
             if (_AsyncLevelLoadingOperation != null)
             {
@@ -1934,6 +2012,7 @@ namespace Photon.Pun
                 _AsyncLevelLoadingOperation = null;
             }
 
+            // "현재 수준"이 소품에 이미 설정되어 있는지 확인하십시오.
             // check if "current level" is already set in props
             if (PhotonNetwork.CurrentRoom.CustomProperties.ContainsKey(CurrentSceneProperty))
             {
@@ -1969,6 +2048,7 @@ namespace Photon.Pun
             }
 
             // current level is not yet in props, or different, so this client has to set it
+            // 현재 레벨이 아직 소품이 아니거나 다르므로이 클라이언트가 설정해야합니다.
             Hashtable setScene = new Hashtable();
             if (levelId is int) setScene[CurrentSceneProperty] = (int)levelId;
             else if (levelId is string) setScene[CurrentSceneProperty] = (string)levelId;
@@ -1976,6 +2056,7 @@ namespace Photon.Pun
 
             PhotonNetwork.CurrentRoom.SetCustomProperties(setScene);
 
+            //  즉시 보내!왜냐하면 : 대부분의 경우 클라이언트가로드되기 시작하고 얼마 동안 보내지 않기 때문입니다.
             SendAllOutgoingCommands(); // send immediately! because: in most cases the client will begin to load and not send for a while
         }
 
@@ -2005,6 +2086,14 @@ namespace Photon.Pun
                 case PunEvent.SendSerialize:
                 case PunEvent.SendSerializeReliable:
                     // Debug.Log(photonEvent.ToStringFull());
+
+                    /* 이 경우 RunViewUpdate () 및 OnSerializeWrite ()의 정의와 일치해야합니다.
+                     * 이벤트 데이터 객체 [] 형식 :
+                     * 
+                     * 조각화를 피하기 위해 XY 객체에 대한 업데이트 만 하나의 RaiseEvent로 결합합니다.
+                     * 신뢰도 및 관심 그룹은 RaiseEvent에만 사용되며 다른 클라이언트에 도달하는 이벤트 / 데이터에는 포함되지 않습니다.
+                     * OnEvent ()에서 읽습니다.
+                     */
 
                     /* This case must match definition in RunViewUpdate() and OnSerializeWrite().
                      * Format of the event's data object[]:
@@ -2208,6 +2297,7 @@ namespace Photon.Pun
         }
 
         // to be used in the main thread. as OnRegionsPinged is called in a separate thread and so we can't use some of the Unity methods (like saving playerPrefs)
+        // 주 스레드에서 사용됩니다.OnRegionsPinged는 별도의 스레드에서 호출되므로 우리는 playerPrefs를 저장하는 것과 같은 Unity 메서드 중 일부를 사용할 수 없습니다.
         private static RegionHandler _cachedRegionHandler;
 
         private static void OnRegionsPinged(RegionHandler regionHandler)
