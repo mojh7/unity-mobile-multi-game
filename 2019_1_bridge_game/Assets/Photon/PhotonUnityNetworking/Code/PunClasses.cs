@@ -21,6 +21,21 @@
 #pragma warning restore 1587
 
 
+/*
+ * https://doc.photonengine.com/en-us/pun/v2/getting-started/dotnet-callbacks
+ * 
+ * IConnectionCallbacks: 연결 관련 콜백.
+ * IInRoomCallbacks: 방 안의 콜백.
+ * ILobbyCallbacks: 로비 관련 콜백.
+ * IMatchmakingCallbacks: 중매 관련 콜백.
+ * IOnEventCallback: 수신 된 모든 이벤트에 대한 단일 콜백. 이것은 C # 이벤트와 '동등한'것 LoadBalancingClient.EventReceived입니다.
+ * IWebRpcCallback: WebRPC 조작 응답을 수신하기위한 단일 콜백.
+ * IPunInstantiateMagicCallback: 인스턴스화 된 PUN 프리 팹에 대한 단일 콜백.
+ * IPunObservable: PhotonView 직렬화 콜백.
+ * IPunOwnershipCallbacks: PUN 소유권 이전 콜백.
+ */
+
+
 namespace Photon.Pun
 {
     using System;

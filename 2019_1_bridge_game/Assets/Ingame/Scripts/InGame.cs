@@ -25,12 +25,9 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
     public const string PLAYER_LIVES = "PlayerLives";
     public const string PLAYER_READY = "IsPlayerReady";
     public const string PLAYER_LOADED_LEVEL = "PlayerLoadedLevel";
-
     #endregion
 
-
     public static InGame Instance = null;
-    //    public GameObject[] AsteroidPrefabs;
 
     #region unityFunc
     private void Awake()
@@ -43,9 +40,9 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
         //InfoText.text = "Waiting for other players...";
 
         Hashtable props = new Hashtable
-            {
-                {PLAYER_LOADED_LEVEL, true}
-            };
+        {
+            {PLAYER_LOADED_LEVEL, true}
+        };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
     }
     
@@ -176,6 +173,9 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
 
     private void StartGame()
     {
+        Debug.Log("Timer 다 되고 게임 스타트");
+        // TODO : 조이스틱 on, Timer on, 게임 시작!
+
         float angularStart = (360.0f / PhotonNetwork.CurrentRoom.PlayerCount) * PhotonNetwork.LocalPlayer.GetPlayerNumber();
         float x = 20.0f * Mathf.Sin(angularStart * Mathf.Deg2Rad);
         float z = 20.0f * Mathf.Cos(angularStart * Mathf.Deg2Rad);
