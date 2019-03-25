@@ -8,9 +8,6 @@ public class BackendMember : MonoBehaviour
     [SerializeField] private UILogIn loginUI;
     [SerializeField] private Title title;
 
-    private BackendReturnObject bro = new BackendReturnObject();
-    private bool isSuccess = false;
-
     private void Start()
     {
         if (!Backend.IsInitialized)
@@ -48,15 +45,10 @@ public class BackendMember : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void SuccessSaveToken()
     {
-        if (isSuccess)
-        {
-            Backend.BMember.SaveToken(bro);
-            isSuccess = false;
-            bro.Clear();
-        }
+        Backend.BMember.SaveToken(BackendManager.Instance.BRO);
+        BackendManager.Instance.BRO.Clear();
     }
 
     // TODO : Error 팝업 (닉네임, 아이디, 패스워드)
@@ -74,15 +66,18 @@ public class BackendMember : MonoBehaviour
 
         Backend.BMember.CustomSignUp(id, pw, "tester", isComplete =>
         {
-            // 성공시 - Update() 문에서 토큰 저장
+            // 성공시
             Debug.Log(isComplete.ToString());
-            isSuccess = isComplete.IsSuccess();
-            bro = isComplete;
+
+            SuccessSaveToken();
+            BackendManager.Instance.BRO = isComplete;
             
             if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+            Debug.Log(Backend.BMember.GetUserInfo().GetReturnValue());
         });
 
-        PutDeviceToken();
+        //PutDeviceToken();
+        BackendManager.Instance.SetSignupData(id, pw, nick);
         title.LoadMainLobby();
     }
 
@@ -99,29 +94,38 @@ public class BackendMember : MonoBehaviour
 
         Backend.BMember.CustomLogin(id, pw, isComplete =>
         {
-            // 성공시 - Update() 문에서 토큰 저장
+            // 성공시
             Debug.Log(isComplete.ToString());
-            isSuccess = isComplete.IsSuccess();
-            bro = isComplete;
+
+            SuccessSaveToken();
+            BackendManager.Instance.BRO = isComplete;
 
             if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+            Debug.Log(Backend.BMember.GetUserInfo().GetReturnValue());
         });
 
-        PutDeviceToken();
+        //PutDeviceToken();
+        BackendManager.Instance.SetLoginData(id, pw);
+        BackendManager.Instance.GetTableList();
         title.LoadMainLobby();
+    }
+
+    public void CustomCreateNickname()
+    {
+        BackendManager.Instance.CreateNickname();
     }
 
     public void LoginWithTheBackendToken()
     {
         Debug.Log("-------------ALoginWithTheBackendToken-------------");
-
+#if UNITY_ANDROID || UNITY_IOS
         Backend.BMember.LoginWithTheBackendToken(isComplete =>
         {
             // 성공시 - Update() 문에서 토큰 저장
             Debug.Log(isComplete.ToString());
-            isSuccess = isComplete.IsSuccess();
-            bro = isComplete;
+            BackendManager.Instance.BRO = isComplete;
         });
+#endif
     }
 
     // TODO : 닉네임 제한 설정
@@ -157,7 +161,7 @@ public class BackendMember : MonoBehaviour
         return true;
     }
 
-    public void PutDeviceToken()
+    private void PutDeviceToken()
     {
         Debug.Log("-------------APutDeviceToken-------------");
 #if UNITY_ANDROID
@@ -165,7 +169,7 @@ public class BackendMember : MonoBehaviour
         {
             Debug.Log(bro);
         });
-#else
+#elif UNITY_IOS
         Backend.iOS.PutDeviceToken(isDevelopment.iosProd, bro =>
         {
             Debug.Log(bro);
