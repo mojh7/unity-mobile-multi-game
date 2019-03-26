@@ -384,6 +384,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c3d698a19fa14aab6328805326362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InfoText: {fileID: 601629552}
+  sheetMusicPrefabs:
+  - {fileID: 6897039703535395732, guid: 38e0839e6e311904db7bdcaaf6f903a5, type: 3}
   baseTowns: {fileID: 0}
 --- !u!4 &571371136
 Transform:
@@ -414,7 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: {fileID: 601629552}
-  Countdown: 5
+  Countdown: 3
 --- !u!1 &599426370
 GameObject:
   m_ObjectHideFlags: 0
@@ -646,7 +649,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 964925485}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 86aba39379844aa428b0d3c0a3d92534, type: 3}
   m_Name: 

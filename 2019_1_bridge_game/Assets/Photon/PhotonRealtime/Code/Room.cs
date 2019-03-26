@@ -317,6 +317,7 @@ namespace Photon.Realtime
         }
 
         /// <summary>
+        /// 이 회의실의 사용자 정의 속성을 업데이트하고 동기화합니다.선택적으로 expectedProperties가 조건으로 제공 될 수 있습니다.
         /// Updates and synchronizes this Room's Custom Properties. Optionally, expectedProperties can be provided as condition.
         /// </summary>
         /// <remarks>

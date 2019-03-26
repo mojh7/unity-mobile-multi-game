@@ -47,10 +47,27 @@ namespace UBZ.MultiGame.Owner
             }
         }
 
-        //// Update is called once per frame
-        //void Update()
+        //void update()
         //{
+        //    if (!photonView.IsMine || !controllable)
+        //    {
+        //        return;
+        //    }
 
+        //    rotation = Input.GetAxis("Horizontal");
+        //    acceleration = Input.GetAxis("Vertical");
+
+        //    if (Input.GetButton("Jump") && shootingTimer <= 0.0)
+        //    {
+        //        shootingTimer = 0.2f;
+
+        //        photonView.RPC("Fire", RpcTarget.AllViaServer, rigidbody.position, rigidbody.rotation);
+        //    }
+
+        //    if (shootingTimer > 0.0f)
+        //    {
+        //        shootingTimer -= Time.deltaTime;
+        //    }
         //}
 
         void FixedUpdate()
@@ -69,28 +86,36 @@ namespace UBZ.MultiGame.Owner
         public override void Init()
         {
             base.Init();
-            CameraController.Instance.AttachObject(this.transform); // get Camera
-            baseColor = Color.white;
             characterState = CharacterInfo.State.ALIVE;
             ownerType = CharacterInfo.OwnerType.PLAYER;
             damageImmune = CharacterInfo.DamageImmune.NONE;
             abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
-
+            directionVector = new Vector3(1, 0, 0);
+            if (photonView.IsMine)
+            {
+                CameraController.Instance.AttachObject(this.transform); // get Camera
+                baseColor = Color.white;
+                Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
+                InitController();
+                TimeController.Instance.PlayStart();
+            }
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
 
-            Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
 
             //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
 
-            directionVector = new Vector3(1, 0, 0);
-            InitController();
-            TimeController.Instance.PlayStart();
             //Debug.Log("hpMax : " + hpMax);
         }
 
         #endregion
 
         #region func
+
+        [PunRPC]
+        public void Dash()
+        {
+
+        }
 
         //public override CustomObject Interact()
         //{
@@ -118,28 +143,57 @@ namespace UBZ.MultiGame.Owner
         //    return bestCollider.GetComponent<CustomObject>();
         //}
 
+        // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
-            if (rgbody)
+            // player 자신
+            if(photonView.IsMine)
             {
-                rgbody.MovePosition(objTransform.position
-                + controller.GetMovingInputVector() * (movingSpeed) * Time.fixedDeltaTime);
+                if (rgbody)
+                {
+                    rgbody.MovePosition(objTransform.position
+                    + controller.GetMovingInputVector() * (movingSpeed) * Time.fixedDeltaTime);
+                }
+
+#if UNITY_EDITOR
+                if (Input.GetKey(KeyCode.W))
+                {
+                    bodyTransform.Translate(Vector2.up * 5f * Time.fixedDeltaTime);
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    bodyTransform.Translate(Vector2.down * 5f * Time.fixedDeltaTime);
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    bodyTransform.Translate(Vector2.right * 5f * Time.fixedDeltaTime);
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    bodyTransform.Translate(Vector2.left * 5f * Time.fixedDeltaTime);
+                }
+#endif
+                directionDegree = controller.GetMovingInputDegree();
+
+                if (-90 <= directionDegree && directionDegree < 90)
+                {
+                    isRightDirection = true;
+                    scaleVector.x = 1f;
+                    spriteTransform.localScale = scaleVector;
+                }
+                else
+                {
+                    isRightDirection = false;
+                    scaleVector.x = -1f;
+                    spriteTransform.localScale = scaleVector;
+                }
+            }
+            else // 타 user player
+            {
+
             }
 
-            directionDegree = controller.GetMovingInputDegree();
-
-            if (-90 <= directionDegree && directionDegree < 90)
-            {
-                isRightDirection = true;
-                scaleVector.x = 1f;
-                spriteTransform.localScale = scaleVector;
-            }
-            else
-            {
-                isRightDirection = false;
-                scaleVector.x = -1f;
-                spriteTransform.localScale = scaleVector;
-            }
             //if (controller.GetMoveInputVector().sqrMagnitude > 0.1f)
             //{
             //    animationHandler.Walk();
@@ -148,25 +202,6 @@ namespace UBZ.MultiGame.Owner
             //{
             //    animationHandler.Idle();
             //}
-#if UNITY_EDITOR
-            if (Input.GetKey(KeyCode.W))
-            {
-                bodyTransform.Translate(Vector2.up * 5f * Time.fixedDeltaTime);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                bodyTransform.Translate(Vector2.down * 5f * Time.fixedDeltaTime);
-            }
-
-            if (Input.GetKey(KeyCode.D))
-            {
-                bodyTransform.Translate(Vector2.right * 5f * Time.fixedDeltaTime);
-            }
-            else if (Input.GetKey(KeyCode.A))
-            {
-                bodyTransform.Translate(Vector2.left * 5f * Time.fixedDeltaTime);
-            }
-#endif
         }
 
         #endregion
