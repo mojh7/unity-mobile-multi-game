@@ -16,9 +16,10 @@ namespace Photon.Pun.UtilityScripts
     using UnityEngine.EventSystems;
 
 
+    // This component will instantiate a network GameObject when in a room and the user click on that component's GameObject.
+    // Uses PhysicsRaycaster for positioning.
     /// <summary>
-    /// This component will instantiate a network GameObject when in a room and the user click on that component's GameObject.
-    /// Uses PhysicsRaycaster for positioning.
+    /// 이 구성 요소는 방안에있을 때 네트워크 GameObject를 인스턴스화하고 사용자가 해당 구성 요소의 GameObject를 클릭합니다.
     /// </summary>
     public class OnClickRpc : MonoBehaviourPun, IPointerClickHandler
     {

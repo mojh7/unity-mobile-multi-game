@@ -364,6 +364,7 @@ GameObject:
   m_Component:
   - component: {fileID: 571371136}
   - component: {fileID: 571371135}
+  - component: {fileID: 571371137}
   m_Layer: 0
   m_Name: InGameManager
   m_TagString: Untagged
@@ -400,6 +401,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &571371137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 571371134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc398cf76e6d458caf303b5fceea504, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: {fileID: 601629552}
+  Countdown: 5
 --- !u!1 &599426370
 GameObject:
   m_ObjectHideFlags: 0
@@ -571,8 +586,8 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 495c9e2a934bcc640a8d7427b13cb680, type: 3}
-    m_FontSize: 24
+    m_Font: {fileID: 12800000, guid: 1b48ecb3387507d428b045488035f15d, type: 3}
+    m_FontSize: 36
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -603,7 +618,6 @@ GameObject:
   - component: {fileID: 964925486}
   - component: {fileID: 964925487}
   - component: {fileID: 964925488}
-  - component: {fileID: 964925489}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -654,20 +668,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerOverviewEntryPrefab: {fileID: 168392, guid: f03d1c686a26a1d4da99a4186b0bb1ab,
     type: 3}
---- !u!114 &964925489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964925485}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffc398cf76e6d458caf303b5fceea504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Text: {fileID: 601629552}
-  Countdown: 5
 --- !u!1 &1254699528 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6897039703535395732, guid: 38e0839e6e311904db7bdcaaf6f903a5,

@@ -212,10 +212,17 @@ namespace Photon.Pun.UtilityScripts
     /// <summary>Extension used for PlayerRoomIndexing and Player class.</summary>
     public static class PlayerNumberingExtensions
     {
+        /*
         /// <summary>Extension for Player class to wrap up access to the player's custom property.
 		/// Make sure you use the delegate 'OnPlayerNumberingChanged' to knoiw when you can query the PlayerNumber. Numbering can changes over time or not be yet assigned during the initial phase ( when player creates a room for example)
 		/// </summary>
         /// <returns>persistent index in room. -1 for no indexing</returns>
+        */
+
+        /// <summary> 플레이어 클래스가 플레이어의 사용자 지정 속성에 대한 액세스를 마무리하는 확장 프로그램입니다.
+        /// PlayerNumber를 쿼리 할 수있을 때 대리자 'OnPlayerNumberingChanged'를 사용하여 확인하십시오. 번호 매김은 시간이 지남에 따라 변경되거나 초기 단계에서 지정되지 않을 수 있습니다 (플레이어가 예를 들어 회의실을 만들 때).
+        /// </summary>
+        /// <returns> 방의 영구 인덱스. 인덱스가없는 경우 -1 </returns>
         public static int GetPlayerNumber(this Player player)
         {
 			if (player == null) {
@@ -238,12 +245,21 @@ namespace Photon.Pun.UtilityScripts
             return -1;
         }
 
+        /*
 		/// <summary>
 		/// Sets the player number.
 		/// It's not recommanded to manually interfere with the playerNumbering, but possible.
 		/// </summary>
 		/// <param name="player">Player.</param>
 		/// <param name="playerNumber">Player number.</param>
+        */
+
+        /// <summary>
+        /// 플레이어 번호를 설정합니다.
+        /// 수동으로 플레이어를 방해하는 것은 권장되지 않습니다. 넘버링은 가능하지만 가능합니다.
+        /// </summary>
+        /// <param name = "player"> 플레이어. </param>
+        /// <param name = "playerNumber"> 플레이어 번호. </param>
         public static void SetPlayerNumber(this Player player, int playerNumber)
         {
 			if (player == null) {

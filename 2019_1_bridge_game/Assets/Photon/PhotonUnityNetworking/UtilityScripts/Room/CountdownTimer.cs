@@ -42,13 +42,11 @@ namespace Photon.Pun.UtilityScripts
     public class CountdownTimer : MonoBehaviourPunCallbacks
     {
         public const string CountdownStartTime = "StartTime";
-
         /// <summary>
         /// 만료된 카운트다운 타이머 델리게이트
         /// OnCountdownTimerHasExpired delegate.
         /// </summary>
         public delegate void CountdownTimerHasExpired();
-
         /// <summary>
         /// 타이머가 만료하면 호출 됨.
         /// Called when the timer has expired.
@@ -56,7 +54,6 @@ namespace Photon.Pun.UtilityScripts
         public static event CountdownTimerHasExpired OnCountdownTimerHasExpired;
 
         private bool isTimerRunning;
-
         private float startTime;
 
         // 카운트 다운을 시각화하기위한 텍스트 구성 요소에 대한 참조
