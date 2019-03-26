@@ -7,12 +7,17 @@ public class InGameUIManager : MonoBehaviourSingleton<InGameUIManager>
 {
     #region variables
     private bool active;
+    private bool controllable;
     #endregion
 
     #region get / set
-    public bool GetActived()
+    public bool GetControllable()
     {
-        return active;
+        return controllable;
+    }
+    public bool SetControllable(bool controllable)
+    {
+        return this.controllable = controllable;
     }
     #endregion
 
@@ -26,9 +31,7 @@ public class InGameUIManager : MonoBehaviourSingleton<InGameUIManager>
     #region func
     private void InitIngameUI()
     {
-        active = true;
+        active = false;
     }
     #endregion
-
-
 }

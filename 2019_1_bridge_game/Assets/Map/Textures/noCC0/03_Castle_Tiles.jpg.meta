@@ -22,7 +22,7 @@ TextureImporter:
     21300034: 03_Castle_Tiles_17
     21300036: 03_Castle_Tiles_18
     21300038: 03_Castle_Tiles_19
-    21300040: 03_Castle_Tiles_20
+    21300040: team_base_red
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -511,6 +511,26 @@ TextureImporter:
       tessellationDetail: 0
       bones: []
       spriteID: 801a32da535cbb54d8103b5b822d6ab7
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: team_base_red
+      rect:
+        serializedVersion: 2
+        x: 718
+        y: 52
+        width: 106
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 811553d3ab3b6da46be75749dc27b13e
       vertices: []
       indices: 
       edges: []

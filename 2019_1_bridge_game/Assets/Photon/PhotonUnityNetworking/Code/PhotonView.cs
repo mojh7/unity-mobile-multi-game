@@ -227,6 +227,7 @@ namespace Photon.Pun
             get { return this.viewIdField / PhotonNetwork.MAX_VIEW_IDS; }
         }
 
+        /*
         /// <summary>
         /// True if the PhotonView is "mine" and can be controlled by this client.
         /// </summary>
@@ -234,6 +235,16 @@ namespace Photon.Pun
         /// PUN has an ownership concept that defines who can control and destroy each PhotonView.
         /// True in case the owner matches the local Player.
         /// True if this is a scene photonview on the Master client.
+        /// </remarks>
+        */
+
+        /// <summary>
+        /// PhotonView가 "mine"이고 이 클라이언트가 제어 할 수 있으면 True입니다.
+        /// </summary>
+        /// <remarks>
+        /// PUN은 누가 각 PhotonView를 제어하고 파괴 할 수 있는지 정의하는 소유권 개념을 가지고 있습니다.
+        /// 소유자가 로컬 플레이어와 일치하는 경우 true입니다.
+        /// 이것이 마스터 클라이언트의 장면 photonview이면 true
         /// </remarks>
         public bool IsMine
         {

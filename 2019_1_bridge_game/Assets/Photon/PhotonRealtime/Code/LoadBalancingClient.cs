@@ -29,82 +29,111 @@ namespace Photon.Realtime
     #if SUPPORTED_UNITY || NETFX_CORE
     using Hashtable = ExitGames.Client.Photon.Hashtable;
     using SupportClass = ExitGames.Client.Photon.SupportClass;
-    #endif
+#endif
 
 
     #region Enums
 
+
+    // State values for a client, which handles switching Photon server types, some operations, etc.
+
+    /*
     /// <summary>
-    /// State values for a client, which handles switching Photon server types, some operations, etc.
+    /// 포톤 서버 유형 전환, 일부 작업 등을 처리하는 클라이언트의 상태 값
     /// </summary>
-    /// \ingroup publicApi
+    ///// \ingroup publicApi
+    /// */
     public enum ClientState
     {
-        /// <summary>Peer is created but not used yet.</summary>
+
+        /// <summary>피어가 생성되었지만 아직 사용되지 않았습니다. Peer is created but not used yet.</summary>
         PeerCreated,
 
-        /// <summary>Transition state while connecting to a server. On the Photon Cloud this sends the AppId and AuthenticationValues (UserID).</summary>
+        // Transition state while connecting to a server. On the Photon Cloud this sends the AppId and AuthenticationValues (UserID).
+        /// <summary>서버에 연결하는 동안 전환 상태. Photon Cloud에서는 AppId와 AuthenticationValues ​​(UserID)를 전송합니다.</summary>
         Authenticating,
 
-        /// <summary>Transition state while connecting to a server. Leads to state ConnectedToMasterserver or JoinedLobby.</summary>
+        // <summary>Transition state while connecting to a server. Leads to state ConnectedToMasterserver or JoinedLobby.</summary> 
+        /// <summary> 서버에 연결하는 동안의 상태 전환. ConnectedToMasterserver 또는 JoinedLobby로 연결됩니다. </summary>
         Authenticated,
 
-        /// <summary>The client sent an OpJoinLobby and if this was done on the Master Server, it will result in. Depending on the lobby, it gets room listings.</summary>
+        // <summary>The client sent an OpJoinLobby and if this was done on the Master Server, it will result in. Depending on the lobby, it gets room listings.</summary>
+        /// <summary> 클라이언트가 OpJoin 로비를 보내고 마스터 서버에서 이 작업을 수행하면 결과가 나타납니다. 로비에 따라 방 목록이 나타납니다. </summary>
         JoiningLobby,
 
-        /// <summary>The client is in a lobby, connected to the MasterServer. Depending on the lobby, it gets room listings.</summary>
+        // <summary>The client is in a lobby, connected to the MasterServer. Depending on the lobby, it gets room listings.</summary>
+        /// <summary> 클라이언트가 MasterServer에 연결된 로비에 있습니다. 로비에 따라 방 목록을 얻습니다. </summary>
         JoinedLobby,
 
-        /// <summary>Transition from MasterServer to GameServer.</summary>
+        // <summary>Transition from MasterServer to GameServer.</summary>
+        /// <summary> MasterServer에서 GameServer로 전환. </summary>
         DisconnectingFromMasterserver,
 
-        /// <summary>Transition to GameServer (client authenticates and joins/creates a room).</summary>
+        // <summary>Transition to GameServer (client authenticates and joins/creates a room).</summary>
+        /// <summary> GameServer 로의 전환 (클라이언트가 인증하고 조인 / 룸 생성). </summary>
         ConnectingToGameserver,
 
-        /// <summary>Connected to GameServer (going to auth and join game).</summary>
+        // <summary>Connected to GameServer (going to auth and join game).</summary>
+        /// <summary> GameServer에 연결되었습니다 (인증 및 게임 참여). </summary>
         ConnectedToGameserver,
 
-        /// <summary>Transition state while joining or creating a room on GameServer.</summary>
+        // <summary>Transition state while joining or creating a room on GameServer.</summary>
+        /// <summary> GameServer에 참여하거나 게임 룸을 만들 때의 전환 상태. </summary>
         Joining,
 
-        /// <summary>The client entered a room. The CurrentRoom and Players are known and you can now raise events.</summary>
+        // <summary>The client entered a room. The CurrentRoom and Players are known and you can now raise events.</summary>
+        /// <summary> 클라이언트가 방에 들어갔다. CurrentRoom과 Players가 알려져 있으므로 이제 이벤트를 발생시킬 수 있습니다. </summary>
         Joined,
 
-        /// <summary>Transition state when leaving a room.</summary>
+        // <summary>Transition state when leaving a room.</summary>
+        /// <summary> 방을 떠날 때의 전환 상태 </summary>
         Leaving,
 
-        /// <summary>Transition from GameServer to MasterServer (after leaving a room/game).</summary>
+        // <summary>Transition from GameServer to MasterServer (after leaving a room/game).</summary>
+        /// <summary> GameServer에서 MasterServer로 전환 (방 / 게임을 떠난 후). </summary>
         DisconnectingFromGameserver,
 
-        /// <summary>Connecting to MasterServer (includes sending authentication values).</summary>
+        // <summary>Connecting to MasterServer (includes sending authentication values).</summary>
+        /// <summary> MasterServer에 연결 (인증 값 전송 포함). </summary>
         ConnectingToMasterserver,
 
-        /// <summary>The client disconnects (from any server). This leads to state Disconnected.</summary>
+        // <summary>The client disconnects (from any server). This leads to state Disconnected.</summary>
+        /// <summary> 클라이언트는 (모든 서버에서) 연결을 끊습니다. 이로 인해 Disconnected 상태가됩니다. </summary>
         Disconnecting,
 
-        /// <summary>The client is no longer connected (to any server). Connect to MasterServer to go on.</summary>
+        // <summary>The client is no longer connected (to any server). Connect to MasterServer to go on.</summary>
+        /// <summary>클라이언트는 더 이상 (모든 서버에) 연결되지 않습니다. 계속하려면 MasterServer에 연결하십시오.</summary>
         Disconnected,
 
-        /// <summary>Connected to MasterServer. You might use matchmaking or join a lobby now.</summary>
+        // <summary>Connected to MasterServer. You might use matchmaking or join a lobby now.</summary>
+        /// <summary> MasterServer에 연결되었습니다. 매치 메이킹을 사용하거나 로비에 참여할 수 있습니다. </summary> 
         ConnectedToMasterserver,
 
         /// <summary>Connected to MasterServer. You might use matchmaking or join a lobby now.</summary>
         [Obsolete("Renamed to ConnectedToMasterserver.")]
         ConnectedToMaster = ConnectedToMasterserver,
 
-        /// <summary>Client connects to the NameServer. This process includes low level connecting and setting up encryption. When done, state becomes ConnectedToNameServer.</summary>
+        // <summary>Client connects to the NameServer. This process includes low level connecting and setting up encryption. When done, state becomes ConnectedToNameServer.</summary>
+        /// <summary> 클라이언트가 NameServer에 연결합니다. 이 프로세스에는 저수준 연결 및 암호화 설정이 포함됩니다. 완료되면 상태는 ConnectedToNameServer가됩니다. </summary>
         ConnectingToNameServer,
 
-        /// <summary>Client is connected to the NameServer and established enctryption already. You should call OpGetRegions or ConnectToRegionMaster.</summary>
+        // <summary>Client is connected to the NameServer and established enctryption already. You should call OpGetRegions or ConnectToRegionMaster.</summary>
+        /// <summary> 클라이언트가 NameServer에 연결되고 이미 암호화가 완료되었습니다. OpGetRegions 또는 ConnectToRegionMaster를 호출해야합니다. </summary>
         ConnectedToNameServer,
 
-        /// <summary>Clients disconnects (specifically) from the NameServer (usually to connect to the MasterServer).</summary>
+        // <summary>Clients disconnects (specifically) from the NameServer (usually to connect to the MasterServer).</summary>
+        /// <summary> 클라이언트는 NameServer에서 (특히) MasterServer에 연결을 끊습니다 (일반적으로 MasterServer에 연결). </summary>
         DisconnectingFromNameServer
     }
 
-
+    /*
     /// <summary>
     /// Internal state, how this peer gets into a particular room (joining it or creating it).
+    /// </summary>
+    */
+
+    /// <summary>
+    /// 내부 상태,이 피어가 특정 룸에 들어가는 방법 (참여 또는 생성).
     /// </summary>
     internal enum JoinType
     {
@@ -118,8 +147,13 @@ namespace Photon.Realtime
         JoinOrCreateRoom
     }
 
+    /*
     /// <summary>Enumaration of causes for Disconnects (used in LoadBalancingClient.DisconnectedCause).</summary>
     /// <remarks>Read the individual descriptions to find out what to do about this type of disconnect.</remarks>
+    */
+
+    /// <summary> Disconnects에 대한 원인 규명 (LoadBalancingClient.DisconnectedCause에서 사용됨). </summary>
+    /// <remarks> 이러한 유형의 연결 해제에 대해 수행 할 작업을 찾으려면 개별 설명을 읽으십시오. </remarks>
     public enum DisconnectCause
     {
         /// <summary>No error was tracked.</summary>
@@ -164,33 +198,45 @@ namespace Photon.Realtime
         DisconnectByClientLogic
     }
 
+    /*
     /// <summary>Available server (types) for internally used field: server.</summary>
     /// <remarks>Photon uses 3 different roles of servers: Name Server, Master Server and Game Server.</remarks>
+    */
+    /// <summary> 내부에서 사용 가능한 서버 (유형) : server. </summary>
+    /// <remarks> Photon은 이름 서버, 마스터 서버 및 게임 서버의 3 가지 역할을 사용합니다. </remarks>
     public enum ServerConnection
     {
-        /// <summary>This server is where matchmaking gets done and where clients can get lists of rooms in lobbies.</summary>
+
+        // <summary>This server is where matchmaking gets done and where clients can get lists of rooms in lobbies.</summary>
+        /// <summary>이 서버는 중매가 이루어지는 장소이며 로비에서 로비의 객실 목록을 얻을 수있는 곳입니다. </summary>
         MasterServer,
-        /// <summary>This server handles a number of rooms to execute and relay the messages between players (in a room).</summary>
+        // <summary>This server handles a number of rooms to execute and relay the messages between players (in a room).</summary>
+        /// <summary>이 서버는 플레이어간에 (방에있는) 메시지를 실행하고 중계 할 여러 방을 처리합니다. </summary>
         GameServer,
-        /// <summary>This server is used initially to get the address (IP) of a Master Server for a specific region. Not used for Photon OnPremise (self hosted).</summary>
+        // <summary>This server is used initially to get the address (IP) of a Master Server for a specific region. Not used for Photon OnPremise (self hosted).</summary>
+        /// <summary>이 서버는 처음에 특정 지역에 대한 마스터 서버의 주소 (IP)를 가져 오는 데 사용됩니다. Photon OnPremise (자체 호스팅)에는 사용되지 않습니다. </summary>
         NameServer
     }
 
     /// <summary>
+    /// 통신이 암호화되는 방법을 정의합니다.
     /// Defines how the communication gets encrypted.
     /// </summary>
     public enum EncryptionMode
     {
+        // This is the default encryption mode: Messages get encrypted only on demand (when you send operations with the "encrypt" parameter set to true).
         /// <summary>
-        /// This is the default encryption mode: Messages get encrypted only on demand (when you send operations with the "encrypt" parameter set to true).
+        /// 이것은 기본 암호화 모드입니다. 메시지는 요청시에만 암호화됩니다 ( "encrypt"매개 변수를 true로 설정하여 작업을 보내는 경우).
         /// </summary>
         PayloadEncryption,
+        // With this encryption mode for UDP, the connection gets setup and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is unavailable.
         /// <summary>
-        /// With this encryption mode for UDP, the connection gets setup and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is unavailable.
+        /// UDP에 대한 이 암호화 모드를 사용하면 연결이 설정되고 모든 추가 데이터 그램이 거의 완전히 암호화됩니다. 주문형 메시지 암호화 (예 : PayloadEncryption)를 사용할 수 없습니다.
         /// </summary>
         DatagramEncryption = 10,
+        // With this encryption mode for UDP, the connection gets setup with random sequence numbers and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is unavailable.
         /// <summary>
-        /// With this encryption mode for UDP, the connection gets setup with random sequence numbers and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is unavailable.
+        /// UDP에 대한 이 암호화 모드를 사용하면 임의의 시퀀스 번호로 연결이 설정되고 이후의 모든 데이터 그램은 거의 완전히 암호화됩니다. 주문형 메시지 암호화 (예 : PayloadEncryption)를 사용할 수 없습니다.
         /// </summary>
         DatagramEncryptionRandomSequence = 11,
     }
@@ -213,6 +259,7 @@ namespace Photon.Realtime
     }
     #endregion
 
+    /*
     /// <summary>
     /// This class implements the Photon LoadBalancing workflow by using a LoadBalancingPeer.
     /// It keeps a state and will automatically execute transitions between the Master and Game Servers.
@@ -227,6 +274,24 @@ namespace Photon.Realtime
     /// are called when the state changes. Call base.method first, then pick the operation or state you
     /// want to react to and put it in a switch-case.
     /// We try to provide demo to each platform where this api can be used, so lookout for those.
+    /// </remarks>
+    */
+
+
+    /// <summary>
+    /// 이 클래스는 LoadBalancingPeer를 사용하여 Photon LoadBalancing 워크 플로를 구현합니다.
+    /// 상태를 유지하고 마스터 서버와 게임 서버 사이의 전환을 자동으로 실행합니다.
+    /// </summary>
+    /// <remarks>
+    /// 이 클래스 (및 Player 클래스)는 자신의 게임 로직을 구현하도록 확장되어야합니다.
+    /// CreatePlayer를 Player의 "팩토리"메서드로 재정의하고 자신의 Player 인스턴스를 반환 할 수 있습니다.
+    /// 이 클래스의 state는 클라이언트가 로비에있을 때(또는 마스터에만있을 때)
+    /// 그리고 실제 게임이 일어나야하는 게임에서.
+    /// 확장 메모 :
+    /// 이 클래스의 확장은 IPhotonPeerListener의 메서드를 재정의해야합니다.
+    /// 상태가 변경되면 호출됩니다. base.method를 먼저 호출 한 다음 작업을 선택하거나
+    /// 는 스위치 케이스에 반응하고 넣고 싶다.
+    /// 우리는이 API가 사용될 수있는 각 플랫폼에 데모를 제공하려고합니다.
     /// </remarks>
     public class LoadBalancingClient : IPhotonPeerListener
     {
@@ -2786,7 +2851,7 @@ namespace Photon.Realtime
         }
     }
 
-
+    /*
     /// <summary>
     /// Collection of "organizational" callbacks for the Realtime Api to cover: Connection and Regions.
     /// </summary>
@@ -2799,8 +2864,24 @@ namespace Photon.Realtime
     /// You can also simply override MonoBehaviourPunCallbacks which will provide you with Magic Callbacks ( like Unity would call Start(), Update() on a MonoBehaviour)
     /// </remarks>
     /// \ingroup callbacks
+    */
+
+    /// <summary>
+    /// 연결 관련 콜백, 
+    /// 실시간 Api가 커버하는 "조직적"콜백 컬렉션 : 연결 및 지역.
+    /// </summary>
+    /// <remarks>
+    /// 이 인터페이스를 구현하는 클래스는 다양한 상황에 대한 콜백을 얻기 위해 등록되어야합니다.
+    ///
+    /// 콜백에 등록하려면 PhotonNetwork.AddCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    /// 콜백 수신을 중지하려면 PhotonNetwork.RemoveCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    ///
+    /// MonoBehaviourPunCallbacks를 오버라이드하여 매직 콜백을 제공 할 수도 있습니다 (Unity가 MonoBehaviour에서 Start (), Update ()를 호출하는 것처럼)
+    /// </remarks>
+    /// \ingroup callbacks
     public interface IConnectionCallbacks
     {
+        /*
         /// <summary>
         /// Called to signal that the "low level connection" got established but before the client can call operation on the server.
         /// </summary>
@@ -2815,8 +2896,25 @@ namespace Photon.Realtime
         ///
         /// This is not called for transitions from the masterserver to game servers.
         /// </remarks>
+        */
+
+        /// <summary>
+        /// "저레벨 연결"이 설정되었지만 클라이언트가 서버에서 작업을 호출하기 전에 신호를 보내도록 호출되었습니다.
+        /// </summary>
+        /// <remarks>
+        /// (낮은 수준의 전송) 연결이 설정된 후 클라이언트는 자동으로
+        /// 인증 작업. 클라이언트가 다른 작업을 호출하기 전에 응답을 받아야합니다.
+        ///
+        /// 논리는 OnRegionListReceived 또는 OnConnectedToMaster 중 하나를 기다려야합니다.
+        ///
+        ///이 콜백은 서버에 전혀 도달 할 수 있는지 (기술적으로) 감지하는 데 유용합니다.
+        /// OnDisconnected (DisconnectCause 원인)을 구현하고 원인을 확인하는 것으로 충분합니다.
+        ///
+        /// 마스터 서버에서 게임 서버로 전환 할 때 호출되지 않습니다.
+        /// </remarks>
         void OnConnected();
 
+        /*
         /// <summary>
         /// Called when the client is connected to the Master Server and ready for matchmaking and other tasks.
         /// </summary>
@@ -2824,24 +2922,50 @@ namespace Photon.Realtime
         /// The list of available rooms won't become available unless you join a lobby via LoadBalancingClient.OpJoinLobby.
         /// You can join rooms and create them even without being in a lobby. The default lobby is used in that case.
         /// </remarks>
+        */
+
+        /// <summary>
+        /// 클라이언트가 마스터 서버에 연결되어 있고 matchmaking 및 기타 작업 준비가되었을 때 호출됩니다.
+        /// </summary>
+        /// <remarks>
+        /// LoadBalancingClient.OpJoinLobby를 통해 로비에 가입하지 않으면 사용 가능한 객실 목록이 제공되지 않습니다.
+        /// 로비에 있지 않아도 방에 들어가서 만들 수 있습니다. 이 경우 기본 로비가 사용됩니다.
+        /// </remarks>
         void OnConnectedToMaster();
 
+        /*
         /// <summary>
         /// Called after disconnecting from the Photon server. It could be a failure or an explicit disconnect call
         /// </summary>
         /// <remarks>
         ///  The reason for this disconnect is provided as DisconnectCause.
         /// </remarks>
+        */
+
+        /// <summary>
+        /// Photon 서버에서 연결을 해제 한 후에 호출됩니다. 실패 또는 명시 적 연결 끊기 호출 일 수 있습니다.
+        /// </summary>
+        /// <remarks>
+        /// 이 연결 끊기 이유는 DisconnectCause로 제공됩니다.
+        /// </remarks>
         void OnDisconnected(DisconnectCause cause);
 
+        /*
         /// <summary>
         /// Called when the Name Server provided a list of regions for your title.
         /// </summary>
         /// <remarks>Check the RegionHandler class description, to make use of the provided values.</remarks>
         /// <param name="regionHandler">The currently used RegionHandler.</param>
+        */
+
+        /// <summary>
+        /// 네임 서버가 사용자의 타이틀 영역 목록을 제공했을 때 호출됩니다.
+        /// </summary>
+        /// <remarks> 제공된 값을 사용하려면 RegionHandler 클래스 설명을 확인하십시오. </remarks>
+        /// <param name = "regionHandler"> 현재 사용되는 RegionHandler입니다. </param>
         void OnRegionListReceived(RegionHandler regionHandler);
 
-
+        /*
         /// <summary>
         /// Called when your Custom Authentication service responds with additional data.
         /// </summary>
@@ -2854,8 +2978,23 @@ namespace Photon.Realtime
         /// Example: void OnCustomAuthenticationResponse(Dictionary&lt;string, object&gt; data) { ... }
         /// </remarks>
         /// <see cref="https://doc.photonengine.com/en-us/realtime/current/reference/custom-authentication"/>
+        */
+
+        /// <summary>
+        /// 사용자 정의 인증 서비스가 추가 데이터로 응답 할 때 호출됩니다.
+        /// </summary>
+        /// <비고>
+        /// 사용자 정의 인증 서비스는 응답에 사용자 정의 데이터를 포함 할 수 있습니다.
+        ///이 콜백에서 해당 데이터가 사전으로 제공됩니다.
+        /// 데이터의 키가 문자열이어야하지만 값은 문자열이나 숫자 일 수 있습니다 (Json의 경우).
+        /// 값 유형이 예상 한 값이라는 것을 확실히해야합니다. 숫자는 (현재) int64가됩니다.
+        ///
+        /// 예 : void OnCustomAuthenticationResponse (사전 & lt; 문자열, 개체 & gt; 데이터) {...}
+        /// </remarks>
+        /// <see cref = "https://doc.photonengine.com/ko-kr/realtime/current/reference/custom-authentication"/>.
         void OnCustomAuthenticationResponse(Dictionary<string, object> data);
 
+        /*
         /// <summary>
         /// Called when the custom authentication failed. Followed by disconnect!
         /// </summary>
@@ -2870,11 +3009,27 @@ namespace Photon.Realtime
         /// this won't be called!
         /// </remarks>
         /// <param name="debugMessage">Contains a debug message why authentication failed. This has to be fixed during development.</param>
-        void OnCustomAuthenticationFailed(string debugMessage);
+        */
 
+        /// <summary>
+        /// 사용자 지정 인증에 실패하면 호출됩니다. 연결 해제!
+        /// </summary>
+        /// <remarks>
+        /// 사용자 입력, 잘못된 토큰 / 비밀로 인해 사용자 정의 인증이 실패 할 수 있습니다.
+        /// 인증이 성공하면이 메소드는 호출되지 않습니다. OnJoinedLobby () 또는 OnConnectedToMaster ()를 구현합니다 (평소와 같이).
+        ///
+        /// 게임 개발 중에 서버 측 구성이 잘못되어 실패 할 수도 있습니다.
+        /// 이러한 경우 debugMessage를 기록하는 것이 매우 중요합니다.
+        ///
+        /// 앱에 대한 맞춤 인증 서비스 ([Dashboard] (https://dashboard.photonengine.com))를 설정하지 않은 경우,
+        /// 이것은 호출되지 않습니다!
+        /// </remarks>
+        /// <param name ="debugMessage"> 왜 인증에 실패했는지 디버그 메시지가 들어 있습니다. 개발 중에는 수정해야합니다.</param>
+        void OnCustomAuthenticationFailed(string debugMessage);
     }
 
 
+    /* 
     /// <summary>
     /// Collection of "organizational" callbacks for the Realtime Api to cover the Lobby.
     /// </summary>
@@ -2885,6 +3040,22 @@ namespace Photon.Realtime
     /// To stop getting callbacks, PhotonNetwork.RemoveCallbackTarget(&lt;Your Component implementing this interface&gt;);
     ///
     /// You can also simply override MonoBehaviourPunCallbacks which will provide you with Magic Callbacks ( like Unity would call Start(), Update() on a MonoBehaviour)
+    /// </remarks>
+    /// \ingroup callbacks
+    */
+
+
+    /// <summary>
+    /// 로비 관련 콜백.
+    /// 실시간 Api가 로비를 커버하기위한 "조직적인"콜백 콜렉션.
+    /// </summary>
+    /// <remarks>
+    /// 이 인터페이스를 구현하는 클래스는 다양한 상황에 대한 콜백을 얻기 위해 등록되어야합니다.
+    ///
+    /// 콜백에 등록하려면 PhotonNetwork.AddCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    /// 콜백 수신을 중지하려면 PhotonNetwork.RemoveCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    ///
+    /// MonoBehaviourPunCallbacks를 오버라이드하여 매직 콜백을 제공 할 수도 있습니다 (Unity가 MonoBehaviour에서 Start (), Update ()를 호출하는 것처럼)
     /// </remarks>
     /// \ingroup callbacks
     public interface ILobbyCallbacks
@@ -2928,7 +3099,7 @@ namespace Photon.Realtime
         void OnLobbyStatisticsUpdate(List<TypedLobbyInfo> lobbyStatistics);
     }
 
-
+    /*
     /// <summary>
     /// Collection of "organizational" callbacks for the Realtime Api to cover Matchmaking.
     /// </summary>
@@ -2941,10 +3112,25 @@ namespace Photon.Realtime
     /// You can also simply override MonoBehaviourPunCallbacks which will provide you with Magic Callbacks ( like Unity would call Start(), Update() on a MonoBehaviour)
     /// </remarks>
     /// \ingroup callbacks
+    */
+
+    /// <summary>
+    /// 실시간 API가 Matchmaking를 커버하기위한 "조직적"콜백 콜렉션.
+    /// </summary>
+    /// <remarks>
+    ///이 인터페이스를 구현하는 클래스는 다양한 상황에 대한 콜백을 얻기 위해 등록되어야합니다.
+    ///
+    /// 콜백에 등록하려면 PhotonNetwork.AddCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    /// 콜백 수신을 중지하려면 PhotonNetwork.RemoveCallbackTarget (&lt;이 인터페이스를 구현하는 구성 요소 &gt;);
+    ///
+    /// MonoBehaviourPunCallbacks를 오버라이드하여 매직 콜백을 제공 할 수도 있습니다 (Unity가 MonoBehaviour에서 Start (), Update ()를 호출하는 것처럼)
+    /// </remarks>
+    /// \ingroup callbacks
     public interface IMatchmakingCallbacks
     {
 
         /// <summary>
+        /// 서버가 FindFriends 요청에 응답을 보낼 때 호출됩니다.
         /// Called when the server sent the response to a FindFriends request.
         /// </summary>
         /// <remarks>
@@ -2956,6 +3142,7 @@ namespace Photon.Realtime
         void OnFriendListUpdate(List<FriendInfo> friendList);
 
         /// <summary>
+        /// 이 클라이언트가 방을 만들고 입력 할 때 호출됩니다. OnJoinedRoom ()도 호출됩니다.
         /// Called when this client created a room and entered it. OnJoinedRoom() will be called as well.
         /// </summary>
         /// <remarks>
@@ -2970,9 +3157,19 @@ namespace Photon.Realtime
         void OnCreatedRoom();
 
         /// <summary>
+        /// 서버가 공간을 생성 할 수 없을 때 호출됩니다(OpCreateRoom 실패).
         /// Called when the server couldn't create a room (OpCreateRoom failed).
         /// </summary>
         /// <remarks>
+        /// 방을 만드는 것은 여러 가지 이유로 실패 할 수 있습니다. 대부분의 경우, 방은 이미 존재합니다 (사용중인 방 이름) 또는
+        /// RoomOptions의 충돌로 룸 생성이 불가능합니다.
+        ///
+        /// 게임 서버에서 방을 만들지 못하는 경우 :
+        /// 클라이언트는 실패를 내부적으로 캐시하고 실패 콜백을 호출하기 전에 마스터 서버로 돌아갑니다.
+        /// 이 방법으로 클라이언트는 콜백이 끝난 순간에 방을 찾고 찾을 수 있습니다.
+        /// 이 경우 클라이언트는 OnConnectedToMaster를 호출하는 것을 건너 뛰지 만 마스터 서버로 돌아가는 것은 계속 OnConnected를 호출합니다.
+        /// OnConnected의 콜백을 클라이언트가 연결할 수있는 순수한 정보로 처리합니다.
+        /// 
         /// Creating a room may fail for various reasons. Most often, the room already exists (roomname in use) or
         /// the RoomOptions clash and it's impossible to create the room.
         ///
@@ -2987,6 +3184,7 @@ namespace Photon.Realtime
         void OnCreateRoomFailed(short returnCode, string message);
 
         /// <summary>
+        /// LoadBalancingClient가 방을 입력 할 때 호출됩니다.이 클라이언트가 방을 작성했거나 간단하게 합류 한 경우에도 상관 없습니다.
         /// Called when the LoadBalancingClient entered a room, no matter if this client created it or simply joined.
         /// </summary>
         /// <remarks>
@@ -3113,6 +3311,7 @@ namespace Photon.Realtime
 
 
     /// <summary>
+    /// Realtime API에 대한 이벤트 콜백.OpRaiseEvent를 통해 서버 및 클라이언트가 보낸 이벤트를 나타냅니다.
     /// Event callback for the Realtime Api. Covers events from the server and those sent by clients via OpRaiseEvent.
     /// </summary>
     /// <remarks>
@@ -3124,6 +3323,7 @@ namespace Photon.Realtime
     /// \ingroup callbacks
     public interface IOnEventCallback
     {
+        /*
         /// <summary>Called for any incoming events.</summary>
         /// <remarks>
         /// To receive events, implement IOnEventCallback in any class and register it via AddCallbackTarget
@@ -3134,10 +3334,22 @@ namespace Photon.Realtime
         /// It is best practice to assign an eventCode for each different type of content and action, so the Code
         /// will be essential to read the incoming events.
         /// </remarks>
+        */
+        /// <summary> 들어오는 이벤트에 대해 호출됩니다. </summary>
+        /// <remarks>
+        /// 이벤트를 받으려면 IOnEventCallback을 모든 클래스에 구현하고 AddCallbackTarget을 통해 등록하십시오
+        /// (LoadBalancingClient 또는 PhotonNetwork에서).
+        ///
+        /// EventData.Sender를 사용하면 이벤트를 보낸 플레이어를 찾을 수 있습니다.
+        ///
+        /// 각기 다른 유형의 컨텐트와 액션에 대해 eventCode를 할당하는 것이 가장 좋습니다. 따라서 코드
+        ///는 들어오는 사건을 읽는 데 필수적입니다.
+        /// </remarks>
         void OnEvent(EventData photonEvent);
     }
 
     /// <summary>
+    /// Realtime API의 "WebRpc"콜백 용 인터페이스.현재 웹 RPC에 대한 응답 만 포함됩니다.
     /// Interface for "WebRpc" callbacks for the Realtime Api. Currently includes only responses for Web RPCs.
     /// </summary>
     /// <remarks>

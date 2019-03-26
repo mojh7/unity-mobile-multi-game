@@ -50,9 +50,9 @@ namespace Photon.Realtime
     public class Player
     {
 
+        // Used internally to identify the masterclient of a room.
         /// <summary>
         /// 방의 마스터 클라이언트를 식별하기 위해 내부적으로 사용됩니다.
-        /// Used internally to identify the masterclient of a room.
         /// </summary>
         protected internal Room RoomReference { get; set; }
 
@@ -65,7 +65,6 @@ namespace Photon.Realtime
         /// <remarks>The ID is assigned per room and only valid in that context. It will change even on leave and re-join. IDs are never re-used per room.</remarks>
         */
 
-
         /// <summary> 현재 방에있는이 플레이어의 식별자. actorNumber 또는 actorNumber로도 알려져 있습니다. 객실 밖에서는 -1입니다. </summary>
         /// <remarks> ID는 방당 할당되며 해당 상황에서만 유효합니다. 휴가와 재결합시에도 변경됩니다. ID는 객실 당 결코 재사용되지 않습니다. </remarks>
         public int ActorNumber
@@ -73,9 +72,9 @@ namespace Photon.Realtime
             get { return this.actorNumber; }
         }
 
+        // Only one player is controlled by each client. Others are not local.
         /// <summary>
         /// 한 명의 플레이어만 각 클라이언트가 제어합니다. 다른 것들은 지역 적이 아닙니다.
-        /// Only one player is controlled by each client. Others are not local.
         /// </summary>
         public readonly bool IsLocal;
          
@@ -91,11 +90,12 @@ namespace Photon.Realtime
         /// </remarks>
         */
 
-
-        /// <summary>이 플레이어의 고유하지 않은 별명. 방에 자동으로 동기화되었습니다. </summary>
-        /// <remakrs>
+        /// <summary>
+        /// 이 플레이어의 고유하지 않은 별명. 방에 자동으로 동기화되었습니다.
+        /// </summary>
+        /// <remarks>
         /// 플레이어는 방에서 자신의 플레이어 이름을 변경할 수 있습니다 (속성 일뿐입니다).
-        ///이 값을 설정하면 서버 및 다른 플레이어가 업데이트됩니다 (작업 사용).
+        /// 이 값을 설정하면 서버 및 다른 플레이어가 업데이트됩니다 (작업 사용).
         /// </remarks>
         public string NickName
         {

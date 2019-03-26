@@ -306,7 +306,7 @@ namespace Photon.Pun
         /// <summary>
         /// PhotonView "lastOnSerializeDataSent"를 재설정하여 "OnReliable"동기화 된 PhotonViews가 새 클라이언트에 완전한 상태를 보냅니다 (상태가 변경되지 않으면 별도의 메시지가 전송되지 않습니다).
         ///이 재설정으로 인해 다른 모든 플레이어는 전체 OnSerialize를 받게됩니다.
-        /// </ summary>
+        /// </summary>
         private static void ResetPhotonViewsOnSerialize()
         {
             foreach (PhotonView photonView in photonViewList.Values)

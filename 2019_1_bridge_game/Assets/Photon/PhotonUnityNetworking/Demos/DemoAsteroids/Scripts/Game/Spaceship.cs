@@ -43,6 +43,7 @@ namespace Photon.Pun.Demo.Asteroids
 
         public void Awake()
         {
+            Debug.Log("언제 생성 되는거야");
             photonView = GetComponent<PhotonView>();
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();

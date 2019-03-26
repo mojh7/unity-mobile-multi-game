@@ -1251,7 +1251,7 @@ namespace Photon.Pun
             return false;
         }
 
-
+        /*
         /// <summary>
         /// Makes this client disconnect from the photon server, a process that leaves any room and calls OnDisconnected on completion.
         /// </summary>
@@ -1261,6 +1261,18 @@ namespace Photon.Pun
         /// When used in OfflineMode, the state-change and event-call OnDisconnected are immediate.
         /// Offline mode is set to false as well.
         /// Once disconnected, the client can connect again. Use ConnectUsingSettings.
+        /// </remarks>
+        */
+
+        /// <summary>
+        /// 이 클라이언트를 포톤 서버에서 연결 해제합니다. 프로세스가 완료되면 OnDisconnected를 호출하고 모든 회의실을 종료합니다.
+        /// </summary>
+        /// <remarks>
+        /// 연결을 끊으면 클라이언트는 서버에 "연결 해제 중"메시지를 보냅니다. 이렇게하면 떠나기 / 연결 끊기가 빨라집니다.
+        /// 메시지를 보내십시오. 그렇지 않으면 서버가이 클라이언트의 연결을 시간 종료합니다.
+        /// OfflineMode에서 사용될 때 상태 변경 및 이벤트 호출 OnDisconnected는 즉각적입니다.
+        /// 오프라인 모드도 false로 설정됩니다.
+        /// 연결이 끊어지면 클라이언트는 다시 연결할 수 있습니다. ConnectUsingSettings를 사용하십시오.
         /// </remarks>
         public static void Disconnect()
         {
@@ -2853,6 +2865,7 @@ namespace Photon.Pun
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelNumber,LoadSceneMode.Single);
         }
 
+        /*
         /// <summary>Wraps loading a level to pause the network message-queue. Optionally syncs the loaded level in a room.</summary>
         /// <remarks>
         /// While loading levels, it makes sense to not dispatch messages received by other players.
@@ -2872,6 +2885,27 @@ namespace Photon.Pun
         /// <param name='levelName'>
         /// Name of the level to load. Make sure it's available to all clients in the same room.
         /// </param>
+        */ 
+
+        /// <summary> 네트워크 메시지 대기열을 일시 중지하는 레벨을로드합니다. 필요에 따라 방의 로드 된 레벨을 동기화합니다. </summary>
+        /// <remarks>
+        /// 로드하는 동안 다른 플레이어가받은 메시지를 보내지 않는 것이 좋습니다.
+        /// 이 메소드는 PhotonNetwork.IsMessageQueueRunning = false를 설정하고
+        /// 레벨이로드되었을 때의 큐.
+        ///
+        /// 실내의로드 된 레벨을 동기화하려면 PhotonNetwork.AutomaticallySyncScene을 true로 설정합니다.
+        /// 방의 마스터 클라이언트는로드 된 레벨을 방 안의 다른 모든 플레이어와 동기화합니다.
+        ///
+        /// 다른 장면을로드하기 전에 RPC를 실행하지 않도록해야합니다 (포함하지 않은 RPC
+        /// 동일한 GameObjects 및 PhotonViews). OnJoinedRoom에서 이것을 호출 할 수 있습니다.
+        ///
+        /// 이것은 SceneManager.LoadSceneAsync ()를 사용합니다.
+        ///
+        /// PhotonNetwork.LevelLoadingProgress를 사용하여 LevelLoading의 진행 상태를 확인합니다 (-1은로드하지 않음을 의미하고 0부터 1까지의 범위를 가짐)
+        /// </remarks>
+        /// <param name = 'levelName'>
+        /// 로드 할 수준의 이름입니다. 같은 방에있는 모든 고객이 사용할 수 있는지 확인하십시오.
+        /// </param>
         public static void LoadLevel(string levelName)
         {
             if (PhotonNetwork.AutomaticallySyncScene)
@@ -2884,6 +2918,7 @@ namespace Photon.Pun
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Single);
         }
 
+        /*
         /// <summary>
         /// This operation makes Photon call your custom web-service by name (path) with the given parameters.
         /// </summary>
@@ -2915,6 +2950,40 @@ namespace Photon.Pun
         ///     }
         ///     // and so on
         /// }</pre>
+        /// </example>
+        */
+
+        /// <summary>
+        /// 이 작업은 Photon이 주어진 매개 변수로 이름 (경로)으로 사용자 정의 웹 서비스를 호출하도록합니다.
+        /// </summary>
+        /// <remarks>
+        /// 이 기능은 사용하기 전에 Photon Cloud Dashboard에서 설정해야하는 서버 측 기능입니다.
+        /// <see cref = "https://doc.photonengine.com/ko-kr/pun/v2/gameplay/web-extensions/webrpc"/>
+        /// 매개 변수는 JSon 형식으로 변환되므로 매개 변수가 호환되는지 확인하십시오.
+        ///
+        /// 응답받는 방법은 <see cref = "Photon.Realtime.IWebRpcCallback.OnWebRpcResponse"/>를 참조하십시오.
+        ///
+        /// OperationResponse는 WebRPC를 호출 할 수 있는지 여부 만 알려주는 것을 이해하는 것이 중요합니다.
+        /// 응답 내용에는 웹 서비스가 보낸 값과 오류 / 성공 코드가 포함됩니다.
+        /// 웹 서비스가 실패한 경우 오류 코드와 디버그 메시지는 일반적으로
+        /// OperationResponse.
+        ///
+        /// WebRpcResponse 클래스는 WebRPC에서 가장 가치있는 콘텐츠를 추출하는 도우미 클래스입니다.
+        /// 응답.
+        /// </remarks>
+        /// <example>
+        /// 예제 콜백 구현 : <pre>
+        ///
+        /// public void OnWebRpcResponse (OperationResponse 응답)
+        /// {
+        /// WebRpcResponse webResponse = 새 WebRpcResponse (operationResponse);
+        /// if (webResponse.ReturnCode! = 0) {// ...
+        ///}
+        ///
+        /// switch (webResponse.Name) {// ...
+        ///}
+        ///     // 등등
+        ///} </pre>
         /// </example>
         public static bool WebRpc(string name, object parameters, bool sendAuthCookie = false)
         {

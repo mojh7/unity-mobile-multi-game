@@ -15,6 +15,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
 {
     #region Constants
+
     public const float ASTEROIDS_MIN_SPAWN_TIME = 5.0f;
     public const float ASTEROIDS_MAX_SPAWN_TIME = 10.0f;
 
@@ -50,7 +51,7 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
     {
         base.OnEnable();
 
-        //CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
+        CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
     }
     #endregion
 
@@ -122,7 +123,8 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("TempLobbyScene");
+        //UnityEngine.SceneManagement.SceneManager.LoadScene("TempLobbyScene");
+        GameManager.Instance.LoadNextScene(GameScene.TEMP_LOBBY, false);
     }
 
     public override void OnLeftRoom()
@@ -134,7 +136,7 @@ public class InGame : Photon.Pun.MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
         {
-            StartCoroutine(SpawnAsteroid());
+            //StartCoroutine(SpawnAsteroid());
         }
     }
 

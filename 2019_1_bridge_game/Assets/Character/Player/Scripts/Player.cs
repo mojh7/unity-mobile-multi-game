@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-namespace UBZ.Owner
+namespace UBZ.MultiGame.Owner
 {
     public class Player : Character
     {

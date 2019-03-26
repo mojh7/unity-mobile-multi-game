@@ -42,10 +42,11 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 2b4fe9a2c4c37154db1fc346fdb6e663, type: 3}
-    totalSpriteSurfaceArea: 46583
+    totalSpriteSurfaceArea: 68844
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: b7e601737b87e9c49bc8e584ed62d141, type: 3}
   - {fileID: 21300008, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300010, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300012, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
@@ -56,6 +57,7 @@ SpriteAtlas:
   - {fileID: 21300006, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300016, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300018, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  - {fileID: 21300040, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300038, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300036, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300034, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
@@ -67,6 +69,7 @@ SpriteAtlas:
   - {fileID: 21300022, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300020, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   m_PackedSpriteNamesToIndex:
+  - team_base_tiles_0
   - 03_Castle_Tiles_4
   - 03_Castle_Tiles_5
   - 03_Castle_Tiles_6
@@ -77,6 +80,7 @@ SpriteAtlas:
   - 03_Castle_Tiles_3
   - 03_Castle_Tiles_8
   - 03_Castle_Tiles_9
+  - team_base_red
   - 03_Castle_Tiles_19
   - 03_Castle_Tiles_18
   - 03_Castle_Tiles_17

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-using UBZ.Owner.CharacterInfo;
+using UBZ.MultiGame.Owner.CharacterInfo;
 
-namespace UBZ.Owner
+namespace UBZ.MultiGame.Owner
 {
     namespace CharacterInfo
     {

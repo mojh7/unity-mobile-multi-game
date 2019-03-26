@@ -72,7 +72,7 @@ public abstract class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHand
     // 드래그 중
     public virtual void OnDrag(PointerEventData ped)
     {
-        if (false == InGameUIManager.Instance.GetActived())
+        if (false == InGameUIManager.Instance.GetControllable())
         {
             inputVector = Vector3.zero;
             return;
