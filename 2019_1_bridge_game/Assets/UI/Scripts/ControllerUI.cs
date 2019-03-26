@@ -28,7 +28,7 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
     {
         touched = true;
     }
-    public void SetPlayer(UBZ.Owner.Character character, ref PlayerController controller)
+    public void SetPlayer(UBZ.MultiGame.Owner.Character character, ref PlayerController controller)
     {
         movingJoystick.SetPlayer(character);
         controller = new PlayerController(movingJoystick);

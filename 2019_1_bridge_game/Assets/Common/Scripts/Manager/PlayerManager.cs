@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UBZ.Owner;
+using UBZ.MultiGame.Owner;
 
 public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
 {
