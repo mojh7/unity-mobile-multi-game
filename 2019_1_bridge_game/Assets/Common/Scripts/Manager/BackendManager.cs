@@ -2,14 +2,18 @@
 using LitJson;
 using BackEnd;
 using System.Collections.Generic;
+using System;
 
 public class BackendManager : MonoBehaviourSingleton<BackendManager>
 {
-    private string id;
-    private string pw;
-    private string nick;
+    private string id = "";
+    private string pw = "";
+    private string nick = "";
 
     private BackendReturnObject bro = new BackendReturnObject();
+
+    private string Indate;     //gameinfo update, gameinfo delete, findOne에 사용
+    private string characterTable = "character";
 
     private List<string> PublicTables = new List<string>();
     private List<string> PrivateTables = new List<string>();
@@ -68,6 +72,31 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         bro.Clear();
     }
 
+
+    public void GameInfoInsert()
+    {
+        Debug.Log("-----------------A GameInfo Insert-----------------");
+
+        Param param = new Param();
+        param.Add("id", id);
+        param.Add("nickname", nick);
+        param.Add("coin", 0);
+        param.Add("rank", 0);
+        param.Add("honor", 0);
+        param.Add("level", 0);
+        param.Add("stage", 0);
+
+        Backend.GameInfo.Insert(characterTable, param, insertComplete =>
+        {
+            Debug.Log("insert : " + insertComplete.ToString());
+            if (insertComplete.IsSuccess())
+            {
+                Indate = insertComplete.GetInDate();
+                Debug.Log("indate : " + Indate);
+            }
+        });
+    }
+
     public void GetTableList()
     {
         Debug.Log("-----------------A Get Table List-----------------");
@@ -110,6 +139,21 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         Backend.GameInfo.GetPrivateContents(tableName, bro =>
         {
             Debug.Log(bro);
+            if (bro.IsSuccess())
+            {
+                GetGameInfo(bro.GetReturnValuetoJSON());
+            }
+        });
+    }
+
+    public void AGetPublicContents(string tableName)
+    {
+        Debug.Log("-----------------AGet Public Contents-----------------");
+
+        Backend.GameInfo.GetPublicContents(tableName, bro =>
+        {
+            Debug.Log(bro);
+
             if (bro.IsSuccess())
             {
                 GetGameInfo(bro.GetReturnValuetoJSON());
