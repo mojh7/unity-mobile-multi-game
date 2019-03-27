@@ -37,12 +37,17 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public const string PLAYER_LIVES = "PlayerLives";
     public const string PLAYER_READY = "IsPlayerReady";
     public const string PLAYER_LOADED_LEVEL = "PlayerLoadedLevel";
+
+    public const string RED_TEAM_PLAYER = "RedTeamPlayer";
+    public const string BLUE_TEAM_PLAYER = "BlueTeamPlayer";
     #endregion
 
     #region variables
     public static InGameManager Instance = null;
 
     public Text InfoText;
+    public Transform redTeamSpawnPoint;
+    public Transform blueTeamSpawnPoint;
     public GameObject[] sheetMusicPrefabs;
 
     // 이후 랜덤한 위치를 유동적으로 대입
@@ -51,6 +56,10 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
     #region get / set
     public Transform GetBaseTown() { return baseTowns; }
+    public static bool IsRedTeam(int playerNumber)
+    {
+        return (playerNumber % 2) == 0;
+    }
     public static Color GetPlayerColorWithTeam(int playerNumber)
     {
         switch (playerNumber % 2)
@@ -82,6 +91,21 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
             {PLAYER_LOADED_LEVEL, true}
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+
+
+        PhotonNetwork.LocalPlayer.SetTeam((PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2) == 0? PunTeams.Team.RED : PunTeams.Team.BLUE);
+        Debug.Log("Player Number : " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + ", Team : " + PhotonNetwork.LocalPlayer.GetTeam());
+
+        GameObject playerObj = null;
+        if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
+        {
+            playerObj = PhotonNetwork.Instantiate("Player", redTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
+        }
+        else if(PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
+        {
+            playerObj = PhotonNetwork.Instantiate("Player", blueTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
+        }
+        playerObj.GetComponent<UBZ.MultiGame.Owner.Player>().Init();
     }
 
     public override void OnDisable()
@@ -98,9 +122,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         Debug.Log("Timer 다 되고 게임 스타트");
         // TODO : 조이스틱 on, Player 생성, 게임 시작!
         InGameUIManager.Instance.SetControllable(true);
-
-        GameObject playerObj = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.Euler(0, 0, 0), 0);
-        playerObj.GetComponent<UBZ.MultiGame.Owner.Player>().Init();
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -234,8 +255,16 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         while (true)
         {
-            yield return YieldInstructionCache.WaitForSeconds(5.0f);
 
+
+            /*
+            int randomInt = 0;
+            while (true)
+            {
+                yield return YieldInstructionCache.WaitForSeconds(5.0f);
+                randomInt = Random.RandomRange(0, 3); 
+            }
+            */
             // TODO : 맵 마다 정해진 위치에서 악보 스폰 되는게?, 악보 스폰 텀은 얼마나?(아마 악보마다 랜덤하게 하는게 낫지 않을까?)
             // 맵 마다 컨셉으로 리스폰 위치의 갯수, 시간 다르게 해도 좋을 듯??
         }

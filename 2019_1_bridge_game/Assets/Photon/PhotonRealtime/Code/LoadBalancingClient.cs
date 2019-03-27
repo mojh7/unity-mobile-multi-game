@@ -551,7 +551,8 @@ namespace Photon.Realtime
         private readonly List<TypedLobbyInfo> lobbyStatistics = new List<TypedLobbyInfo>();
 
 
-        /// <summary>The local player is never null but not valid unless the client is in a room, too. The ID will be -1 outside of rooms.</summary>
+        // <summary>The local player is never null but not valid unless the client is in a room, too. The ID will be -1 outside of rooms.</summary>
+        /// <summary> 로컬 플레이어는 null이 아니지만 클라이언트가 방에 있지 않으면 유효하지 않습니다.ID는 객실 밖에서 -1이됩니다. </summary>
         public Player LocalPlayer { get; internal set; }
 
         /// <summary>

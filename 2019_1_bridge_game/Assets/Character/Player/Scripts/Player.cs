@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
 namespace UBZ.MultiGame.Owner
 {
@@ -91,14 +92,32 @@ namespace UBZ.MultiGame.Owner
             damageImmune = CharacterInfo.DamageImmune.NONE;
             abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
             directionVector = new Vector3(1, 0, 0);
+
+            if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
+            {
+                Components.SpriteRenderer.color = Color.red;
+            }
+            else if (PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
+            {
+                Components.SpriteRenderer.color = Color.blue;
+            }
+
             if (photonView.IsMine)
             {
                 CameraController.Instance.AttachObject(this.transform); // get Camera
                 baseColor = Color.white;
                 Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
                 InitController();
-                TimeController.Instance.PlayStart();
+                //TimeController.Instance.PlayStart();
             }
+
+            //Debug.Log(PhotonNetwork.LocalPlayer.GetPlayerNumber());
+            //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
+            //Debug.Log(PhotonNetwork.LocalPlayer.GetScore());
+            //Debug.Log(PhotonNetwork.LocalPlayer.GetNext());
+            //gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            //Components.InteractiveCollider2D.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            //Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
 
 

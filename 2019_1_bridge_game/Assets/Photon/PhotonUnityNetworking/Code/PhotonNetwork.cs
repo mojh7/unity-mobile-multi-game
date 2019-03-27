@@ -285,12 +285,22 @@ namespace Photon.Pun
         /// </summary>
         public static PunLogLevel LogLevel = PunLogLevel.ErrorsOnly;
 
+        /*
         /// <summary>
         /// This client's Player instance is always available, unless the app shuts down.
         /// </summary>
         /// <remarks>
         /// Useful (e.g.) to set the Custom Player Properties or the NickName for this client anytime.
         /// When the client joins a room, the Custom Properties and other values are synced.
+        /// </remarks>
+        */
+
+        /// <summary>
+        /// 이 클라이언트의 Player 인스턴스는 앱을 종료하지 않는 한 항상 사용할 수 있습니다.
+        /// </summary>
+        /// <remarks>
+        /// 언제든지 이 클라이언트에 대한 사용자 지정 플레이어 속성 또는 NickName을 설정하는 데 유용합니다 (예 :).
+        /// 클라이언트가 회의실에 참여하면 사용자 지정 속성 및 기타 값이 동기화됩니다.
         /// </remarks>
         public static Player LocalPlayer
         {

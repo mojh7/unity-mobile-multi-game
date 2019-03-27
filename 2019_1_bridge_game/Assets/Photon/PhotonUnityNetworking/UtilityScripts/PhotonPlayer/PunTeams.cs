@@ -34,13 +34,19 @@ namespace Photon.Pun.UtilityScripts
     public class PunTeams : MonoBehaviourPunCallbacks
     {
         /// <summary>Enum defining the teams available. First team should be neutral (it's the default value any field of this enum gets).</summary>
-        public enum Team : byte { none, red, blue };
+        public enum Team : byte { NONE, RED, BLUE };
 
+        /*
         /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
         /// <remarks>Note that this is static. Can be accessed by PunTeam.PlayersPerTeam. You should not modify this.</remarks>
+        */
+
+        /// <summary> 플레이어 목록이 있는 팀의 주요 목록. 자동으로 최신 상태로 유지됩니다. </summary>
+        /// <remarks> 이것은 정적이라는 점에 유의하십시오. PunTeam.PlayersPerTeam에서 액세스 할 수 있습니다. 이것을 수정해서는 안됩니다. </remarks>
         public static Dictionary<Team, List<Player>> PlayersPerTeam;
 
-        /// <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
+        // <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
+        /// <summary>"this"플레이어의 팀 유사성에 사용할 플레이어 사용자 정의 속성 이름을 정의합니다.</summary>
         public const string TeamPlayerProp = "team";
 
 
@@ -124,13 +130,21 @@ namespace Photon.Pun.UtilityScripts
                 return (PunTeams.Team)teamId;
             }
 
-            return PunTeams.Team.none;
+            return PunTeams.Team.NONE;
         }
 
+        /*
         /// <summary>Switch that player's team to the one you assign.</summary>
         /// <remarks>Internally checks if this player is in that team already or not. Only team switches are actually sent.</remarks>
         /// <param name="player"></param>
         /// <param name="team"></param>
+        */
+
+
+        /// <summary> 지정한 팀으로 팀을 전환하십시오. </summary>
+        /// <remarks> 이 플레이어가 해당 팀에 이미 있는지 여부를 내부적으로 확인합니다. 팀 스위치 만 실제로 전송됩니다. </remarks>
+        /// <param name = "player"> </param>
+        /// <param name = "team"> </param>
         public static void SetTeam(this Player player, PunTeams.Team team)
         {
             if (!PhotonNetwork.IsConnectedAndReady)
