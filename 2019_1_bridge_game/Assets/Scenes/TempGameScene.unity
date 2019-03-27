@@ -258,7 +258,7 @@ PrefabInstance:
     - target: {fileID: 2222818889752054563, guid: 060619ae708a2f841af1993b02a67499,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2222818889752054561, guid: 060619ae708a2f841af1993b02a67499,
         type: 3}
@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InfoText: {fileID: 601629552}
   sheetMusicPrefabs:
-  - {fileID: 6897039703535395732, guid: 38e0839e6e311904db7bdcaaf6f903a5, type: 3}
+  - {fileID: 1254699528}
   baseTowns: {fileID: 0}
 --- !u!4 &571371136
 Transform:
@@ -62146,7 +62146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2060321659
 Transform:
   m_ObjectHideFlags: 0
@@ -62270,7 +62270,7 @@ PrefabInstance:
     - target: {fileID: 6897039703535395732, guid: 38e0839e6e311904db7bdcaaf6f903a5,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6897039703535395734, guid: 38e0839e6e311904db7bdcaaf6f903a5,
         type: 3}
@@ -62358,7 +62358,7 @@ PrefabInstance:
     - target: {fileID: 2222818889752054563, guid: 060619ae708a2f841af1993b02a67499,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2222818889752054561, guid: 060619ae708a2f841af1993b02a67499,
         type: 3}

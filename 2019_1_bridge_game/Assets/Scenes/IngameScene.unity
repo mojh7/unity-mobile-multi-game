@@ -1323,6 +1323,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5c3d698a19fa14aab6328805326362, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InfoText: {fileID: 0}
+  sheetMusicPrefabs: []
   baseTowns: {fileID: 106069455}
 --- !u!1001 &739143798677963104
 PrefabInstance:
