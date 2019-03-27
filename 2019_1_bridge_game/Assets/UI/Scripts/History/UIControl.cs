@@ -13,13 +13,16 @@ public class UIControl : MonoBehaviour
     {
         if (transform.parent.GetComponent<Animator>() != null)
         {
-            transform.parent.GetComponent<Animator>().Play("Show");
+            transform.parent.GetComponent<Animator>().SetBool("open", true);
+            Debug.Log("show and animate");
+            //transform.parent.GetComponent<Animator>().Play("Show");
 
             if (transform.GetComponent<Button>() != null)
                 transform.GetComponent<Button>().interactable = true;
         }
         else
         {
+            Debug.Log("show");
             gameObject.SetActive(true);
         }
     }
@@ -27,13 +30,15 @@ public class UIControl : MonoBehaviour
     {
         if (transform.parent.GetComponent<Animator>() != null)
         {
-            transform.parent.GetComponent<Animator>().Play("Hide");
-
+            transform.parent.GetComponent<Animator>().SetBool("open", false);
+            //transform.parent.GetComponent<Animator>().Play("Hide");
+            Debug.Log("hide and animate");
             if (transform.GetComponent<Button>() != null)
                 transform.GetComponent<Button>().interactable = false;
         }
         else
         {
+            Debug.Log("hide");
             gameObject.SetActive(false);
         }
     }

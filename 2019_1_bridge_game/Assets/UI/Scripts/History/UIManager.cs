@@ -111,5 +111,4 @@ public class UIManager : MonoBehaviourSingleton<UIManager>
                 uiHistory.Pop().OnHide();
         }
     }
-
 }
