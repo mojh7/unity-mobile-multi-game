@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 namespace Photon.Pun.Demo.Asteroids
 {
+    // TODO : 0327 모 : 데모 씬들 차차 지울거라 데모 씬에 종속된 클래스들 따로 옮겨 놓고 수정해서 사용할 예정
+    // 일단은 데모 씬에 종속된 클래스 그냥 사용 후 차차 옮김.
     public class LobbyMainPanel : MonoBehaviourPunCallbacks
     {
         [Header("Login Panel")]
@@ -36,6 +38,9 @@ namespace Photon.Pun.Demo.Asteroids
 
         public Button StartGameButton;
         public GameObject PlayerListEntryPrefab;
+
+        public GameObject redTeamGroup;
+        public GameObject blueTeamGroup;
 
         private Dictionary<string, RoomInfo> cachedRoomList;
         private Dictionary<string, GameObject> roomListEntries;
