@@ -7,6 +7,7 @@
 namespace Photon.Chat
 {
     /// <summary>
+    /// Photon Chat에서 내부적으로 사용되는 작업에 대한 코드를 마무리합니다. 일반적으로 직접 사용하지 않아도됩니다.
     /// Wraps up codes for operations used internally in Photon Chat. You don't have to use them directly usually.
     /// </summary>
     public class ChatOperationCode

@@ -84,6 +84,14 @@ namespace Photon.Pun.Demo.Asteroids
                 if (p.ActorNumber == ownerId)
                 {
                     PlayerColorImage.color = AsteroidsGame.GetColor(p.GetPlayerNumber());
+                    //if (PunTeams.Team.RED == p.GetTeam())
+                    //{
+                    //    PlayerColorImage.color = Color.red;
+                    //}
+                    //else if (PunTeams.Team.BLUE == p.GetTeam())
+                    //{
+                    //    PlayerColorImage.color = Color.blue;
+                    //}
                 }
             }
         }

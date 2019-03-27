@@ -92,7 +92,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
-
         PhotonNetwork.LocalPlayer.SetTeam((PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2) == 0? PunTeams.Team.RED : PunTeams.Team.BLUE);
         Debug.Log("Player Number : " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + ", Team : " + PhotonNetwork.LocalPlayer.GetTeam());
 

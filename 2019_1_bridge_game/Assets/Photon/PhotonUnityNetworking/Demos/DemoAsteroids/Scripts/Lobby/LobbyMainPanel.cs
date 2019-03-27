@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Photon.Pun.UtilityScripts;
+
 namespace Photon.Pun.Demo.Asteroids
 {
     // TODO : 0327 모 : 데모 씬들 차차 지울거라 데모 씬에 종속된 클래스들 따로 옮겨 놓고 수정해서 사용할 예정
@@ -60,6 +62,34 @@ namespace Photon.Pun.Demo.Asteroids
 
         #endregion
 
+        #region func
+        private void UpdatePlayerListEntries()
+        {
+            /*
+            foreach(GameObject gameObj in playerListEntries.Values)
+            {
+                gameObj.transform.SetParent(InsideRoomPanel.transform);
+            }
+            */
+
+            for (int i = 1; i < (int)PunTeams.Team.NUM_STATS; i++)
+            {
+                for (int j = 0; j < PunTeams.PlayersPerTeam[(PunTeams.Team)i].Count; j++)
+                {
+                    int actorNumber = PunTeams.PlayersPerTeam[(PunTeams.Team)i][j].ActorNumber;
+                    if (PunTeams.Team.RED == (PunTeams.Team)i)
+                    {
+                        playerListEntries[actorNumber].transform.SetParent(redTeamGroup.transform);
+                    }
+                    else if (PunTeams.Team.BLUE == (PunTeams.Team)i)
+                    {
+                        playerListEntries[actorNumber].transform.SetParent(blueTeamGroup.transform);
+                    }
+                }
+            }      
+        }
+        #endregion
+
         #region PUN CALLBACKS
 
         public override void OnConnectedToMaster()
@@ -96,13 +126,18 @@ namespace Photon.Pun.Demo.Asteroids
         {
             string roomName = "Room " + Random.Range(1000, 10000);
 
-            RoomOptions options = new RoomOptions {MaxPlayers = 8};
+            RoomOptions options = new RoomOptions {MaxPlayers = 4};
 
             PhotonNetwork.CreateRoom(roomName, options, null);
         }
 
         public override void OnJoinedRoom()
         {
+            //PhotonNetwork.LocalPlayer.SetTeam((PhotonNetwork.CurrentRoom.PlayerCount % 2) == 1 ? PunTeams.Team.RED : PunTeams.Team.BLUE);
+
+            Debug.Log("OnJoinedRoom()");
+            Debug.Log("player number : " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + ", actor number : " + PhotonNetwork.LocalPlayer.ActorNumber
+                + ", team : " + PhotonNetwork.LocalPlayer.GetTeam());
             SetActivePanel(InsideRoomPanel.name);
 
             if (playerListEntries == null)
@@ -117,14 +152,16 @@ namespace Photon.Pun.Demo.Asteroids
                 entry.transform.localScale = Vector3.one;
                 entry.GetComponent<PlayerListEntry>().Initialize(p.ActorNumber, p.NickName);
 
+                // 방 안의 다른 player ready 상태 보고 동기화
                 object isPlayerReady;
                 if (p.CustomProperties.TryGetValue(AsteroidsGame.PLAYER_READY, out isPlayerReady))
                 {
                     entry.GetComponent<PlayerListEntry>().SetPlayerReady((bool) isPlayerReady);
                 }
-
                 playerListEntries.Add(p.ActorNumber, entry);
             }
+
+            //UpdatePlayerListEntries();
 
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
 
@@ -150,26 +187,34 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
+            Debug.Log("OnPlayerEnteredRoom()");
+            Debug.Log("player number : " + newPlayer.GetPlayerNumber() + ", actor number : " + newPlayer.ActorNumber
+                + ", team : " + newPlayer.GetTeam());
             GameObject entry = Instantiate(PlayerListEntryPrefab);
             entry.transform.SetParent(InsideRoomPanel.transform);
             entry.transform.localScale = Vector3.one;
             entry.GetComponent<PlayerListEntry>().Initialize(newPlayer.ActorNumber, newPlayer.NickName);
 
             playerListEntries.Add(newPlayer.ActorNumber, entry);
-
+            //UpdatePlayerListEntries();
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
+            Debug.Log("OnPlayerLeftRoom()");
+            Debug.Log("player number : " + otherPlayer.GetPlayerNumber() + ", actor number : " + otherPlayer.ActorNumber
+                + ", team : " + otherPlayer.GetTeam());
             Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
             playerListEntries.Remove(otherPlayer.ActorNumber);
-
+            //UpdatePlayerListEntries();
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 
         public override void OnMasterClientSwitched(Player newMasterClient)
         {
+            Debug.Log("OnMasterClientSwitched(), masterClient : " + newMasterClient.ActorNumber);
+            // 마스터 클라 바뀌고 본인이 마스터 클라면 시작 버튼 생성
             if (PhotonNetwork.LocalPlayer.ActorNumber == newMasterClient.ActorNumber)
             {
                 StartGameButton.gameObject.SetActive(CheckPlayersReady());
@@ -193,6 +238,7 @@ namespace Photon.Pun.Demo.Asteroids
                 }
             }
 
+            Debug.Log("OnPlayerPropertiesUpdate : " + CheckPlayersReady());
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 

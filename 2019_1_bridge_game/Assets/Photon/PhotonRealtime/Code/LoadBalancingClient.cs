@@ -547,7 +547,8 @@ namespace Photon.Realtime
         /// </remarks>
         public bool EnableLobbyStatistics;
 
-        /// <summary>Internal lobby stats cache, used by LobbyStatistics.</summary>
+        // Internal lobby stats cache, used by LobbyStatistics.
+        /// <summary>LobbyStatistics에서 사용하는 내부 로비 통계 캐시입니다.</summary>
         private readonly List<TypedLobbyInfo> lobbyStatistics = new List<TypedLobbyInfo>();
 
 
@@ -1701,6 +1702,7 @@ namespace Photon.Realtime
         #region Helpers
 
         /// <summary>
+        /// 이벤트 및 작업 응답에서 서버로부터 오는 속성을 읽는 데 개인적으로 사용됩니다 (조금 까다 롭습니다).
         /// Privately used to read-out properties coming from the server in events and operation responses (which might be a bit tricky).
         /// </summary>
         private void ReadoutProperties(Hashtable gameProperties, Hashtable actorProperties, int targetActorNr)
@@ -1721,6 +1723,9 @@ namespace Photon.Realtime
                 {
                     // we have a single entry in the actorProperties with one user's name
                     // targets MUST exist before you set properties
+
+                    // 사용자 이름이 하나 인 actorProperties에 하나의 항목이 있습니다.
+                    // 속성을 설정하기 전에 대상이 반드시 존재해야합니다.
                     Player target = this.CurrentRoom.GetPlayer(targetActorNr);
                     if (target != null)
                     {
@@ -1733,6 +1738,8 @@ namespace Photon.Realtime
                 {
                     // in this case, we've got a key-value pair per actor (each
                     // value is a hashtable with the actor's properties then)
+                    // 이 경우 액터별로 키 - 값 쌍이 있습니다 (각 키 - 값 쌍
+                    // 값은 액터의 속성을 가진 해시 테이블입니다.)
                     int actorNr;
                     Hashtable props;
                     string newName;
@@ -1862,6 +1869,7 @@ namespace Photon.Realtime
         }
 
         /// <summary>
+        /// 플레이어 인스턴스를 만드는 팩토리 메서드 - 사용자 지정 기능을 사용하여 플레이어 유형을 얻으려면 재정의하십시오.
         /// Factory method to create a player instance - override to get your own player-type with custom features.
         /// </summary>
         /// <param name="actorName">The name of the player to be created. </param>
@@ -1936,6 +1944,7 @@ namespace Photon.Realtime
         }
 
         /// <summary>
+        /// 서버가 제공하는 OperationResponses를 사용하여 내부 상태를 향상시키고 필요에 따라 ops를 호출합니다.
         /// Uses the OperationResponses provided by the server to advance the internal state and call ops as needed.
         /// </summary>
         /// <remarks>
@@ -2136,6 +2145,7 @@ namespace Photon.Realtime
                     this.ConnectionCallbackTargets.OnRegionListReceived(this.RegionHandler);
                     break;
 
+                    //이는 마스터 서버에서만 발생합니다. gameserver에서 "정규"조인입니다.
                 case OperationCode.JoinRandomGame:  // this happens only on the master server. on gameserver this is a "regular" join
                 case OperationCode.CreateGame:
                 case OperationCode.JoinGame:
@@ -2488,10 +2498,17 @@ namespace Photon.Realtime
             }
         }
 
+        /*
         /// <summary>
         /// Uses the photonEvent's provided by the server to advance the internal state and call ops as needed.
         /// </summary>
         /// <remarks>This method is essential to update the internal state of a LoadBalancingClient. Overriding methods must call base.OnEvent.</remarks>
+        */
+
+        /// <summary>
+        /// 서버에서 제공 한 photonEvent를 사용하여 내부 상태를 향상시키고 필요에 따라 ops를 호출합니다.
+        /// </summary>
+        /// <remarks>이 메서드는 LoadBalancingClient의 내부 상태를 업데이트하는 데 필수적입니다. 메소드를 오버라이드하면 base.OnEvent를 호출해야합니다. </remarks>
         public virtual void OnEvent(EventData photonEvent)
         {
             int actorNr = photonEvent.Sender;

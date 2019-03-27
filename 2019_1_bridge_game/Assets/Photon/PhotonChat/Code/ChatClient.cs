@@ -920,6 +920,7 @@ namespace Photon.Chat
                     this.HandleAuthResponse(operationResponse);
                     break;
 
+                // 다음 조작은 대개 유용한 데이터를 리턴하지 않으며 오류도 리턴하지 않습니다.
                 // the following operations usually don't return useful data and no error.
                 case (byte)ChatOperationCode.Subscribe:
                 case (byte)ChatOperationCode.Unsubscribe:
