@@ -9,51 +9,47 @@ public class BackendMember : MonoBehaviour
     [SerializeField] private UILogIn loginUI;
     [SerializeField] private Title title;
 
-    private bool isSuccess = false;
-    private BackendReturnObject bro = new BackendReturnObject();
+    private string serverErrorCode = null;
 
     private void Start()
     {
-        if (!Backend.IsInitialized)
+        Backend.Initialize(BRO =>
         {
-            Backend.Initialize(BackendCallback);
-        }
-        else
-        {
-            BackendCallback();
-        }
+            Debug.Log("Backend.Initialize " + BRO);
+            // 성공
+            if (BRO.IsSuccess())
+            {
+                if (!Backend.Utils.GetGoogleHash().Equals("")) Debug.Log(Backend.Utils.GetGoogleHash());
+
+                serverErrorCode = Backend.Utils.GetServerTime().GetErrorCode();
+                
+                LoginWithTheBackendToken();
+            }
+            // 실패
+            else
+            {
+                Debug.LogError("Failed to initialize the backend");
+            }
+        });
     }
 
-    // 초기화 함수 이후에 실행되는 callback 
-    private void BackendCallback()
+    public void ServerCheckToBackend()
     {
-        // 초기화 성공한 경우 실행
-        if (Backend.IsInitialized)
+        // 이상 없음.
+        if (serverErrorCode == null) return;
+        //message: timeout error
+        if (serverErrorCode.Equals("408"))
         {
-            // example 
-            // 버전체크 -> 업데이트 
-
-            Debug.Log(Backend.Utils.GetServerTime());
-            
-            LoginWithTheBackendToken();
-        }
-        // 초기화 실패한 경우 실행 
-        else
-        {
-            Debug.LogError("Backend Callback Err ");
+            Backend.Utils.GetServerTime(); // or 처음 씬 재 실행
         }
     }
-
-    //private void SuccessSaveToken()
-    //{
-    //    Debug.Log("------------------Update !");
-    //    Backend.BMember.SaveToken(bro);
-    //    bro.Clear();
-    //}
 
     // TODO : Error 팝업 (닉네임, 아이디, 패스워드)
     public void CustomSignUp()
     {
+        DeleteDeviceToken();
+        Backend.BMember.Logout();
+
         Debug.Log("-------------ACustomSignUp-------------");
         var user = signUI.GetSignUpDataNIP();
         string nick = user.Item1.Trim();
@@ -65,8 +61,11 @@ public class BackendMember : MonoBehaviour
         if (!CheckPassword(pw))   return; // 팝업 호출
 
         BackendReturnObject isComplete =  Backend.BMember.CustomSignUp(id, pw, "tester");
+        Debug.Log(isComplete.ToString());
 
-        if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        ServerCheckToBackend();
+        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        if (!isComplete.IsSuccess()) return;
 
         BackendManager.Instance.SetSignupData(id, pw, nick);
         BackendManager.Instance.GameInfoInsert();
@@ -76,6 +75,9 @@ public class BackendMember : MonoBehaviour
     // TODO : Error 팝업 (아이디, 패스워드)
     public void CustomLogin()
     {
+        DeleteDeviceToken();
+        Backend.BMember.Logout();
+
         Debug.Log("-------------ACustomLogin-------------");
         var user = loginUI.GetLogInDataIP();
         string id = user.Item1.Trim();
@@ -87,22 +89,19 @@ public class BackendMember : MonoBehaviour
         Debug.Log("ID : " + id + " /PW : " + pw);
 
         BackendReturnObject isComplete = Backend.BMember.CustomLogin(id, pw);
+        Debug.Log(isComplete.ToString());
 
-       if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        ServerCheckToBackend();
+        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        if (!isComplete.IsSuccess()) return;
 
         BackendManager.Instance.SetLoginData(id, pw);
         BackendManager.Instance.GetTableList();
         title.LoadMainLobby();
     }
 
-    public void CustomCreateNickname()
-    {
-        BackendManager.Instance.CreateNickname();
-    }
-
     public void LoginWithTheBackendToken()
     {
-        Debug.Log("-------------LoginWithTheBackendToken-------------");
         BackendReturnObject isComplete = Backend.BMember.LoginWithTheBackendToken();
         Debug.Log(isComplete.ToString());
 
@@ -112,6 +111,7 @@ public class BackendMember : MonoBehaviour
 
             //BackendManager.Instance.SetLoginData(id, pw);
             BackendManager.Instance.GetTableList();
+            Backend.BMember.GetUserInfo();
             title.LoadMainLobby();
         }
     }
@@ -149,20 +149,12 @@ public class BackendMember : MonoBehaviour
         return true;
     }
 
-//    public void PutDeviceToken()
-//    {
-//        Debug.Log("-------------PutDeviceToken-------------");
-//#if UNITY_ANDROID
-//        try
-//        {
-//            Debug.Log(Backend.Android.PutDeviceToken());
-//        }
-//        catch (Exception e)
-//        {
-//            Debug.Log(e);
-//        }
-//#elif  UNITY_IOS
-//        Debug.Log(Backend.iOS.PutDeviceToken(isDevelopment.iosProd));
-//#endif
-//    }
+    public void DeleteDeviceToken()
+    {
+#if UNITY_ANDROID && !UNITY_EDITOR
+        Debug.Log(Backend.Android.DeleteDeviceToken());
+#elif UNITY_IOS
+        Debug.Log(Backend.iOS.DeleteDeviceToken());
+#endif
+    }
 }

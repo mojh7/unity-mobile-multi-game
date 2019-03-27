@@ -15,5 +15,5 @@ MonoBehaviour:
   clientAppID: 841a53b0-4a14-11e9-9b5a-d53eb14de92d449
   signatureKey: 841a7ac0-4a14-11e9-9b5a-d53eb14de92d449
   packageName: com.bridgeTeam.temp
-  isDevelop: 0
+  isDevelop: 1
   Version: 3.5.7
