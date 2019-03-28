@@ -53,11 +53,17 @@ namespace Photon.Pun.Demo.Asteroids
         public void Awake()
         {
             PhotonNetwork.AutomaticallySyncScene = true;
+            
 
             cachedRoomList = new Dictionary<string, RoomInfo>();
             roomListEntries = new Dictionary<string, GameObject>();
             
             PlayerNameInput.text = "Player " + Random.Range(1000, 10000);
+        }
+
+        private void Start()
+        {
+            AudioManager.Instance.StopMusic();
         }
 
         #endregion
@@ -177,9 +183,7 @@ namespace Photon.Pun.Demo.Asteroids
             SetActivePanel(SelectionPanel.name);
 
             if(null == playerListEntries)
-            {
                 return;
-            }
 
             foreach (GameObject entry in playerListEntries.Values)
             {
@@ -192,6 +196,9 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
+            if (null == playerListEntries)
+                return;
+
             Debug.Log("OnPlayerEnteredRoom()");
             Debug.Log("player number : " + newPlayer.GetPlayerNumber() + ", actor number : " + newPlayer.ActorNumber
                 + ", team : " + newPlayer.GetTeam());
@@ -207,6 +214,9 @@ namespace Photon.Pun.Demo.Asteroids
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
+            if (null == playerListEntries)
+                return;
+
             Debug.Log("OnPlayerLeftRoom()");
             Debug.Log("player number : " + otherPlayer.GetPlayerNumber() + ", actor number : " + otherPlayer.ActorNumber
                 + ", team : " + otherPlayer.GetTeam());

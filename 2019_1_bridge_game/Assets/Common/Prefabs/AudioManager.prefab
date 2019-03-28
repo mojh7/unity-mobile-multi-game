@@ -48,6 +48,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e399cceb9c3acb04492d5bd0acf63f82, type: 3}
   - {fileID: 8300000, guid: f7c3d045b0b2e944ebe065cd5a177d65, type: 3}
   - {fileID: 8300000, guid: f858742009e87a7489bdbc7d450a5a7e, type: 3}
+  - {fileID: 8300000, guid: 599982c4d7354574cb9d54d935cfadbb, type: 3}
 --- !u!82 &3560977556493749774
 AudioSource:
   m_ObjectHideFlags: 0
@@ -237,6 +238,8 @@ MonoBehaviour:
   commonSfxList:
   - {fileID: 8300000, guid: b5bda7894e00e4e4da9949ce37a3c340, type: 3}
   - {fileID: 8300000, guid: d14765b029770754e9e13ce2b88ea8be, type: 3}
+  - {fileID: 8300000, guid: ed53f94c9cbd9fe44b0cd411772ed4f5, type: 3}
+  - {fileID: 8300000, guid: e0d52263cd1ab4a40b49b9c8bdaa1fb8, type: 3}
   uiSfxList:
   - {fileID: 8300000, guid: bc8ba3d31bf20a14d8f08c7fc6009fce, type: 3}
   pianoSfxList:

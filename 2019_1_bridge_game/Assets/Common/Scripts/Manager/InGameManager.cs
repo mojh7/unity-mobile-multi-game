@@ -47,8 +47,9 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public static InGameManager Instance = null;
 
     public Text InfoText;
-    public Transform redTeamSpawnPoint;
-    public Transform blueTeamSpawnPoint;
+    [SerializeField] private Transform redTeamSpawnPoint;
+    [SerializeField] private Transform blueTeamSpawnPoint;
+
     public GameObject[] sheetMusicPrefabs;
 
     public Text text;
@@ -58,6 +59,9 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     #endregion
 
     #region get / set
+
+    public Transform GetRedTeamBaseZone() { return redTeamSpawnPoint; }
+    public Transform GetBlueTeamBaseZone() { return blueTeamSpawnPoint; }
     public Transform GetBaseTown() { return baseTowns; }
     public static bool IsRedTeam(int playerNumber)
     {
@@ -139,6 +143,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         Debug.Log("게임 끝");
         InGameUIManager.Instance.SetControllable(false);
+        AudioManager.Instance.PlaySound("GameEnd", SFXType.COMMON);
 
         PunTeams.Team teamName = PunTeams.Team.RED;
         int redTeamScore = 0, blueTeamScore = 0;
@@ -359,17 +364,19 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
     private IEnumerator EndOfGame(string winner, int score)
     {
-        float timer = 3.0f;
+        float timer = 5.0f;
 
         while (timer > 0.0f)
         {
-            InfoText.text = string.Format("{0}\n\nReturning to lobby in {1} seconds.", temp, timer.ToString("n2"));
+            InfoText.text = string.Format("{0}\n\n로비 복귀 {1} 초 전", temp, timer.ToString("n2"));
 
             yield return new WaitForEndOfFrame();
 
             timer -= Time.deltaTime;
         }
 
+        PhotonNetwork.LocalPlayer.SetScore(0);
+        PhotonNetwork.LocalPlayer.SetNumSheetMusic(0);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("TempLobbyScene");
     }

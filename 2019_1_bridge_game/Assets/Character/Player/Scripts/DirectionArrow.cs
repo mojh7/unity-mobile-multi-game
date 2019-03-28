@@ -9,16 +9,28 @@ public class DirectionArrow : MonoBehaviour
 
     private Transform baseTown;
     private float speed = 3.0f;
+    private bool canFollow = false;
     private bool isInBase = true;
+
+    public void RemoveDirectionArrow()
+    {
+        canFollow = false;
+        arrow.gameObject.SetActive(false);
+    }
 
     public void SetBaseTown(Transform baseTf)
     {
+        Debug.Log(baseTf);
+        canFollow = true;
         this.baseTown = baseTf;
     }
 
+    // TODO : tag 체크 비싼 걸로 알아서 layer 체크로 대체
     public void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.name.Equals("임시 - Base Town"))
+        if (!canFollow)
+            return;
+        if (coll.transform.CompareTag("BaseZone"))
         {
             isInBase = true;
             sprite.SetActive(false);
@@ -28,7 +40,9 @@ public class DirectionArrow : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D coll)
     {
-        if (coll.name.Equals("임시 - Base Town"))
+        if (!canFollow)
+            return;
+        if (coll.transform.CompareTag("BaseZone"))
         {
             isInBase = false;
             sprite.SetActive(true);

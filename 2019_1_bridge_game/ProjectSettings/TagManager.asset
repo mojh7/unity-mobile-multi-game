@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Interactor
   - Bullet
+  - BaseZone
   layers:
   - Default
   - TransparentFX
@@ -24,7 +25,7 @@ TagManager:
   - SheetMusic
   - RedTeamBaseZone
   - BlueTeamBaseZone
-  - 
+  - Player
   - 
   - 
   - 

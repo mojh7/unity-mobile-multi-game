@@ -22,13 +22,13 @@ public class SheetMusic : PickupItem
     {
         if (PickupIsMine)
         {
-            Debug.Log("I picked up something. That's a score!, " + pianoIndex.Length);
+            //Debug.Log("I picked up something. That's a score!, " + pianoIndex.Length);
             AudioManager.Instance.PlaySound(pianoIndex[(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % pianoIndex.Length)], SFXType.PIANO);
             PhotonNetwork.LocalPlayer.AddNumSheetMusic(1);
         }
         else
         {
-            Debug.Log("Someone else picked up something. Lucky!");
+            //Debug.Log("Someone else picked up something. Lucky!");
         }
     }
 }

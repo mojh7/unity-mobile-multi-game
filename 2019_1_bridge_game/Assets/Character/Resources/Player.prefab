@@ -178,7 +178,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -213,7 +213,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8187804715069046748
 Transform:
   m_ObjectHideFlags: 0
@@ -347,6 +347,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   ObservedComponents:
   - {fileID: 1217160423651349537}
+  - {fileID: 4916806489907511217}
   viewIdField: 0
   InstantiationId: 1
   isRuntimeInstantiated: 0
@@ -608,7 +609,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2501618507458234028}
   - component: {fileID: 1996409239071181392}
-  m_Layer: 12
+  m_Layer: 17
   m_Name: hitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

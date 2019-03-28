@@ -95,15 +95,18 @@ namespace UBZ.MultiGame.Owner
             abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
             directionVector = new Vector3(1, 0, 0);
 
+            Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
+                baseZoneTransform = InGameManager.Instance.GetRedTeamBaseZone();
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             }
             else if (PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
+                baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
             }
@@ -112,9 +115,13 @@ namespace UBZ.MultiGame.Owner
             {
                 CameraController.Instance.AttachObject(this.transform); // get Camera
                 //baseColor = Color.white;
-                Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
+                Components.DirectionArrow.SetBaseTown(baseZoneTransform);
                 InitController();
                 //TimeController.Instance.PlayStart();
+            }
+            else
+            {
+                Components.DirectionArrow.RemoveDirectionArrow();
             }
 
             //Debug.Log(PhotonNetwork.LocalPlayer.GetPlayerNumber());
@@ -134,6 +141,11 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region func
+        public bool IsMine()
+        {
+            return photonView.IsMine;
+        }
+
 
         [PunRPC]
         public void Dash()

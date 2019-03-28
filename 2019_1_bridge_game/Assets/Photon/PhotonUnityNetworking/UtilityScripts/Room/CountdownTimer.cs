@@ -135,7 +135,7 @@ namespace Photon.Pun.UtilityScripts
                 countdown = gameTime - timer;
                 //Debug.Log((float)PhotonNetwork.Time + ", " + gameTime +", "+ startTime + ", " + timer + ", " + countdown);
 
-                text2.text = string.Format("게임 남은 시간 : {0} 초", countdown.ToString("n2"));
+                text2.text = string.Format("Time : {0}", countdown.ToString("n2"));
                 if (countdown > 0.0f)
                 {
                     continue;
