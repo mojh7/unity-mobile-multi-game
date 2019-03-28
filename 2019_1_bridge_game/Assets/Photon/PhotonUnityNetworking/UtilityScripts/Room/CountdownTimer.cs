@@ -13,11 +13,14 @@
 // <author>developer@exitgames.com</author>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 using ExitGames.Client.Photon;
 using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace Photon.Pun.UtilityScripts
 {
@@ -53,15 +56,22 @@ namespace Photon.Pun.UtilityScripts
         /// </summary>
         public static event CountdownTimerHasExpired OnCountdownTimerHasExpired;
 
+        public static event CountdownTimerHasExpired OnGameEndTimerHasExpired;
+        public static event CountdownTimerHasExpired OnBeforeBackToLobbyTimerHasExpired;
+
+
         private bool isTimerRunning;
         private float startTime;
 
         // 카운트 다운을 시각화하기위한 텍스트 구성 요소에 대한 참조
         [Header("Reference to a Text component for visualizing the countdown")]
         public Text Text;
+        public Text text2;
 
         [Header("Countdown time in seconds")]
         public float Countdown = 5.0f;
+
+        [SerializeField] private float gameTime = 30f;
 
         public void Start()
         {
@@ -93,7 +103,7 @@ namespace Photon.Pun.UtilityScripts
             isTimerRunning = false;
 
             Text.text = string.Empty;
-
+            StartCoroutine(GameEndTimer());
             if (OnCountdownTimerHasExpired != null)
             {
                 OnCountdownTimerHasExpired();
@@ -103,11 +113,41 @@ namespace Photon.Pun.UtilityScripts
         public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
         {
             object startTimeFromProps;
+            object gameTimeFromProps;
 
             if (propertiesThatChanged.TryGetValue(CountdownStartTime, out startTimeFromProps))
             {
                 isTimerRunning = true;
                 startTime = (float)startTimeFromProps;
+            }
+        }
+
+        private IEnumerator GameEndTimer()
+        {
+            Debug.Log("GameTimer 시작, " + Time.time);
+            float timer, countdown;
+            //Debug.Log((float)PhotonNetwork.Time + ", " + startTime + ", " + timer + ", " + countdown);
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+
+                timer = (float)PhotonNetwork.Time - startTime - Countdown;
+                countdown = gameTime - timer;
+                //Debug.Log((float)PhotonNetwork.Time + ", " + gameTime +", "+ startTime + ", " + timer + ", " + countdown);
+
+                text2.text = string.Format("게임 남은 시간 : {0} 초", countdown.ToString("n2"));
+                if (countdown > 0.0f)
+                {
+                    continue;
+                }
+                Debug.Log("GameTimer 끝 : " + Time.time);
+                text2.text = string.Empty;
+
+                if (OnGameEndTimerHasExpired != null)
+                {
+                    OnGameEndTimerHasExpired();
+                }
+                break;
             }
         }
     }

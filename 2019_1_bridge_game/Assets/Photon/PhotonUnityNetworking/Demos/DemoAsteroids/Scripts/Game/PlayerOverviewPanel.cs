@@ -50,14 +50,14 @@ namespace Photon.Pun.Demo.Asteroids
             PunTeams.Team teamName = PunTeams.Team.RED;
             int redTeamScore = 0, blueTeamScore = 0;
             GUIStyle guiStyle = new GUIStyle();
-            guiStyle.fontSize = 20;
+            guiStyle.fontSize = 24;
             guiStyle.normal.textColor = Color.red;
             GUILayout.Label("Team: " + teamName.ToString(), guiStyle);
             List<Player> redTeamPlayers = PunTeams.PlayersPerTeam[teamName];
             foreach (Player player in redTeamPlayers)
             {
                 //GUILayout.Label("  " + player.ToStringFull() + " Score: " + player.GetScore(), guiStyle);
-                GUILayout.Label(player.NickName + " : 점수 : " + player.GetScore() + ", 악보 보유 수 : " + player.GetNumSheetMusic(), guiStyle);
+                GUILayout.Label(player.NickName + " : 점수 : " + player.GetScore() + ", 악보 수 : " + player.GetNumSheetMusic(), guiStyle);
                 redTeamScore += player.GetScore();
             }
             guiStyle.normal.textColor = Color.blue;
