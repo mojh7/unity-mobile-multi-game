@@ -64,7 +64,7 @@ namespace Photon.Pun.UtilityScripts
 
         /// <summary>
         /// dont destroy on load flag for this Component's GameObject to survive Level Loading.
-        /// 레벨 로딩에서 생존하기 위해이 컴포넌트의 GameObject에 대한로드 플래그를 파괴하지 마십시오.
+        /// 레벨 로딩에서 생존하기 위해이 컴포넌트의 GameObject에 대한 로드 플래그를 파괴하지 마십시오.
         /// </summary>
         public bool dontDestroyOnLoad = false;
 
@@ -128,12 +128,13 @@ namespace Photon.Pun.UtilityScripts
 
 
         // each player can select it's own playernumber in a room, if all "older" players already selected theirs
+        // 모든 "오래된"플레이어가 이미 자신의 것을 선택한 경우 각 플레이어가 방 안의 자신의 플레이어 번호를 선택할 수 있습니다.
 
-
+        // Internal call Refresh the cached data and call the OnPlayerNumberingChanged delegate.
         /// <summary>
-        /// Internal call Refresh the cached data and call the OnPlayerNumberingChanged delegate.
+        /// 내부 호출 캐시 된 데이터를 새로 고치고 OnPlayerNumberingChanged 대리자를 호출합니다.
         /// </summary>
-       public void RefreshData()
+        public void RefreshData()
         {
             if (PhotonNetwork.CurrentRoom == null)
             {

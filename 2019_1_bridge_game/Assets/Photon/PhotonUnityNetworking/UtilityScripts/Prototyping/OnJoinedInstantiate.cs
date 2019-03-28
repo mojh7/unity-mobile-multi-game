@@ -18,9 +18,10 @@ using Photon.Realtime;
 namespace Photon.Pun.UtilityScripts
 {
     /// <summary>
+    /// 이 구성 요소는 방이 연결되면 네트워크 GameObject를 인스턴스화합니다.
     /// This component will instantiate a network GameObject when a room is joined
     /// </summary>
-	public class OnJoinedInstantiate : MonoBehaviour , IConnectionCallbacks , IMatchmakingCallbacks , ILobbyCallbacks
+    public class OnJoinedInstantiate : MonoBehaviour , IConnectionCallbacks , IMatchmakingCallbacks , ILobbyCallbacks
     {
         public Transform SpawnPosition;
         public float PositionOffset = 2.0f;

@@ -100,7 +100,8 @@ namespace Photon.Pun
         /// <summary>This Monobehaviour allows Photon to run an Update loop.</summary>
         private static readonly PhotonHandler photonMono;
 
-        /// <summary>The LoadBalancingClient is part of Photon Realtime and wraps up multiple servers and states for PUN.</summary>
+        // <summary>The LoadBalancingClient is part of Photon Realtime and wraps up multiple servers and states for PUN.</summary>
+        /// <summary>LoadBalancingClient는 Photon Realtime의 일부이며 PUN에 대한 여러 서버 및 상태를 래핑합니다.</summary>
         public static LoadBalancingClient NetworkingClient;
 
         /// <summary>
@@ -261,11 +262,20 @@ namespace Photon.Pun
             get { return NetworkingClient.CurrentLobby; }
         }
 
+        /*
         /// <summary>
         /// Get the room we're currently in (also when in OfflineMode). Null if we aren't in any room.
         /// </summary>
         /// <remarks>
         /// LoadBalancing Client is not aware of the Photon Offline Mode, so never use PhotonNetwork.NetworkingClient.CurrentRoom will be null if you are using OffLine Mode, while PhotonNetwork.CurrentRoom will be set when offlineMode is true
+        /// </remarks>
+        */
+        
+        /// <summary>
+        /// 우리가 현재있는 방을 가져옵니다 (OfflineMode에서도). 우리가 어떤 방에도 없다면 널.
+        /// </summary>
+        /// <remakrs>
+        /// LoadBalancing Client는 Photon 오프라인 모드를 인식하지 못하므로 OffLine Mode를 사용하는 경우 PhotonNetwork.NetworkingClient.CurrentRoom을 사용하지 마십시오. offlineMode가 true 인 경우 PhotonNetwork.CurrentRoom이 설정됩니다.
         /// </remarks>
         public static Room CurrentRoom
         {
@@ -285,12 +295,22 @@ namespace Photon.Pun
         /// </summary>
         public static PunLogLevel LogLevel = PunLogLevel.ErrorsOnly;
 
+        /*
         /// <summary>
         /// This client's Player instance is always available, unless the app shuts down.
         /// </summary>
         /// <remarks>
         /// Useful (e.g.) to set the Custom Player Properties or the NickName for this client anytime.
         /// When the client joins a room, the Custom Properties and other values are synced.
+        /// </remarks>
+        */
+
+        /// <summary>
+        /// 이 클라이언트의 Player 인스턴스는 앱을 종료하지 않는 한 항상 사용할 수 있습니다.
+        /// </summary>
+        /// <remarks>
+        /// 언제든지 이 클라이언트에 대한 사용자 지정 플레이어 속성 또는 NickName을 설정하는 데 유용합니다 (예 :).
+        /// 클라이언트가 회의실에 참여하면 사용자 지정 속성 및 기타 값이 동기화됩니다.
         /// </remarks>
         public static Player LocalPlayer
         {
@@ -434,7 +454,7 @@ namespace Photon.Pun
         private static bool offlineMode = false;
         private static Room offlineModeRoom = null;
 
-
+        /*
         /// <summary>Defines if all clients in a room should load the same level as the Master Client (if that used PhotonNetwork.LoadLevel).</summary>
         /// <remarks>
         /// To synchronize the loaded level, the Master Client should use PhotonNetwork.LoadLevel.
@@ -444,6 +464,21 @@ namespace Photon.Pun
         /// and is not in the same scene yet, it will immediately pause the Message Queue
         /// (PhotonNetwork.IsMessageQueueRunning = false) and load. When the scene finished loading,
         /// PUN will automatically re-enable the Message Queue.
+        /// </remarks>
+        */
+
+        /// <summary>
+        /// 방의 모든 클라이언트가 마스터 클라이언트와 동일한 레벨을 로드해야하는지 정의합니다 (PhotonNetwork.LoadLevel을 사용하는 경우).
+        /// <para>하나의 클라이언트가 룸내의 모든 클라이언트들에게 로드해야할 레벨을 정의</para>
+        /// </summary>
+        /// <remarks>
+        /// 로드 된 레벨을 동기화하려면 마스터 클라이언트가 PhotonNetwork.LoadLevel을 사용해야합니다.
+        /// 모든 클라이언트는 방에 들어가면 (콜백 OnJoinedRoom 이전) 또는 변경시 즉시 새 장면을로드합니다.
+        ///
+        /// 내부적으로로드 된 장면에 대해 Custom Room Property가 설정됩니다. 클라이언트가 그것을 읽을 때
+        /// 같은 장면에 있지 않은 경우 즉시 메시지 큐를 일시 중지합니다.
+        /// (PhotonNetwork.IsMessageQueueRunning = false) 및로드. 장면로드가 완료되면,
+        /// PUN은 메시지 큐를 자동으로 다시 활성화합니다.
         /// </remarks>
         public static bool AutomaticallySyncScene
         {
@@ -1031,7 +1066,7 @@ namespace Photon.Pun
             photonGO.hideFlags = HideFlags.HideInHierarchy;
         }
 
-
+        /*
         /// <summary>Connect to Photon as configured in the PhotonServerSettings file.</summary>
         /// <remarks>
         /// Implement IConnectionCallbacks, to make your game logic aware of state changes.
@@ -1059,6 +1094,35 @@ namespace Photon.Pun
         ///
         /// In general check out the <see cref="DisconnectCause"/> from the <see cref="IConnectionCallbacks.OnDisconnected"/> callback.
         ///  </remarks>
+        */
+
+        /// <summary> PhotonServerSettings 파일에 구성된대로 Photon에 연결하십시오. </summary>
+        /// <remarks>
+        /// IConnectionCallbacks를 구현하여 게임 논리가 상태 변경을 인식하도록합니다.
+        /// 특히, IConnectionCallbacks.ConnectedToMasterserver는
+        /// 클라이언트가 중매를 할 수 있습니다.
+        ///
+        /// 이 메서드는 OfflineMode를 비활성화합니다 (인스턴스화 된 GO는 삭제되지 않습니다).
+        /// 는 IsMessageQueueRunning을 true로 설정합니다.
+        ///
+        /// Photon 구성은 PUN 마법사에 의해 생성되며 AppId,
+        /// Photon Cloud 게임을위한 지역, 다른 것들 중에서도 서버 주소.
+        ///
+        /// 설정 파일을 무시하려면 관련 값을 설정하고 호출하여 연결하십시오
+        /// ConnectToMaster, ConnectToRegion.
+        ///
+        /// Photon Cloud에 연결하려면 유효한 AppId가 설정 파일에 있어야합니다 (Photon Cloud 대시 보드에 표시됨).
+        /// https://dashboard.photonengine.com
+        ///
+        /// Photon Cloud에 연결하는 것이 실패 할 수 있습니다 :
+        /// - 잘못된 AppId
+        /// - 네트워크 문제
+        /// - 유효하지 않은 영역
+        /// - 구독 CCU 한도 도달
+        /// - 등
+        ///
+        /// 일반적으로 <see cref = "DisconnectCause"/>를 <see cref = "IConnectionCallbacks.OnDisconnected"/> 콜백에서 확인하십시오.
+        /// </remarks>
         public static bool ConnectUsingSettings()
         {
             if (NetworkingClient.LoadBalancingPeer.PeerState != PeerStateValue.Disconnected)

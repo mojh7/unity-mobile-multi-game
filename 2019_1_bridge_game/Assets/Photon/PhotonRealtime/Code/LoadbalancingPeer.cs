@@ -1642,29 +1642,50 @@ namespace Photon.Realtime
         /// <summary>Max number of players that can be in the room at any time. 0 means "no limit".</summary>
         public byte MaxPlayers;
 
-        /// <summary>Time To Live (TTL) for an 'actor' in a room. If a client disconnects, this actor is inactive first and removed after this timeout. In milliseconds.</summary>
+        // <summary>Time To Live (TTL) for an 'actor' in a room. If a client disconnects, this actor is inactive first and removed after this timeout. In milliseconds.</summary>
+        /// <summary>방 안에있는 'actor'의 live 시간(time to live, TTL). 클라이언트의 연결이 끊어지면 이 액터가 먼저 비활성화 되고 이 타임 아웃 후에 제거됩니다.밀리 초 단위.</summary>
         public int PlayerTtl;
 
-        /// <summary>Time To Live (TTL) for a room when the last player leaves. Keeps room in memory for case a player re-joins soon. In milliseconds.</summary>
+        // <summary>Time To Live (TTL) for a room when the last player leaves. Keeps room in memory for case a player re-joins soon. In milliseconds.</summary>
+        /// <summary>마지막 플레이어가 떠날 때 방의 TTL (Time To Live). 플레이어가 곧 다시 참여하는 경우를 대비하여 메모리에 공간을 유지합니다. 밀리 초 단위.</summary>
         public int EmptyRoomTtl;
 
+        /*
         /// <summary>Removes a user's events and properties from the room when a user leaves.</summary>
         /// <remarks>
         /// This makes sense when in rooms where players can't place items in the room and just vanish entirely.
         /// When you disable this, the event history can become too long to load if the room stays in use indefinitely.
         /// Default: true. Cleans up the cache and props of leaving users.
         /// </remarks>
+        */
+
+        /// <summary> 사용자가 나갈 때 방에서 사용자의 이벤트와 속성을 제거합니다. </ summary>
+        /// <remarks>
+        /// 이것은 플레이어가 방 안에 아이템을 놓을 수없고 방금 전적으로 사라지는 방에서 의미가 있습니다.
+        /// 이 기능을 사용하지 않으면 방이 무한정 사용중인 경우 이벤트 기록이 너무 길어 져서 로드 할 수 없습니다.
+        /// 기본값 : true. 사용자를 떠나는 캐시와 소품을 정리합니다.
+        /// </remarks>
         public bool CleanupCacheOnLeave { get { return this.cleanupCacheOnLeave; } set { this.cleanupCacheOnLeave = value; } }
         private bool cleanupCacheOnLeave = true;
 
+        /*
         /// <summary>The room's custom properties to set. Use string keys!</summary>
         /// <remarks>
         /// Custom room properties are any key-values you need to define the game's setup.
         /// The shorter your keys are, the better.
         /// Example: Map, Mode (could be "m" when used with "Map"), TileSet (could be "t").
         /// </remarks>
+        */
+
+        /// <summary> 설정할 룸의 사용자 정의 특성. 문자열 키 사용! </summary>
+        /// <remarks>
+        /// 사용자 정의 룸 속성은 게임 설정을 정의하는 데 필요한 키 - 값입니다.
+        /// 귀하의 키가 짧을수록 좋습니다.
+        /// 예 : Map, Mode ( "Map"과 함께 사용하는 경우 "m"이 될 수 있음), TileSet ( "t"일 수 있음).
+        /// </remarks>
         public Hashtable CustomRoomProperties;
 
+        /*
         /// <summary>Defines the custom room properties that get listed in the lobby.</summary>
         /// <remarks>
         /// Name the custom room properties that should be available to clients that are in a lobby.
@@ -1672,6 +1693,17 @@ namespace Photon.Realtime
         /// not be sent to the lobby, which causes traffic and delays for clients in the lobby.
         ///
         /// Default: No custom properties are sent to the lobby.
+        /// </remarks>
+        */
+
+
+        /// <summary> 로비에 나열된 사용자 정의 방 속성을 정의합니다. </summary>
+        /// <remarks>
+        /// 로비에있는 클라이언트에서 사용할 수 있어야하는 사용자 정의 룸 속성의 이름을 지정합니다.
+        /// 주의해서 사용하십시오. 사용자 정의 속성이 중매 또는 사용자 정보에 필수적인 경우가 아니면
+        /// 로비에 전송되지 않아 로비의 클라이언트에 대한 트래픽 및 지연이 발생합니다.
+        ///
+        /// Default : 사용자 지정 속성이 로비에 전송되지 않습니다.
         /// </remarks>
         public string[] CustomRoomPropertiesForLobby = new string[0];
 
@@ -1733,7 +1765,8 @@ namespace Photon.Realtime
     }
 
 
-    /// <summary>Aggregates several less-often used options for operation RaiseEvent. See field descriptions for usage details.</summary>
+    // <summary>Aggregates several less-often used options for operation RaiseEvent. See field descriptions for usage details.</summary>
+    /// <summary>RaiseEvent 작업에 자주 사용되지 않는 몇 가지 옵션을 집계합니다.사용법에 대한 자세한 내용은 필드 설명을 참조하십시오.</summary>
     public class RaiseEventOptions
     {
         /// <summary>Default options: CachingOption: DoNotCache, InterestGroup: 0, targetActors: null, receivers: Others, sequenceChannel: 0.</summary>

@@ -65,7 +65,7 @@ namespace Photon.Realtime
         /// <remarks>The ID is assigned per room and only valid in that context. It will change even on leave and re-join. IDs are never re-used per room.</remarks>
         */
 
-        /// <summary> 현재 방에있는이 플레이어의 식별자. actorNumber 또는 actorNumber로도 알려져 있습니다. 객실 밖에서는 -1입니다. </summary>
+        /// <summary> 현재 방에있는 이 플레이어의 식별자. actorNumber 또는 actorNumber로도 알려져 있습니다. 객실 밖에서는 -1입니다. </summary>
         /// <remarks> ID는 방당 할당되며 해당 상황에서만 유효합니다. 휴가와 재결합시에도 변경됩니다. ID는 객실 당 결코 재사용되지 않습니다. </remarks>
         public int ActorNumber
         {
@@ -557,7 +557,7 @@ namespace Photon.Realtime
         /// 속성은 Turnbased 게임 (IsPersistent = true 사용)의 게임 상태와 함께 저장됩니다.
         /// </remarks>
         /// <param name="propertiesToSet"> 설정할 수있는 사용자 정의 속성의 Hashtable입니다. </param>
-        /// <param name="expectedValues">null가 아닌 경우는, 서버가이 갱신의 조건으로서 체크하는 프로퍼티 - 값입니다.</param>
+        /// <param name="expectedValues">null가 아닌 경우는, 서버가 이 갱신의 조건으로서 체크하는 프로퍼티 - 값입니다.</param>
         /// <param name="webFlags">이 SetCustomProperties 작업이 WebHooks로 전달되는지 여부를 정의합니다. 고객이 방에 있어야합니다.</param>
         public void SetCustomProperties(Hashtable propertiesToSet, Hashtable expectedValues = null, WebFlags webFlags = null)
         {

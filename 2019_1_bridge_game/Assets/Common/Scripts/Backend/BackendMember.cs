@@ -1,5 +1,6 @@
 ﻿using BackEnd;
 using LitJson;
+using System;
 using UnityEngine;
 
 public class BackendMember : MonoBehaviour
@@ -8,52 +9,47 @@ public class BackendMember : MonoBehaviour
     [SerializeField] private UILogIn loginUI;
     [SerializeField] private Title title;
 
+    private string serverErrorCode = null;
+
     private void Start()
     {
-        if (!Backend.IsInitialized)
+        Backend.Initialize(BRO =>
         {
-            Backend.Initialize(BackendCallback);
-        }
-        else
-        {
-            BackendCallback();
-        }
+            Debug.Log("Backend.Initialize " + BRO);
+            // 성공
+            if (BRO.IsSuccess())
+            {
+                if (!Backend.Utils.GetGoogleHash().Equals("")) Debug.Log(Backend.Utils.GetGoogleHash());
+
+                serverErrorCode = Backend.Utils.GetServerTime().GetErrorCode();
+                
+                LoginWithTheBackendToken();
+            }
+            // 실패
+            else
+            {
+                Debug.LogError("Failed to initialize the backend");
+            }
+        });
     }
 
-    // 초기화 함수 이후에 실행되는 callback 
-    private void BackendCallback()
+    public void ServerCheckToBackend()
     {
-        // 초기화 성공한 경우 실행
-        if (Backend.IsInitialized)
+        // 이상 없음.
+        if (serverErrorCode == null) return;
+        //message: timeout error
+        if (serverErrorCode.Equals("408"))
         {
-            // example 
-            // 버전체크 -> 업데이트 
-
-            // 구글 해시키 획득 
-            if (!Backend.Utils.GetGoogleHash().Equals(""))
-                Debug.Log(Backend.Utils.GetGoogleHash());
-
-            // 서버시간 획득
-            Debug.Log(Backend.Utils.GetServerTime());
-
-            LoginWithTheBackendToken();
+            Backend.Utils.GetServerTime(); // or 처음 씬 재 실행
         }
-        // 초기화 실패한 경우 실행 
-        else
-        {
-            Debug.LogError("Backend Callback Err ");
-        }
-    }
-
-    private void SuccessSaveToken()
-    {
-        Backend.BMember.SaveToken(BackendManager.Instance.BRO);
-        BackendManager.Instance.BRO.Clear();
     }
 
     // TODO : Error 팝업 (닉네임, 아이디, 패스워드)
     public void CustomSignUp()
     {
+        DeleteDeviceToken();
+        Backend.BMember.Logout();
+
         Debug.Log("-------------ACustomSignUp-------------");
         var user = signUI.GetSignUpDataNIP();
         string nick = user.Item1.Trim();
@@ -64,26 +60,24 @@ public class BackendMember : MonoBehaviour
         if (!CheckID(id))         return; // 팝업 호출
         if (!CheckPassword(pw))   return; // 팝업 호출
 
-        Backend.BMember.CustomSignUp(id, pw, "tester", isComplete =>
-        {
-            // 성공시
-            Debug.Log(isComplete.ToString());
+        BackendReturnObject isComplete =  Backend.BMember.CustomSignUp(id, pw, "tester");
+        Debug.Log(isComplete.ToString());
 
-            SuccessSaveToken();
-            BackendManager.Instance.BRO = isComplete;
-            
-            if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
-            Debug.Log(Backend.BMember.GetUserInfo().GetReturnValue());
-        });
+        ServerCheckToBackend();
+        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        if (!isComplete.IsSuccess()) return;
 
-        //PutDeviceToken();
         BackendManager.Instance.SetSignupData(id, pw, nick);
+        BackendManager.Instance.GameInfoInsert();
         title.LoadMainLobby();
     }
 
     // TODO : Error 팝업 (아이디, 패스워드)
     public void CustomLogin()
     {
+        DeleteDeviceToken();
+        Backend.BMember.Logout();
+
         Debug.Log("-------------ACustomLogin-------------");
         var user = loginUI.GetLogInDataIP();
         string id = user.Item1.Trim();
@@ -92,40 +86,34 @@ public class BackendMember : MonoBehaviour
         if (!CheckID(id))         return; // 팝업 호출
         if (!CheckPassword(pw))   return; // 팝업 호출
 
-        Backend.BMember.CustomLogin(id, pw, isComplete =>
-        {
-            // 성공시
-            Debug.Log(isComplete.ToString());
+        Debug.Log("ID : " + id + " /PW : " + pw);
 
-            SuccessSaveToken();
-            BackendManager.Instance.BRO = isComplete;
+        BackendReturnObject isComplete = Backend.BMember.CustomLogin(id, pw);
+        Debug.Log(isComplete.ToString());
 
-            if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
-            Debug.Log(Backend.BMember.GetUserInfo().GetReturnValue());
-        });
+        ServerCheckToBackend();
+        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
+        if (!isComplete.IsSuccess()) return;
 
-        //PutDeviceToken();
         BackendManager.Instance.SetLoginData(id, pw);
         BackendManager.Instance.GetTableList();
         title.LoadMainLobby();
     }
 
-    public void CustomCreateNickname()
-    {
-        BackendManager.Instance.CreateNickname();
-    }
-
     public void LoginWithTheBackendToken()
     {
-        Debug.Log("-------------ALoginWithTheBackendToken-------------");
-#if UNITY_ANDROID || UNITY_IOS
-        Backend.BMember.LoginWithTheBackendToken(isComplete =>
+        BackendReturnObject isComplete = Backend.BMember.LoginWithTheBackendToken();
+        Debug.Log(isComplete.ToString());
+
+        if (isComplete.IsSuccess())
         {
-            // 성공시 - Update() 문에서 토큰 저장
-            Debug.Log(isComplete.ToString());
-            BackendManager.Instance.BRO = isComplete;
-        });
-#endif
+            Debug.Log("Auto login");
+
+            //BackendManager.Instance.SetLoginData(id, pw);
+            BackendManager.Instance.GetTableList();
+            Backend.BMember.GetUserInfo();
+            title.LoadMainLobby();
+        }
     }
 
     // TODO : 닉네임 제한 설정
@@ -161,19 +149,12 @@ public class BackendMember : MonoBehaviour
         return true;
     }
 
-    private void PutDeviceToken()
+    public void DeleteDeviceToken()
     {
-        Debug.Log("-------------APutDeviceToken-------------");
-#if UNITY_ANDROID
-        Backend.Android.PutDeviceToken(bro =>
-        {
-            Debug.Log(bro);
-        });
+#if UNITY_ANDROID && !UNITY_EDITOR
+        Debug.Log(Backend.Android.DeleteDeviceToken());
 #elif UNITY_IOS
-        Backend.iOS.PutDeviceToken(isDevelopment.iosProd, bro =>
-        {
-            Debug.Log(bro);
-        });
+        Debug.Log(Backend.iOS.DeleteDeviceToken());
 #endif
     }
 }

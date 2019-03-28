@@ -5,28 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/Scenes/LogoScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/LogoScene.unity
     guid: 3e9d1bec780a13745ad3b324b5c4da6c
-  - enabled: 1
-    path: Assets/Scenes/LoadingScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/LoadingScene.unity
     guid: 6c467781db357e84fa33125c4d593f79
-  - enabled: 1
-    path: Assets/Scenes/TitleScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/TitleScene.unity
     guid: 2f636bd1c9090ff4eb8385ef9a0bc150
-  - enabled: 1
-    path: Assets/Scenes/MainLobbyScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/MainLobbyScene.unity
     guid: 376bd8fe5d31ec34290b25fc25569497
-  - enabled: 1
-    path: Assets/Scenes/RoomScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/RoomScene.unity
     guid: f10d76c3c2a8d6b489bed27e7de358ba
-  - enabled: 1
-    path: Assets/Scenes/IngameScene.unity
+  - enabled: 0
+    path: Assets/GameScenes/Scenes/IngameScene.unity
     guid: b61910619e86e5e4290b499f6e7ca67e
   - enabled: 1
-    path: Assets/Scenes/TempLobbyScene.unity
+    path: Assets/GameScenes/Scenes/TempLobbyScene.unity
     guid: c8a9d1312a49dc8488a9b32d83d659c7
   - enabled: 1
-    path: Assets/Scenes/TempGameScene.unity
-    guid: 98efc37d6307844488eb3e4247dde7e9
+    path: Assets/GameScenes/Scenes/TempGameScene.unity
+    guid: 9e34b549fa9781646a1c311ba1fa8a54
   m_configObjects: {}
