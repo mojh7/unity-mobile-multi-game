@@ -8,6 +8,8 @@ public class BackendMember : MonoBehaviour
     [SerializeField] private UISignUp signUI;
     [SerializeField] private UILogIn loginUI;
     [SerializeField] private Title title;
+    [SerializeField] private UICreateNick nickUI;
+    [SerializeField] private UISystemPopup popupUI;
 
     private string serverErrorCode = null;
 
@@ -52,23 +54,38 @@ public class BackendMember : MonoBehaviour
 
         Debug.Log("-------------ACustomSignUp-------------");
         var user = signUI.GetSignUpDataNIP();
-        string nick = user.Item1.Trim();
-        string id   = user.Item2.Trim();
-        string pw   = user.Item3.Trim();
+        string id   = user.Item1.Trim();
+        string pw   = user.Item2.Trim();
 
-        if (!CheckNickname(nick)) return; // 팝업 호출
-        if (!CheckID(id))         return; // 팝업 호출
-        if (!CheckPassword(pw))   return; // 팝업 호출
+        if (!BackendUtils.Instance.IsCheckLength(id, 10)) { popupUI.ShowSystemText("아이디의 길이가 너무 깁니다."); return; } // 팝업 호출
+        if (BackendUtils.Instance.IsSpecialCharacter(id)) { popupUI.ShowSystemText("특수문자가 포함되어 있습니다."); return; } // 팝업 호출
+        if (!BackendUtils.Instance.IsCheckLength(pw, 15)) { popupUI.ShowSystemText("비밀번호 길이가 너무 깁니다."); return; } // 팝업 호출
 
-        BackendReturnObject isComplete =  Backend.BMember.CustomSignUp(id, pw, "tester");
-        Debug.Log(isComplete.ToString());
+        //BackendReturnObject isComplete =  Backend.BMember.CustomSignUp(id, pw, "tester"); Debug.Log(isComplete.ToString());
 
-        ServerCheckToBackend();
-        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
-        if (!isComplete.IsSuccess()) return;
+        //if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); return; };
 
-        BackendManager.Instance.SetSignupData(id, pw, nick);
-        BackendManager.Instance.GameInfoInsert();
+        //ServerCheckToBackend();
+        //if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
+
+        //Debug.Log(Backend.BMember.CreateNickname(id).ToString());
+
+        BackendManager.Instance.SetLoginData(id, pw);
+        UIManager.Instance.ShowNew(nickUI);
+    }
+
+    public void CustomNickname()
+    {
+        string nick = nickUI.GetNickData();
+
+        if (BackendUtils.Instance.IsInBadWord(nick)) { popupUI.ShowSystemText("비속어가 들어가있습니다."); return; }
+        if (!BackendUtils.Instance.IsCheckLength(nick, 8)) { popupUI.ShowSystemText("이름의 길이가 너무 깁니다."); return; }
+
+        //BackendReturnObject isComplete = Backend.BMember.UpdateNickname(nick);
+
+        //if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
+
+        //BackendManager.Instance.GameInfoInsert();
         title.LoadMainLobby();
     }
 
@@ -83,16 +100,12 @@ public class BackendMember : MonoBehaviour
         string id = user.Item1.Trim();
         string pw = user.Item2.Trim();
 
-        if (!CheckID(id))         return; // 팝업 호출
-        if (!CheckPassword(pw))   return; // 팝업 호출
-
         Debug.Log("ID : " + id + " /PW : " + pw);
 
-        BackendReturnObject isComplete = Backend.BMember.CustomLogin(id, pw);
-        Debug.Log(isComplete.ToString());
+        BackendReturnObject isComplete = Backend.BMember.CustomLogin(id, pw); Debug.Log(isComplete.ToString());
+        if (!BackendUtils.Instance.LoginErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("존재하지 않는 아이디 이거나 비밀번호가 틀렸습니다."); return; };
 
         ServerCheckToBackend();
-        //if (!CheckSignStatusCode(isComplete.ToString())) return; // 팝업 호출
         if (!isComplete.IsSuccess()) return;
 
         BackendManager.Instance.SetLoginData(id, pw);
@@ -114,39 +127,6 @@ public class BackendMember : MonoBehaviour
             Backend.BMember.GetUserInfo();
             title.LoadMainLobby();
         }
-    }
-
-    // TODO : 닉네임 제한 설정
-    private bool CheckNickname(string nick)
-    {
-        if (nick.Equals("")) return false;
-        return true;
-    }
-
-    // TODO : 아이디 제한 설정
-    private bool CheckID(string id)
-    {
-        if (id.Equals("")) return false;
-        return true;
-    }
-
-    // TODO : 비밀번호 제한 설정
-    private bool CheckPassword(string pw)
-    {
-        if (pw.Equals("")) return false;
-        return true;
-    }
-
-    private bool CheckSignStatusCode(string code)
-    {
-        // 409 : 중복된 아이디
-        // 401 : 비밀번호가 틀린 경우
-        // 403 : 차단 당한 경우
-        if (code.Equals("409")) return false;
-        if (code.Equals("401")) return false;
-        if (code.Equals("403")) return false;
-
-        return true;
     }
 
     public void DeleteDeviceToken()

@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 
 public class CSVReader {
 
@@ -43,4 +44,22 @@ public class CSVReader {
         return list;
     }
 
+    public static HashSet<string> ReadHash(string file)
+    {
+        HashSet<string> list = new HashSet<string>();
+
+        TextAsset data = Resources.Load(file) as TextAsset;
+        string[] lines = Regex.Split(data.text, LINE_SPLIT_RE);
+
+        if (lines.Length <= 1) return list;
+
+        for (int i = 0; i < lines.Length; i++)
+        {
+            string[] values = Regex.Split(lines[i], SPLIT_RE);
+            if (values.Length == 0 || values[0] == "") continue;
+
+            list.Add(values[0]);
+        }
+        return list;
+    }
 }
