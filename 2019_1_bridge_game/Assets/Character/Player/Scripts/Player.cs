@@ -17,6 +17,8 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region variables
+        private Photon.Pun.UtilityScripts.PunTeams team;
+
         private Transform objTransform;
 
         private PhotonView photonView;
@@ -109,7 +111,7 @@ namespace UBZ.MultiGame.Owner
             if (photonView.IsMine)
             {
                 CameraController.Instance.AttachObject(this.transform); // get Camera
-                baseColor = Color.white;
+                //baseColor = Color.white;
                 Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
                 InitController();
                 //TimeController.Instance.PlayStart();
@@ -119,11 +121,10 @@ namespace UBZ.MultiGame.Owner
             //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetScore());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetNext());
-            gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            //gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //Components.InteractiveCollider2D.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-            Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            //Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
-
 
             //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
 

@@ -11,7 +11,7 @@ public class SheetMusic : PickupItem
         if (PickupIsMine)
         {
             Debug.Log("I picked up something. That's a score!");
-            PhotonNetwork.LocalPlayer.AddScore(1);
+            PhotonNetwork.LocalPlayer.AddNumSheetMusic(1);
         }
         else
         {
