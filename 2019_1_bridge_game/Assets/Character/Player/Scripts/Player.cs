@@ -96,10 +96,14 @@ namespace UBZ.MultiGame.Owner
             if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             }
             else if (PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
             }
 
             if (photonView.IsMine)
@@ -115,9 +119,9 @@ namespace UBZ.MultiGame.Owner
             //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetScore());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetNext());
-            //gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //Components.InteractiveCollider2D.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-            //Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
 
 

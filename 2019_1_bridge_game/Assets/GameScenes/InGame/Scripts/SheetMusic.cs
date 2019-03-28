@@ -2,23 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
-public class SheetMusic : CollisionLevelObject
+public class SheetMusic : PickupItem
 {
-    public void OnCollisionEnter(Collision collision)
+    protected override void OnPickedUp()
     {
-        if (isDestroyed)
+        if (PickupIsMine)
         {
-            return;
+            Debug.Log("I picked up something. That's a score!");
+            PhotonNetwork.LocalPlayer.AddScore(1);
         }
-
-        if (collision.gameObject.CompareTag("Player"))
+        else
         {
-            if (photonView.IsMine)
-            {
-                Debug.Log("악보와 충돌");
-                Destroy();
-            }
+            Debug.Log("Someone else picked up something. Lucky!");
         }
     }
 }

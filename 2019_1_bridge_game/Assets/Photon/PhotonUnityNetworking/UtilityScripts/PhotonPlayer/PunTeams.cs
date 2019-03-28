@@ -111,7 +111,7 @@ namespace Photon.Pun.UtilityScripts
                 PlayersPerTeam[(Team)enumVal].Clear();
             }
 
-
+            /*
             if(PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("--Master, team setting--");
@@ -129,14 +129,15 @@ namespace Photon.Pun.UtilityScripts
                     Debug.Log("i : " + player.ActorNumber + ", " + player.GetTeam());
                 }
             }
+            */
 
-            Debug.Log("--UpdateTeams--");
+            // Debug.Log("--UpdateTeams--");
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
                 Player player = PhotonNetwork.PlayerList[i];
                 Team playerTeam = player.GetTeam();
                 PlayersPerTeam[playerTeam].Add(player);
-                Debug.Log("i : " + player.ActorNumber + ", " + playerTeam);
+                //Debug.Log("i : " + player.ActorNumber + ", " + playerTeam);
             }
         }
     }
