@@ -13,6 +13,7 @@ public class UIbuysuccess : UIControl
     }
     public void panelfalse()
     {
+        transform.parent.GetComponent<Animator>().SetBool("open", false);
         panel.SetActive(false);
     }
 }
