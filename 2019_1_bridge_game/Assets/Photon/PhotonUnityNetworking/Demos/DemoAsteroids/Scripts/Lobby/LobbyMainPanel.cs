@@ -176,6 +176,11 @@ namespace Photon.Pun.Demo.Asteroids
         {
             SetActivePanel(SelectionPanel.name);
 
+            if(null == playerListEntries)
+            {
+                return;
+            }
+
             foreach (GameObject entry in playerListEntries.Values)
             {
                 Destroy(entry.gameObject);
@@ -238,7 +243,7 @@ namespace Photon.Pun.Demo.Asteroids
                 }
             }
 
-            Debug.Log("OnPlayerPropertiesUpdate : " + CheckPlayersReady());
+            // Debug.Log("OnPlayerPropertiesUpdate : " + CheckPlayersReady());
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }
 

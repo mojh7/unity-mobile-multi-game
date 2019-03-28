@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -50,6 +51,8 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public Transform blueTeamSpawnPoint;
     public GameObject[] sheetMusicPrefabs;
 
+    public Text text;
+
     // 이후 랜덤한 위치를 유동적으로 대입
     [SerializeField] private Transform baseTowns;
     #endregion
@@ -81,6 +84,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         base.OnEnable();
         CountdownTimer.OnCountdownTimerHasExpired += OnCountdownTimerIsExpired;
+        CountdownTimer.OnGameEndTimerHasExpired += OnGameEndTimerHasExpired;
     }
 
     public void Start()
@@ -112,6 +116,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         base.OnDisable();
 
         CountdownTimer.OnCountdownTimerHasExpired -= OnCountdownTimerIsExpired;
+        CountdownTimer.OnGameEndTimerHasExpired -= OnGameEndTimerHasExpired;
     }
     #endregion
 
@@ -126,6 +131,51 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         {
             // StartCoroutine(SpawnAsteroid());
         }
+    }
+
+    string temp = string.Empty;
+
+    private void GameOver()
+    {
+        Debug.Log("게임 끝");
+        InGameUIManager.Instance.SetControllable(false);
+
+        PunTeams.Team teamName = PunTeams.Team.RED;
+        int redTeamScore = 0, blueTeamScore = 0;
+        List<Player> redTeamPlayers = PunTeams.PlayersPerTeam[teamName];
+        foreach (Player player in redTeamPlayers)
+        {
+            redTeamScore += player.GetScore();
+        }
+        teamName = PunTeams.Team.BLUE;
+        List<Player> blueTeamPlayers = PunTeams.PlayersPerTeam[teamName];
+        foreach (Player player in blueTeamPlayers)
+        {
+            blueTeamScore += player.GetScore();
+        }
+
+        if (redTeamScore > blueTeamScore)
+        {
+            //InfoText.text = "레드팀 승리!!";
+            temp = "레드팀 승리!!";
+        }
+        else if(redTeamScore < blueTeamScore)
+        {
+            //InfoText.text = "블루팀 승리!!";
+            temp = "블루팀 승리!!";
+        }
+        else
+        {
+            //InfoText.text = "무승부!!";
+            temp = "무승부!!";
+        }
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            // StartCoroutine(SpawnAsteroid());
+        }
+
+        StartCoroutine(EndOfGame("1", 0));
     }
 
     private bool CheckAllPlayerLoadedLevel()
@@ -192,6 +242,12 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         StartGame();
     }
+
+    private void OnGameEndTimerHasExpired()
+    {
+        GameOver();
+    }
+
     #endregion
 
     #region punCallbacks
@@ -307,7 +363,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
         while (timer > 0.0f)
         {
-            //InfoText.text = string.Format("Player {0} won with {1} points.\n\n\nReturning to login screen in {2} seconds.", winner, score, timer.ToString("n2"));
+            InfoText.text = string.Format("{0}\n\nReturning to lobby in {1} seconds.", temp, timer.ToString("n2"));
 
             yield return new WaitForEndOfFrame();
 
@@ -315,6 +371,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         }
 
         PhotonNetwork.LeaveRoom();
+        PhotonNetwork.LoadLevel("TempLobbyScene");
     }
 
     #endregion
