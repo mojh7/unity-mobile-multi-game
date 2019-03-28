@@ -201,6 +201,56 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: 25c52c3d0955773448fd257bd7048ff1, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 68788e6dda9e38e4aaa0ed225cf0c2a4, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: fb2261e402558b74e9d7790ed718be0b, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[3]
+      value: 
+      objectReference: {fileID: 8300000, guid: b1f0209da8aefd14b928cdca41cdc45d, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[4]
+      value: 
+      objectReference: {fileID: 8300000, guid: a288f912c05511e46b0f4897dc9ef1ab, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[5]
+      value: 
+      objectReference: {fileID: 8300000, guid: dff2009bf896a504b9fdcfd0028b1cd8, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[6]
+      value: 
+      objectReference: {fileID: 8300000, guid: 069b3ba6e14a28848a7b73d18a9d3706, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[7]
+      value: 
+      objectReference: {fileID: 8300000, guid: 3a6e91e95d048964f8136dba3897b2cb, type: 3}
+    - target: {fileID: 3560977558471945667, guid: ec8312082314dbc4082878e75c98b24b,
+        type: 3}
+      propertyPath: pianoSfxList.Array.data[8]
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e2307e2a278e3647950503892265cb2, type: 3}
     - target: {fileID: 3560977556493749769, guid: ec8312082314dbc4082878e75c98b24b,
         type: 3}
       propertyPath: clips.Array.size

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clips:
+  - {fileID: 8300000, guid: e399cceb9c3acb04492d5bd0acf63f82, type: 3}
   - {fileID: 8300000, guid: f7c3d045b0b2e944ebe065cd5a177d65, type: 3}
   - {fileID: 8300000, guid: f858742009e87a7489bdbc7d450a5a7e, type: 3}
 --- !u!82 &3560977556493749774
@@ -238,6 +239,17 @@ MonoBehaviour:
   - {fileID: 8300000, guid: d14765b029770754e9e13ce2b88ea8be, type: 3}
   uiSfxList:
   - {fileID: 8300000, guid: bc8ba3d31bf20a14d8f08c7fc6009fce, type: 3}
+  pianoSfxList:
+  - {fileID: 8300000, guid: 29f05ce84f076214588595a0000d75d4, type: 3}
+  - {fileID: 8300000, guid: 25c52c3d0955773448fd257bd7048ff1, type: 3}
+  - {fileID: 8300000, guid: 68788e6dda9e38e4aaa0ed225cf0c2a4, type: 3}
+  - {fileID: 8300000, guid: fb2261e402558b74e9d7790ed718be0b, type: 3}
+  - {fileID: 8300000, guid: b1f0209da8aefd14b928cdca41cdc45d, type: 3}
+  - {fileID: 8300000, guid: a288f912c05511e46b0f4897dc9ef1ab, type: 3}
+  - {fileID: 8300000, guid: dff2009bf896a504b9fdcfd0028b1cd8, type: 3}
+  - {fileID: 8300000, guid: 069b3ba6e14a28848a7b73d18a9d3706, type: 3}
+  - {fileID: 8300000, guid: 3a6e91e95d048964f8136dba3897b2cb, type: 3}
+  - {fileID: 8300000, guid: 7e2307e2a278e3647950503892265cb2, type: 3}
 --- !u!82 &3560977558471945664
 AudioSource:
   m_ObjectHideFlags: 0
