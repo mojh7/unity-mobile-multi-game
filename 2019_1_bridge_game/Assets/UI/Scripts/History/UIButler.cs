@@ -5,17 +5,32 @@ using UnityEngine.UI;
 
 public class UIButler : UIControl
 {
-    List<string> texts = new List<string>();
-    private Text text;
-    int cnt = 0;
 
-    void Start()
+    void OnEnable()
     {
-        text = GetComponent<Text>();
-        //임의 스크립트
-        texts.Add("1:안녕하세요");
-        texts.Add("2:반갑습니다");
-        texts.Add("3:안녕히가세요");
+        //첫실행여부
+
+        PlayerPrefs.SetInt("Tutorial_Start", PlayerPrefs.GetInt("Tutorial_Start", 0));
+        //debug용
+        //PlayerPrefs.SetInt("Tutorial_Start", 0);
+        //첫실행시 대사 출력
+        if (PlayerPrefs.GetInt("Tutorial_Start") == 0)
+        {
+            Debug.Log("First execution");
+            PlayerPrefs.SetInt("Tutorial_Start", 1);
+
+            //대사출력
+            GameObject.Find("butler_panel").transform.Find("initialscript_panel").gameObject.SetActive(true);
+
+            PlayerPrefs.Save();
+        }
+        //나머지 실행
+        else if (PlayerPrefs.GetInt("Tutorial_Start") != 0)
+        {
+            Debug.Log("Extra execution");
+            GameObject.Find("butler_panel").transform.Find("IllustrateBook_panel").gameObject.SetActive(true);
+            GameObject.Find("butler_panel").transform.Find("butlerscript_panel").gameObject.SetActive(true);
+        }
     }
     void Update()
     {
