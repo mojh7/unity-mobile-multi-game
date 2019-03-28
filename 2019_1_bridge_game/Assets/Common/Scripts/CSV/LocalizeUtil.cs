@@ -24,7 +24,7 @@ public class LocalizeUtil
     // 추후에 시작 or 로딩 화면에서 사용
     public void Initialize()
 	{
-        Debug.Log("Init Language File");
+        Debug.Log("Initialize Language File");
         SetLanguageCode(Application.systemLanguage);
     }
 

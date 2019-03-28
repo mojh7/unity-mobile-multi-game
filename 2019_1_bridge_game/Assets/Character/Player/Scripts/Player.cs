@@ -17,6 +17,8 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region variables
+        private Photon.Pun.UtilityScripts.PunTeams team;
+
         private Transform objTransform;
 
         private PhotonView photonView;
@@ -96,16 +98,20 @@ namespace UBZ.MultiGame.Owner
             if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             }
             else if (PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
             }
 
             if (photonView.IsMine)
             {
                 CameraController.Instance.AttachObject(this.transform); // get Camera
-                baseColor = Color.white;
+                //baseColor = Color.white;
                 Components.DirectionArrow.SetBaseTown(InGameManager.Instance.GetBaseTown());
                 InitController();
                 //TimeController.Instance.PlayStart();
@@ -119,7 +125,6 @@ namespace UBZ.MultiGame.Owner
             //Components.InteractiveCollider2D.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
-
 
             //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
 

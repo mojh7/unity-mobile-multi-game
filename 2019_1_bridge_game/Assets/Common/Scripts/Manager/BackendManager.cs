@@ -19,11 +19,6 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     private List<string> PrivateTables = new List<string>();
 
     #region Get / Set
-    public void SetSignupData(string id, string pw, string nick)
-    {
-        this.id = id; this.pw = pw; this.nick = nick;
-    }
-
     public void SetLoginData(string id, string pw)
     {
         this.id = id; this.pw = pw;
@@ -72,6 +67,11 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         bro.Clear();
     }
 
+    public void UpdateNickname(string nick)
+    {
+        Debug.Log("-------------UpdateNickname-------------");
+        Debug.Log(Backend.BMember.UpdateNickname(nick).ToString());
+    }
 
     public void GameInfoInsert()
     {
@@ -110,27 +110,6 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
             }
         });
     }
-
-    public void CreateNickname()
-    {
-        Debug.Log("-------------CreateNickname-------------");
-
-        Backend.BMember.CreateNickname(nick, isComplete =>
-        {
-            Debug.Log(isComplete.ToString());
-        });
-    }
-
-    public void UpdateNickname()
-    {
-        Debug.Log("-------------UpdateNickname-------------");
-
-        Backend.BMember.UpdateNickname(nick, isComplete =>
-        {
-            Debug.Log(isComplete.ToString());
-        });
-    }
-
 
     // character, stage, item, present, message
     public void GetPrivateContents(string tableName)

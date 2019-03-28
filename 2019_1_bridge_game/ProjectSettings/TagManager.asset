@@ -21,9 +21,9 @@ TagManager:
   - CollisionLevelObject
   - RedTeamPlayer
   - BlueTeamPlayer
-  - 
-  - 
-  - 
+  - SheetMusic
+  - RedTeamBaseZone
+  - BlueTeamBaseZone
   - 
   - 
   - 

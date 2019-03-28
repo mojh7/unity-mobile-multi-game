@@ -20,6 +20,7 @@ public enum SFXType
 {
     COMMON,
     UI,
+    PIANO,
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -32,9 +33,12 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     private AudioClip[] commonSfxList;
     [SerializeField]
     private AudioClip[] uiSfxList;
+    [SerializeField]
+    private AudioClip[] pianoSfxList;
 
     private Dictionary<string, AudioClip> commonSfxDictionary;
     private Dictionary<string, AudioClip> uiSfxDictionary;
+    private Dictionary<string, AudioClip> pianoSfxDictionary;
 
     private AudioSource audioSource;
     private float volume;
@@ -72,6 +76,14 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
                 uiSfxDictionary[uiSfxList[i].name] = uiSfxList[i];
             }
         }
+        pianoSfxDictionary = new Dictionary<string, AudioClip>();
+        for (int i = 0; i < pianoSfxList.Length; i++)
+        {
+            if (!pianoSfxDictionary.ContainsKey(pianoSfxList[i].name))
+            {
+                pianoSfxDictionary[pianoSfxList[i].name] = pianoSfxList[i];
+            }
+        }
     }
     #endregion
 
@@ -100,6 +112,9 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
             case SFXType.UI:
                 _clip = uiSfxList[sfxIndex];
                 break;
+            case SFXType.PIANO:
+                _clip = pianoSfxList[sfxIndex];
+                break;
             default:
                 break;
         }
@@ -125,6 +140,9 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
                 break;
             case SFXType.UI:
                 _clip = uiSfxDictionary[sfxName];
+                break;
+            case SFXType.PIANO:
+                _clip = pianoSfxDictionary[sfxName];
                 break;
             default:
                 break;

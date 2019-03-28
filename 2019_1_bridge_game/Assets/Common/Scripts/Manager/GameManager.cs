@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviourSingleton<GameManager>
 
         GameDataManager.Instance.Initialize();
         DatabaseManager.Instance.Initialize();
+        BackendUtils.Instance.Initialize();
     }
 
     private void Update()
