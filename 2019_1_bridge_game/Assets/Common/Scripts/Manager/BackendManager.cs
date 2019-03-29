@@ -73,6 +73,15 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         Debug.Log(Backend.BMember.UpdateNickname(nick).ToString());
     }
 
+    // 7일의 유예기간, 그 전에 로그인하면 탈퇴 철회
+    public void SignOutToken()
+    {
+        BackendReturnObject isComplete = Backend.BMember.SignOut("사유");
+
+        if (isComplete.IsSuccess()) UIManager.Instance.HideAndShowPreview();
+        else { /*시스템 에러 팝업*/ }
+    }
+
     public void GameInfoInsert()
     {
         Debug.Log("-----------------A GameInfo Insert-----------------");
