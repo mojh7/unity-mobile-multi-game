@@ -38,8 +38,10 @@ public class BackendUtils
     // 문자열의 길이 확인
     public bool IsCheckLength(string input, int maxLen)
     {
-        if (input.Length <= maxLen) return true;
-        else                        return false;
+        string inputTrim = input.Trim();
+
+        if (inputTrim.Length <= maxLen) return true;
+        else                            return false;
     }
 
     // 나쁜 단어가 들어있다면 : true

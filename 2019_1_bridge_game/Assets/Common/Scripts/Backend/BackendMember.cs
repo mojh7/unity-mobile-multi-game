@@ -61,14 +61,14 @@ public class BackendMember : MonoBehaviour
         if (BackendUtils.Instance.IsSpecialCharacter(id)) { popupUI.ShowSystemText("특수문자가 포함되어 있습니다."); return; } // 팝업 호출
         if (!BackendUtils.Instance.IsCheckLength(pw, 15)) { popupUI.ShowSystemText("비밀번호 길이가 너무 깁니다."); return; } // 팝업 호출
 
-        //BackendReturnObject isComplete =  Backend.BMember.CustomSignUp(id, pw, "tester"); Debug.Log(isComplete.ToString());
+        BackendReturnObject isComplete = Backend.BMember.CustomSignUp(id, pw); Debug.Log(isComplete.ToString());
 
-        //if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); return; };
+        if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); return; };
 
-        //ServerCheckToBackend();
-        //if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
+        ServerCheckToBackend();
+        if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
 
-        //Debug.Log(Backend.BMember.CreateNickname(id).ToString());
+        Debug.Log(Backend.BMember.CreateNickname(id).ToString());
 
         BackendManager.Instance.SetLoginData(id, pw);
         UIManager.Instance.ShowNew(nickUI);
@@ -76,16 +76,16 @@ public class BackendMember : MonoBehaviour
 
     public void CustomNickname()
     {
-        string nick = nickUI.GetNickData();
+        string nick = nickUI.GetNickData().Trim();
 
         if (BackendUtils.Instance.IsInBadWord(nick)) { popupUI.ShowSystemText("비속어가 들어가있습니다."); return; }
         if (!BackendUtils.Instance.IsCheckLength(nick, 8)) { popupUI.ShowSystemText("이름의 길이가 너무 깁니다."); return; }
 
-        //BackendReturnObject isComplete = Backend.BMember.UpdateNickname(nick);
+        BackendReturnObject isComplete = Backend.BMember.UpdateNickname(nick);
 
-        //if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
+        if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
 
-        //BackendManager.Instance.GameInfoInsert();
+        BackendManager.Instance.GameInfoInsert();
         title.LoadMainLobby();
     }
 
