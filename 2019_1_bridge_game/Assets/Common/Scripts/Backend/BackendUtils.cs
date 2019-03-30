@@ -54,6 +54,13 @@ public class BackendUtils
         return false;
     }
 
+    // 비밀번호 확인 작업, 맞다면 : true
+    public bool IsConfirmPassword(string pw, string confirm)
+    {
+        if (pw.Trim().Equals(confirm.Trim())) return true;
+        else                                  return false;
+    }
+
     public bool SignUpErrorCheck(string code)
     {
         //CustomSignUp - 중복된 customId 가 존재하는 경우

@@ -63,7 +63,7 @@ public class BackendMember : MonoBehaviour
 
         BackendReturnObject isComplete = Backend.BMember.CustomSignUp(id, pw); Debug.Log(isComplete.ToString());
 
-        if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); return; };
+        if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); signUI.AlreadyExistID(); return; };
 
         ServerCheckToBackend();
         if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
