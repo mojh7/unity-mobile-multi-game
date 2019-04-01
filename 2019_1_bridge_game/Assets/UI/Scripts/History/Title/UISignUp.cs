@@ -33,7 +33,7 @@ public class UISignUp : UIControl
     // 아이디 입력을 완료한 후
     public void CheckID()
     {
-        if (!BackendUtils.Instance.IsCheckLength(idText.text, 10) || BackendUtils.Instance.IsSpecialCharacter(idText.text))
+        if (!BackendUtils.Instance.IsValidEmail(idText.text))
         {
             idBox.color = Color.red; idFailIcon.SetActive(true); idCheckIcon.SetActive(false);
         }

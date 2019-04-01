@@ -35,11 +35,20 @@ public class BackendUtils
         return isSpecial;
     }
 
+    // 이메일 주소 형식
+    public bool IsValidEmail(string email)
+    {
+        bool valid = Regex.IsMatch(email, @"[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?");
+
+        return valid;
+    }
+
     // 문자열의 길이 확인
     public bool IsCheckLength(string input, int maxLen)
     {
         string inputTrim = input.Trim();
 
+        if (inputTrim.Length == 0) return false;
         if (inputTrim.Length <= maxLen) return true;
         else                            return false;
     }
@@ -57,6 +66,7 @@ public class BackendUtils
     // 비밀번호 확인 작업, 맞다면 : true
     public bool IsConfirmPassword(string pw, string confirm)
     {
+        if (pw.Trim().Length == 0) return false;
         if (pw.Trim().Equals(confirm.Trim())) return true;
         else                                  return false;
     }
@@ -72,6 +82,13 @@ public class BackendUtils
     {
         //CustomLogin - 존재하지 않는 아이디의 경우 or 비밀번호가 틀린 경우
         if (code.Equals("401")) return false;
+        return true;
+    }
+
+    public bool EmailErrorCheck(string code)
+    {
+        //등록한 이메일이 없는 경우 or 잘못된 이메일을 입력한 경우
+        if (code.Equals("404") || code.Equals("400")) return false;
         return true;
     }
 

@@ -9,6 +9,7 @@ public class BackendMember : MonoBehaviour
     [SerializeField] private UILogIn loginUI;
     [SerializeField] private Title title;
     [SerializeField] private UICreateNick nickUI;
+    [SerializeField] private UIForgotPassword forgotUI;
     [SerializeField] private UISystemPopup popupUI;
 
     private string serverErrorCode = null;
@@ -57,17 +58,25 @@ public class BackendMember : MonoBehaviour
         string id   = user.Item1.Trim();
         string pw   = user.Item2.Trim();
 
-        if (!BackendUtils.Instance.IsCheckLength(id, 10)) { popupUI.ShowSystemText("아이디의 길이가 너무 깁니다."); return; } // 팝업 호출
-        if (BackendUtils.Instance.IsSpecialCharacter(id)) { popupUI.ShowSystemText("특수문자가 포함되어 있습니다."); return; } // 팝업 호출
-        if (!BackendUtils.Instance.IsCheckLength(pw, 15)) { popupUI.ShowSystemText("비밀번호 길이가 너무 깁니다."); return; } // 팝업 호출
+        if (!BackendUtils.Instance.IsCheckLength(pw, 15))
+        {
+            popupUI.ShowSystemText("비밀번호 길이가 너무 깁니다.");
+            return;
+        } // 팝업 호출
 
         BackendReturnObject isComplete = Backend.BMember.CustomSignUp(id, pw); Debug.Log(isComplete.ToString());
 
-        if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("중복된 아이디가 존재합니다."); signUI.AlreadyExistID(); return; };
+        if (!BackendUtils.Instance.SignUpErrorCheck(isComplete.GetStatusCode()))
+        {
+            popupUI.ShowSystemText("중복된 아이디가 존재합니다.");
+            signUI.AlreadyExistID();
+            return;
+        };
 
         ServerCheckToBackend();
         if (!isComplete.IsSuccess()) return;    // 서버 연동 문제 ! 경고창 생각해둘 것.
 
+        Backend.BMember.UpdatePasswordResetEmail(id);
         Debug.Log(Backend.BMember.CreateNickname(id).ToString());
 
         BackendManager.Instance.SetLoginData(id, pw);
@@ -103,7 +112,11 @@ public class BackendMember : MonoBehaviour
         Debug.Log("ID : " + id + " /PW : " + pw);
 
         BackendReturnObject isComplete = Backend.BMember.CustomLogin(id, pw); Debug.Log(isComplete.ToString());
-        if (!BackendUtils.Instance.LoginErrorCheck(isComplete.GetStatusCode())) { popupUI.ShowSystemText("존재하지 않는 아이디 이거나 비밀번호가 틀렸습니다."); return; };
+        if (!BackendUtils.Instance.LoginErrorCheck(isComplete.GetStatusCode()))
+        {
+            popupUI.ShowSystemText("존재하지 않는 아이디 이거나 비밀번호가 틀렸습니다.");
+            return;
+        };
 
         ServerCheckToBackend();
         if (!isComplete.IsSuccess()) return;
@@ -126,6 +139,31 @@ public class BackendMember : MonoBehaviour
             BackendManager.Instance.GetTableList();
             Backend.BMember.GetUserInfo();
             title.LoadMainLobby();
+        }
+    }
+
+    public void ResetPasswordToEmail()
+    {
+        string id = forgotUI.GetIdData();
+        BackendReturnObject isComplete = Backend.BMember.ResetPassword(id, id);
+        Debug.Log(isComplete.ToString());
+
+        forgotUI.SendingMessageShow();
+
+        if (!BackendUtils.Instance.EmailErrorCheck(isComplete.GetStatusCode()))
+        {
+            popupUI.ShowSystemText("없는 아이디이거나 형식이 잘못 되었습니다.");
+            return;
+        };
+
+        if (isComplete.IsSuccess())
+        {
+            popupUI.ShowSystemText("메일이 성공적으로 전송 되었습니다."); // 메일 전송 성공 팝업
+            forgotUI.CompleteMessageShow();
+        }
+        else
+        {
+            forgotUI.FailedMessageShow();
         }
     }
 
