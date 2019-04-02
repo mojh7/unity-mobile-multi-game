@@ -31,8 +31,9 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region unityFunc
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             photonView = photonView = GetComponent<PhotonView>();
             rigidbody = GetComponent<Rigidbody>();
             collider = GetComponent<Collider>();
@@ -50,28 +51,34 @@ namespace UBZ.MultiGame.Owner
             }
         }
 
-        //void update()
-        //{
-        //    if (!photonView.IsMine || !controllable)
-        //    {
-        //        return;
-        //    }
+        void Update()
+        {
+            if (false == InGameUIManager.Instance.GetControllable())
+                return;
 
-        //    rotation = Input.GetAxis("Horizontal");
-        //    acceleration = Input.GetAxis("Vertical");
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                Dash(300f, 50f);
+            }
 
-        //    if (Input.GetButton("Jump") && shootingTimer <= 0.0)
-        //    {
-        //        shootingTimer = 0.2f;
+            spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
+            if (isDash)
+                return;
 
-        //        photonView.RPC("Fire", RpcTarget.AllViaServer, rigidbody.position, rigidbody.rotation);
-        //    }
-
-        //    if (shootingTimer > 0.0f)
-        //    {
-        //        shootingTimer -= Time.deltaTime;
-        //    }
-        //}
+            directionVector = controller.GetMoveRecentNormalInputVector();
+            if (-90 <= directionDegree && directionDegree < 90)
+            {
+                isRightDirection = true;
+                scaleVector.x = 1f;
+                spriteTransform.localScale = scaleVector;
+            }
+            else
+            {
+                isRightDirection = false;
+                scaleVector.x = -1f;
+                spriteTransform.localScale = scaleVector;
+            }
+        }
 
         void FixedUpdate()
         {
@@ -146,13 +153,6 @@ namespace UBZ.MultiGame.Owner
             return photonView.IsMine;
         }
 
-
-        [PunRPC]
-        public void Dash()
-        {
-
-        }
-
         //public override CustomObject Interact()
         //{
         //    float bestDistance = interactiveCollider2D.radius;
@@ -182,6 +182,9 @@ namespace UBZ.MultiGame.Owner
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
+            if (!canMove || isDash)
+                return;
+
             // player 자신
             if(photonView.IsMine)
             {
@@ -210,20 +213,6 @@ namespace UBZ.MultiGame.Owner
                     bodyTransform.Translate(Vector2.left * 5f * Time.fixedDeltaTime);
                 }
 #endif
-                directionDegree = controller.GetMovingInputDegree();
-
-                if (-90 <= directionDegree && directionDegree < 90)
-                {
-                    isRightDirection = true;
-                    scaleVector.x = 1f;
-                    spriteTransform.localScale = scaleVector;
-                }
-                else
-                {
-                    isRightDirection = false;
-                    scaleVector.x = -1f;
-                    spriteTransform.localScale = scaleVector;
-                }
             }
             else // 타 user player
             {
@@ -242,8 +231,78 @@ namespace UBZ.MultiGame.Owner
 
         #endregion
 
-        #region coroutine
+        #region abnormalStatusFunc
+        protected override bool IsControlTypeAbnormal()
+        {
+            return isControlTypeAbnormalStatuses[(int)ControlTypeAbnormalStatus.STUN];
+        }
 
+        // 여러 상태이상, 단일 상태이상 중첩 시 공격, 이동 제한을 한 곳에서 관리하기 위해서
+        /// <summary> 이동 방해 상태 이상 갯수 증가 및 이동 AI OFF Check </summary>
+        protected override void AddRetrictsMovingCount()
+        {
+            restrictMovingCount += 1;
+            if (1 <= restrictMovingCount)
+            {
+                canMove = false;
+            }
+        }
+        /// <summary> 이동 방해 상태 이상 갯수 감소 및 이동 AI ON Check </summary>
+        protected override void SubRetrictsMovingCount()
+        {
+            restrictMovingCount -= 1;
+            if (0 >= restrictMovingCount)
+            {
+                restrictMovingCount = 0;
+                canMove = true;
+            }
+        }
+        /// <summary> 공격 방해 상태 이상 갯수 증가 및 공격 AI OFF Check </summary>
+        protected override void AddRetrictsBehaviorCount()
+        {
+            restrictBehaviorCount += 1;
+            if (1 >= restrictBehaviorCount)
+            {
+                canBehavior = false;
+            }
+        }
+        /// <summary> 공격 방해 상태 이상 갯수 감소 및 공격 AI ON Check </summary>
+        protected override void SubRetrictsBehaviorCount()
+        {
+            restrictBehaviorCount -= 1;
+            if (0 <= restrictBehaviorCount)
+            {
+                restrictBehaviorCount = 0;
+                canBehavior = true;
+            }
+        }
+        #endregion
+
+
+        #region coroutine
+        protected override IEnumerator StunCoroutine(float effectiveTime)
+        {
+            int type = (int)ControlTypeAbnormalStatus.STUN;
+            abnormalComponents.StunEffect.SetActive(true);
+            AddRetrictsMovingCount();
+            AddRetrictsBehaviorCount();
+            //animationHandler.Idle();
+            isControlTypeAbnormalStatuses[type] = true;
+            controlTypeAbnormalStatusTime[type] = 0;
+            controlTypeAbnormalStatusesDurationMax[type] = effectiveTime;
+            while (controlTypeAbnormalStatusTime[type] <= controlTypeAbnormalStatusesDurationMax[type])
+            {
+                if (abnormalImmune == CharacterInfo.AbnormalImmune.ALL)
+                {
+                    controlTypeAbnormalStatusesDurationMax[type] = 0;
+                    break;
+                }
+                controlTypeAbnormalStatusTime[type] += Time.fixedDeltaTime;
+                yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
+            }
+
+            StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus.STUN);
+        }
 
         #endregion
     }
