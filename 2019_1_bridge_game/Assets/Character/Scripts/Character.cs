@@ -58,7 +58,7 @@ namespace UBZ.MultiGame.Owner
         protected SpriteRenderer spriteRenderer;
         protected Transform spriteTransform;
         protected Transform nickNameTransform;
-        protected Transform abnormalTransform;
+        protected Transform abnormalStatusTransform;
         protected CircleCollider2D interactiveCollider2D;
         //protected AnimationHandler animationHandler;
         //protected BuffManager buffManager;
@@ -90,6 +90,7 @@ namespace UBZ.MultiGame.Owner
         protected LayerMask enemyLayer;
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
+        protected Vector3 fixedObjectScale;
         #endregion
 
         #region abnormalStatusVariables
@@ -149,8 +150,11 @@ namespace UBZ.MultiGame.Owner
 
             Components = GetComponent<CharacterComponents>();
             Components.Init();
+            abnormalComponents = GetComponent<AbnormalComponents>();
             spriteRenderer = Components.SpriteRenderer;
             spriteTransform = Components.SpriteTransform;
+            nickNameTransform = Components.NickNameText.transform;
+            abnormalStatusTransform = abnormalComponents.AbnormalStatusTransform;
             interactiveCollider2D = Components.InteractiveCollider2D;
             //animationHandler = Components.AnimationHandler;
             rgbody = Components.Rigidbody2D;

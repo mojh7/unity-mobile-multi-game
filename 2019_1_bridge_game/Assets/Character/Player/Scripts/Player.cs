@@ -39,7 +39,8 @@ namespace UBZ.MultiGame.Owner
             collider = GetComponent<Collider>();
             renderer = GetComponent<Renderer>();
             objTransform = GetComponent<Transform>();
-            scaleVector = new Vector3(1f, 1f, 1f);
+            scaleVector = Vector3.one;
+            fixedObjectScale = new Vector3(-1f, 1f, 1f);
             isRightDirection = true;
         }
 
@@ -74,15 +75,21 @@ namespace UBZ.MultiGame.Owner
                 {
                     isRightDirection = true;
                     scaleVector.x = 1f;
+                    fixedObjectScale.x = 1f;
                     bodyTransform.localScale = scaleVector;
-                    spriteTransform.localScale = scaleVector;
+                    nickNameTransform.localScale = fixedObjectScale;
+                    abnormalStatusTransform.localScale = fixedObjectScale;
+                    //spriteTransform.localScale = scaleVector;
                 }
                 else
                 {
                     isRightDirection = false;
                     scaleVector.x = -1f;
+                    fixedObjectScale.x = -1f;
                     bodyTransform.localScale = scaleVector;
-                    spriteTransform.localScale = scaleVector;
+                    nickNameTransform.localScale = fixedObjectScale;
+                    abnormalStatusTransform.localScale = fixedObjectScale;
+                    //spriteTransform.localScale = scaleVector;
                 }
             }
         }
@@ -147,7 +154,7 @@ namespace UBZ.MultiGame.Owner
         [PunRPC]
         private void PlayerInit()
         {
-            Debug.Log(photonView.Owner.GetPlayerNumber() + ", " + photonView.Owner.GetTeam());
+            Debug.Log("PlayerInit : " + photonView.Owner.GetPlayerNumber() + ", " + photonView.Owner.GetTeam());
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
@@ -165,7 +172,7 @@ namespace UBZ.MultiGame.Owner
                 Components.SpriteRenderer.color = Color.black;
             }
 
-            Components.NickNameText.text = photonView.Owner.NickName;
+            //Components.NickNameText.text = photonView.Owner.NickName;
             if (!photonView.IsMine)
             {
                 Components.DirectionArrow.RemoveDirectionArrow();

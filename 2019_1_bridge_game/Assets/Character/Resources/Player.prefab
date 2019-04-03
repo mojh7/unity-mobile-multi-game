@@ -328,6 +328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b87a942c957a2145b81f9271652e5cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abnormalStatusTransform: {fileID: 464}
   stunEffect: {fileID: 4734960856310116974}
 --- !u!114 &670
 MonoBehaviour:
