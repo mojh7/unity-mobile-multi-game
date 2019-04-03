@@ -10,10 +10,12 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     private string pw = "";
     private string nick = "";
 
-    private BackendReturnObject bro = new BackendReturnObject();
-
-    private string Indate;     //gameinfo update, gameinfo delete, findOne에 사용
-    private string characterTable = "character";
+    private string indate;     //gameinfo update, gameinfo delete, findOne에 사용
+    private const string characterTable = "character";  // private
+    private const string rankTable      = "rank";       // public 
+    private const string stageTable     = "stage";      // private
+    private const string itemTable      = "item";       // private
+    private const string friendTable    = "friend";     // private
 
     private List<string> PublicTables = new List<string>();
     private List<string> PrivateTables = new List<string>();
@@ -27,46 +29,25 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     public string ID { get { return id; } set { id = value; } }
     public string PW { get { return pw; } set { pw = value; } }
     public string Nick { get { return nick; } set { nick = value; } }
-    public BackendReturnObject BRO { get { return bro; } set { bro = value; } }
+    public string Indate { get { return indate; } set { indate = value; } }
     #endregion
 
-    public void GetChartSave()
+    // 접속 성공시 유저의 indate값
+    public void GetUserInfo()
     {
-        Debug.Log("-----------------A Get Chart And Save-----------------");
-        PlayerPrefs.DeleteAll();
-        Backend.Chart.GetChartAndSave(chartsave =>
+        BackendReturnObject isComplete = Backend.BMember.GetUserInfo();
+        if (isComplete.IsSuccess())
         {
-            Debug.Log(chartsave.ToString());
-            bro = chartsave;
-            SuccessUserData();
-        });
-    }
+            JsonData json = isComplete.GetReturnValuetoJSON()["row"];
 
+            Indate = json["inDate"].ToString();
+            Nick   = json["nickname"].ToString();
 
-    // 비동기식 데이터 저장
-    private void SuccessUserData()
-    {
-        Debug.Log("-----------------Update-----------------");
-
-        PlayerPrefs.DeleteAll();
-        Backend.Chart.SaveChart(bro);
-
-        if (bro.IsSuccess())
-        {
-            JsonData rows = bro.GetReturnValuetoJSON()["rows"];
-            string ChartName, ChartContents;
-            // get chart contents with chartName
-            for (int i = 0; i < rows.Count; i++)
-            {
-                ChartName = rows[i]["chartName"]["S"].ToString();
-                ChartContents = PlayerPrefs.GetString(ChartName);
-                Debug.Log(string.Format("{0}\n{1}", ChartName, ChartContents));
-            }
+            Debug.Log(nick + " /" + Indate);
         }
-
-        bro.Clear();
     }
 
+    // 닉네임 수정 
     public void UpdateNickname(string nick)
     {
         Debug.Log("-------------UpdateNickname-------------");
@@ -74,195 +55,118 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     }
 
     // 7일의 유예기간, 그 전에 로그인하면 탈퇴 철회
-    public void SignOutToken()
+    public void SignOutToken(string reason)
     {
-        BackendReturnObject isComplete = Backend.BMember.SignOut("사유");
+        BackendReturnObject isComplete = Backend.BMember.SignOut(reason);
 
         if (isComplete.IsSuccess()) UIManager.Instance.HideAndShowPreview();
         else { /*시스템 에러 팝업*/ }
     }
 
+    // 유저의 초기 데이터베이스 생성
     public void GameInfoInsert()
     {
         Debug.Log("-----------------A GameInfo Insert-----------------");
 
+        // 유저 기본 데이터 
         Param param = new Param();
         param.Add("id", id);
         param.Add("nickname", nick);
         param.Add("coin", 0);
-        param.Add("rank", 0);
-        param.Add("honor", 0);
         param.Add("level", 0);
+
+        InsertGameInfo(characterTable, param);
+
+        // 랭크 기본 데이터
+        param.Clear();
+        param.Add("rank", 0);
+        param.Add("victory", 0);
+        param.Add("defeat", 0);
+
+        InsertGameInfo(rankTable, param);
+
+        // 스테이지 기본 데이터
+        param.Clear();
         param.Add("stage", 0);
 
-        Backend.GameInfo.Insert(characterTable, param, insertComplete =>
+        InsertGameInfo(stageTable, param);
+
+        // 아이템 기본 데이터
+        param.Clear();
+        Dictionary<string, int> character = new Dictionary<string, int>
         {
-            Debug.Log("insert : " + insertComplete.ToString());
-            if (insertComplete.IsSuccess())
-            {
-                Indate = insertComplete.GetInDate();
-                Debug.Log("indate : " + Indate);
-            }
-        });
+            { "kim_default", 1 },
+            { "kim_navy", 0 }
+        };
+        Dictionary<string, int> bgm = new Dictionary<string, int>
+        {
+            { "song1", 1 },
+            { "song2", 0 }
+        };
+        param.Add("item", "null");
+        param.Add("character", character);
+        param.Add("bgm", bgm);
+
+        InsertGameInfo(itemTable, param);
+
+        // 친구 기본 데이터
+        param.Clear();
+        param.Add("friend", "-");
+
+        InsertGameInfo(friendTable, param);
     }
 
-    public void GetTableList()
+    // 게임 정보 수정
+    public void GameInfoUpdate(string table, string indate, Param param)
     {
-        Debug.Log("-----------------A Get Table List-----------------");
-        Backend.GameInfo.GetTableList(tablelist =>
-        {
-            Debug.Log(tablelist);
+        BackendReturnObject isComplete = Backend.GameInfo.Update(table, indate, param);
 
-            if (tablelist.IsSuccess())
-            {
-                SetTable(tablelist.GetReturnValuetoJSON());
-            }
-        });
+        Debug.Log(table + "update : " + isComplete.ToString());
     }
 
-    // character, stage, item, present, message
-    public void GetPrivateContents(string tableName)
+    // 게임 로그 생성
+    private void InsertLog(Param param)
     {
-        Debug.Log("-----------------AGet Private Contents-----------------");
-        Backend.GameInfo.GetPrivateContents(tableName, bro =>
-        {
-            Debug.Log(bro);
-            if (bro.IsSuccess())
-            {
-                GetGameInfo(bro.GetReturnValuetoJSON());
-            }
-        });
+        Debug.Log("-----------------Insert Log-----------------");
+        Debug.Log(Backend.GameInfo.InsertLog("update_log", param).ToString());
     }
 
-    public void AGetPublicContents(string tableName)
+    // 데이터베이스 
+    private void InsertGameInfo(string table, Param param)
     {
-        Debug.Log("-----------------AGet Public Contents-----------------");
+        BackendReturnObject isComplete =  Backend.GameInfo.Insert(table, param);
 
-        Backend.GameInfo.GetPublicContents(tableName, bro =>
+        if (isComplete.IsSuccess())
         {
-            Debug.Log(bro);
-
-            if (bro.IsSuccess())
-            {
-                GetGameInfo(bro.GetReturnValuetoJSON());
-            }
-        });
-    }
-
-    private void SetTable(JsonData data)
-    {
-        JsonData publics = data["publicTables"];
-        foreach (JsonData row in publics)
-        {
-            PublicTables.Add(row.ToString());
-        }
-
-        JsonData privates = data["privateTables"];
-        foreach (JsonData row in privates)
-        {
-            PrivateTables.Add(row.ToString());
+            Debug.Log(table + " insert : " + isComplete.ToString());
         }
     }
 
-    private void GetGameInfo(JsonData returnData)
+    // 게임 결과 
+    public void GameResultIntoBackend(string key)
     {
-        // ReturnValue가 존재하고, 데이터가 있는지 확인
-        if (returnData != null)
+        GetUserInfo();
+        BackendReturnObject isComplete = Backend.GameInfo.GetPublicContentsByGamerIndate("rank", Indate);
+
+        if (isComplete.IsSuccess())
         {
-            Debug.Log("returnvalue is not null");
-            // for the rows 
-            if (returnData.Keys.Contains("rows"))
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            if (data["rows"].Count > 0)
             {
-                Debug.Log("returnvalue contains rows");
-                JsonData rows = returnData["rows"];
+                string value = data["rows"][0][key]["N"].ToString();
+                string rankIndate = data["rows"][0]["inDate"]["S"].ToString();
 
-                for (int i = 0; i < rows.Count; i++)
-                {
-                    GetData(rows[i]);
-                }
-            }
-            // for an row
-            else if (returnData.Keys.Contains("row"))
-            {
-                Debug.Log("returnvalue contains row");
-                JsonData row = returnData["row"];
+                int result = Convert.ToInt32(value) + 1;
+                Param param = new Param();
+                param.Add(key, result);
 
-                GetData(row[0]);
-            }
-        }
-        else
-        {
-            Debug.Log("contents has no data");
-        }
-    }
-
-    // json parsing 활용
-    private void GetData(JsonData data)
-    {
-        string scoreKey = "score";
-        string lunchKey = "lunch";
-        string listKey = "list_string";
-
-        // score 라는 key가 존재하는지 확인
-        if (data.Keys.Contains(scoreKey))
-        {
-            var score = data[scoreKey]["N"];
-            Debug.Log("score: " + score);
-        }
-        else
-        {
-            Debug.Log("there is no key " + scoreKey);
-        }
-        //Debug.Log("data.Keys.Contains(scoreKey" + data.Keys.Contains(scoreKey));
-        // lunch 라는 key가 존재하는지 확인
-        if (data.Keys.Contains(lunchKey))
-        {
-            JsonData lunch = data[lunchKey]["M"];
-            var howmuchKey = "how much";
-            var whenKey = "when";
-            var whatKey = "what";
-
-            if (lunch.Keys.Contains(howmuchKey) && lunch.Keys.Contains(whenKey) && lunch.Keys.Contains(whatKey))
-            {
-                var howmuch = lunch[howmuchKey]["N"].ToString();
-                var when = lunch[whenKey]["S"].ToString();
-                var what = lunch[whatKey]["S"].ToString();
-
-                Debug.Log(when + " " + what + " " + howmuch);
+                GameInfoUpdate("rank", rankIndate, param);
             }
             else
             {
-                Debug.Log("there is no key (" + howmuchKey + " || " + whenKey + " || " + whatKey + ")");
+                Debug.Log("Error : no update to victory !");
             }
-        }
-        else
-        {
-            Debug.Log("there is no key " + lunchKey);
-        }
-
-        // list_string 라는 key가 존재하는지 확인
-        if (data.Keys.Contains(listKey))
-        {
-            List<string> returnlist = new List<string>();
-            JsonData list = data[listKey]["L"];
-            var listCount = list.Count;
-            if (listCount > 0)
-            {
-                for (int j = 0; j < listCount; j++)
-                {
-                    var listdata = list[j]["S"].ToString();
-                    returnlist.Add(listdata);
-                }
-                Debug.Log(JsonMapper.ToJson(returnlist));
-            }
-            else
-            {
-                Debug.Log("list has no data");
-            }
-        }
-        else
-        {
-            Debug.Log("there is no key " + listKey);
         }
     }
 }

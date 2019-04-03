@@ -50,8 +50,9 @@ public class BackendMember : MonoBehaviour
     // TODO : Error 팝업 (닉네임, 아이디, 패스워드)
     public void CustomSignUp()
     {
-        DeleteDeviceToken();
-        Backend.BMember.Logout();
+        //DeleteDeviceToken();
+        //Backend.BMember.Logout();
+        PlayerPrefs.DeleteKey("access_token");
 
         Debug.Log("-------------ACustomSignUp-------------");
         var user = signUI.GetSignUpDataNIP();
@@ -101,8 +102,9 @@ public class BackendMember : MonoBehaviour
     // TODO : Error 팝업 (아이디, 패스워드)
     public void CustomLogin()
     {
-        DeleteDeviceToken();
-        Backend.BMember.Logout();
+        //DeleteDeviceToken();
+        //Backend.BMember.Logout();
+        PlayerPrefs.DeleteKey("access_token");
 
         Debug.Log("-------------ACustomLogin-------------");
         var user = loginUI.GetLogInDataIP();
@@ -121,8 +123,9 @@ public class BackendMember : MonoBehaviour
         ServerCheckToBackend();
         if (!isComplete.IsSuccess()) return;
 
+        BackendManager.Instance.GetUserInfo();
         BackendManager.Instance.SetLoginData(id, pw);
-        BackendManager.Instance.GetTableList();
+        //BackendManager.Instance.GetTableList();
         title.LoadMainLobby();
     }
 
@@ -136,8 +139,7 @@ public class BackendMember : MonoBehaviour
             Debug.Log("Auto login");
 
             //BackendManager.Instance.SetLoginData(id, pw);
-            BackendManager.Instance.GetTableList();
-            Backend.BMember.GetUserInfo();
+            BackendManager.Instance.GetUserInfo();
             title.LoadMainLobby();
         }
     }
