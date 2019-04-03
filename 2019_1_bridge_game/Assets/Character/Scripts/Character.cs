@@ -176,8 +176,17 @@ namespace UBZ.MultiGame.Owner
             textMesh = Components.TextMesh;
         }
 
+        // TODO : skill 임시로 대시로 적용, 나중에는 캐릭터 마다 스킬 적용 해야 할 수도?
+        public void OnSkill()
+        {
+            Dash(750, 120);
+            Debug.Log("스킬(대시) 사용");
+        }
+
         public void Dash(float dashSpeed, float distance)
         {
+            if (!canBehavior)
+                return;
             if (isDash)
             {
                 StopCoroutine(checkingDashEnded);
@@ -324,7 +333,7 @@ namespace UBZ.MultiGame.Owner
                 //Debug.Log(rgbody.velocity + " | " + rgbody.velocity.magnitude + " | " + dashDistanceTotal);
                 yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
                 dashDistanceTotal += rgbody.velocity.magnitude;
-                if (rgbody.velocity.magnitude < 4f || dashDistanceTotal >= distance)
+                if (rgbody.velocity.magnitude < 1f || dashDistanceTotal >= distance)
                 {
                     rgbody.velocity = Vector2.zero;
                     checkingDashEnded = null;

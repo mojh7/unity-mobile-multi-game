@@ -220,8 +220,11 @@ namespace Photon.Pun.Demo.Asteroids
             Debug.Log("OnPlayerLeftRoom()");
             Debug.Log("player number : " + otherPlayer.GetPlayerNumber() + ", actor number : " + otherPlayer.ActorNumber
                 + ", team : " + otherPlayer.GetTeam());
-            Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
-            playerListEntries.Remove(otherPlayer.ActorNumber);
+            if(null != playerListEntries[otherPlayer.ActorNumber])
+            {
+                Destroy(playerListEntries[otherPlayer.ActorNumber].gameObject);
+                playerListEntries.Remove(otherPlayer.ActorNumber);
+            }
             //UpdatePlayerListEntries();
             StartGameButton.gameObject.SetActive(CheckPlayersReady());
         }

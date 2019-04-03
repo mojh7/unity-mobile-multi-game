@@ -56,27 +56,32 @@ namespace UBZ.MultiGame.Owner
             if (false == InGameUIManager.Instance.GetControllable())
                 return;
 
-            if (Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                Dash(300f, 50f);
+                Dash(700f, 60f);
             }
 
-            spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
+            if(null != bodyTransform)
+                spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
             if (isDash)
                 return;
 
-            directionVector = controller.GetMoveRecentNormalInputVector();
-            if (-90 <= directionDegree && directionDegree < 90)
+            if(photonView.IsMine)
             {
-                isRightDirection = true;
-                scaleVector.x = 1f;
-                spriteTransform.localScale = scaleVector;
-            }
-            else
-            {
-                isRightDirection = false;
-                scaleVector.x = -1f;
-                spriteTransform.localScale = scaleVector;
+                directionVector = controller.GetMoveRecentNormalInputVector();
+                directionDegree = directionVector.GetDegFromVector();
+                if (-90 <= directionDegree && directionDegree < 90)
+                {
+                    isRightDirection = true;
+                    scaleVector.x = 1f;
+                    spriteTransform.localScale = scaleVector;
+                }
+                else
+                {
+                    isRightDirection = false;
+                    scaleVector.x = -1f;
+                    spriteTransform.localScale = scaleVector;
+                }
             }
         }
 
@@ -103,19 +108,24 @@ namespace UBZ.MultiGame.Owner
             directionVector = new Vector3(1, 0, 0);
 
             Transform baseZoneTransform = null;
-            if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
+
+            if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
                 baseZoneTransform = InGameManager.Instance.GetRedTeamBaseZone();
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             }
-            else if (PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
+            else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
                 baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+            }
+            else
+            {
+                Components.SpriteRenderer.color = Color.black;
             }
 
             if (photonView.IsMine)
@@ -194,7 +204,7 @@ namespace UBZ.MultiGame.Owner
                     + controller.GetMovingInputVector() * (movingSpeed) * Time.fixedDeltaTime);
                 }
 
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
                 if (Input.GetKey(KeyCode.W))
                 {
                     bodyTransform.Translate(Vector2.up * 5f * Time.fixedDeltaTime);
@@ -212,7 +222,7 @@ namespace UBZ.MultiGame.Owner
                 {
                     bodyTransform.Translate(Vector2.left * 5f * Time.fixedDeltaTime);
                 }
-#endif
+//#endif
             }
             else // 타 user player
             {

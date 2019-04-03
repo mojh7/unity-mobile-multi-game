@@ -248,7 +248,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 5
   m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -709,14 +709,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4570984045348615637}
     m_Modifications:
-    - target: {fileID: 1245233399835474, guid: a023071975a4c6b4688227de501f67d8, type: 3}
-      propertyPath: m_Name
-      value: Status Effects_Stun
-      objectReference: {fileID: 0}
-    - target: {fileID: 1245233399835474, guid: a023071975a4c6b4688227de501f67d8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4549375646246750, guid: a023071975a4c6b4688227de501f67d8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -759,6 +751,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4549375646246750, guid: a023071975a4c6b4688227de501f67d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245233399835474, guid: a023071975a4c6b4688227de501f67d8, type: 3}
+      propertyPath: m_Name
+      value: Status Effects_Stun
+      objectReference: {fileID: 0}
+    - target: {fileID: 1245233399835474, guid: a023071975a4c6b4688227de501f67d8, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 199410555022790138, guid: a023071975a4c6b4688227de501f67d8,
