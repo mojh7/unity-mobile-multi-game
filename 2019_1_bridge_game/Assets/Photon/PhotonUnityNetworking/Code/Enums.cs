@@ -92,27 +92,43 @@ namespace Photon.Pun
 
     public enum ViewSynchronization { Off, ReliableDeltaCompressed, Unreliable, UnreliableOnChange }
 
-
+    /*
     /// <summary>
     /// Options to define how Ownership Transfer is handled per PhotonView.
     /// </summary>
     /// <remarks>
     /// This setting affects how RequestOwnership and TransferOwnership work at runtime.
     /// </remarks>
+    */ 
+
+    /// <summary>
+    /// 소유권 이전이 PhotonView 당 처리되는 방식을 정의하는 옵션.
+    /// </summary>
+    /// <remarks>
+    ///이 설정은 RequestOwnership 및 TransferOwnership이 런타임에 작동하는 방식에 영향을줍니다.
+    /// </remarks>
     public enum OwnershipOption
     {
+        // Ownership is fixed. Instantiated objects stick with their creator, scene objects always belong to the Master Client.
         /// <summary>
-        /// Ownership is fixed. Instantiated objects stick with their creator, scene objects always belong to the Master Client.
+        /// 소유권이 수정되었습니다. 인스턴스화 된 객체는 작성자와 계속 연결되며 장면 객체는 항상 마스터 클라이언트에 속합니다.
         /// </summary>
         Fixed,
+        // Ownership can be taken away from the current owner who can't object.
         /// <summary>
-        /// Ownership can be taken away from the current owner who can't object.
+        /// 소유권을 거부 할 수없는 현재 소유자로부터 소유권을 빼앗을 수 있습니다.
         /// </summary>
         Takeover,
+        /*
         /// <summary>
         /// Ownership can be requested with PhotonView.RequestOwnership but the current owner has to agree to give up ownership.
         /// </summary>
         /// <remarks>The current owner has to implement IPunCallbacks.OnOwnershipRequest to react to the ownership request.</remarks>
+        */
+        /// <summary>
+        /// 소유권은 PhotonView.RequestOwnership으로 요청할 수 있지만 현재 소유자는 소유권을 포기하는 것에 동의해야합니다.
+        /// </summary>
+        /// <remarks> 현재 소유자는 소유권 요청에 대응하기 위해 IPunCallbacks.OnOwnershipRequest를 구현해야합니다. </remarks>
         Request
     }
 }

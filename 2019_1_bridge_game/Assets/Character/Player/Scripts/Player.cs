@@ -74,12 +74,14 @@ namespace UBZ.MultiGame.Owner
                 {
                     isRightDirection = true;
                     scaleVector.x = 1f;
+                    bodyTransform.localScale = scaleVector;
                     spriteTransform.localScale = scaleVector;
                 }
                 else
                 {
                     isRightDirection = false;
                     scaleVector.x = -1f;
+                    bodyTransform.localScale = scaleVector;
                     spriteTransform.localScale = scaleVector;
                 }
             }
@@ -101,45 +103,32 @@ namespace UBZ.MultiGame.Owner
         public override void Init()
         {
             base.Init();
-            characterState = CharacterInfo.State.ALIVE;
             ownerType = CharacterInfo.OwnerType.PLAYER;
-            damageImmune = CharacterInfo.DamageImmune.NONE;
             abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
             directionVector = new Vector3(1, 0, 0);
 
             Transform baseZoneTransform = null;
-
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
-                Components.SpriteRenderer.color = Color.red;
                 baseZoneTransform = InGameManager.Instance.GetRedTeamBaseZone();
-                gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
-                Components.SpriteRenderer.color = Color.blue;
                 baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
-                gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-            }
-            else
-            {
-                Components.SpriteRenderer.color = Color.black;
             }
 
             if (photonView.IsMine)
             {
                 CameraController.Instance.AttachObject(this.transform); // get Camera
-                //baseColor = Color.white;
                 Components.DirectionArrow.SetBaseTown(baseZoneTransform);
                 InitController();
-                //TimeController.Instance.PlayStart();
             }
-            else
-            {
-                Components.DirectionArrow.RemoveDirectionArrow();
-            }
+
+            photonView.RPC("PlayerInit", RpcTarget.All);
+            //else
+            //{
+            //    Components.DirectionArrow.RemoveDirectionArrow();
+            //}
 
             //Debug.Log(PhotonNetwork.LocalPlayer.GetPlayerNumber());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
@@ -155,6 +144,33 @@ namespace UBZ.MultiGame.Owner
             //Debug.Log("hpMax : " + hpMax);
         }
 
+        [PunRPC]
+        private void PlayerInit()
+        {
+            Debug.Log(photonView.Owner.GetPlayerNumber() + ", " + photonView.Owner.GetTeam());
+            if (PunTeams.Team.RED == photonView.Owner.GetTeam())
+            {
+                Components.SpriteRenderer.color = Color.red;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+            }
+            else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
+            {
+                Components.SpriteRenderer.color = Color.blue;
+                gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+            }
+            else
+            {
+                Components.SpriteRenderer.color = Color.black;
+            }
+
+            Components.NickNameText.text = photonView.Owner.NickName;
+            if (!photonView.IsMine)
+            {
+                Components.DirectionArrow.RemoveDirectionArrow();
+            }
+        }
         #endregion
 
         #region func

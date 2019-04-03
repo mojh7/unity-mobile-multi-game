@@ -13,25 +13,25 @@ namespace UBZ.MultiGame.Owner
             PLAYER, ENEMY, OBJECT, PET
         }
 
-        public enum State
-        {
-            DIE, ALIVE
-        }
+        //public enum State
+        //{
+        //    DIE, ALIVE
+        //}
 
-        public enum DamageImmune
-        {
-            NONE, ALL
-        }
-        // 생각 중, 
+        //public enum DamageImmune
+        //{
+        //    NONE, ALL
+        //}
+
         public enum AbnormalImmune
         {
             NONE, ALL
         }
 
-        public enum AimType
-        {
-            AUTO, SEMIAUTO, MANUAL
-        }
+        //public enum AimType
+        //{
+        //    AUTO, SEMIAUTO, MANUAL
+        //}
     }
 
     public abstract class Character : MonoBehaviour
@@ -45,10 +45,10 @@ namespace UBZ.MultiGame.Owner
 
         #region Status
         [SerializeField] protected float movingSpeed;     // Character move Speed
-        protected CharacterInfo.DamageImmune damageImmune;
+        //protected CharacterInfo.DamageImmune damageImmune;
         protected CharacterInfo.AbnormalImmune abnormalImmune;
-        protected CharacterInfo.AimType aimType;
-        protected CharacterInfo.State characterState;
+        //protected CharacterInfo.AimType aimType;
+        //protected CharacterInfo.State characterState;
         protected CharacterInfo.OwnerType ownerType;
         #endregion
 
@@ -57,6 +57,8 @@ namespace UBZ.MultiGame.Owner
         protected AbnormalComponents abnormalComponents;
         protected SpriteRenderer spriteRenderer;
         protected Transform spriteTransform;
+        protected Transform nickNameTransform;
+        protected Transform abnormalTransform;
         protected CircleCollider2D interactiveCollider2D;
         //protected AnimationHandler animationHandler;
         //protected BuffManager buffManager;
@@ -64,8 +66,6 @@ namespace UBZ.MultiGame.Owner
         //protected AIController aiController;
         protected Transform shadowTransform;
         protected Transform bodyTransform;
-
-        protected TextMesh textMesh;
 
         public SpriteRenderer SpriteRenderer
         {
@@ -145,26 +145,10 @@ namespace UBZ.MultiGame.Owner
         #region unityFunc
         protected virtual void Awake()
         {
-            int controlTypeAbnormalStatusTypeLength = (int)ControlTypeAbnormalStatus.END;
-            isControlTypeAbnormalStatuses = new bool[controlTypeAbnormalStatusTypeLength];
-            controlTypeAbnormalStatusCoroutines = new Coroutine[controlTypeAbnormalStatusTypeLength];
-            controlTypeAbnormalStatusTime = new float[controlTypeAbnormalStatusTypeLength];
-            controlTypeAbnormalStatusesDurationMax = new float[controlTypeAbnormalStatusTypeLength];
-        }
-        #endregion
-
-        #region func
-
-        public virtual void Init()
-        {
-            Components = GetComponent<CharacterComponents>();
-            Components.Init();
             InitStatusEffects();
 
-            isDash = false;
-            canMove = true;
-            canBehavior = true;
-
+            Components = GetComponent<CharacterComponents>();
+            Components.Init();
             spriteRenderer = Components.SpriteRenderer;
             spriteTransform = Components.SpriteTransform;
             interactiveCollider2D = Components.InteractiveCollider2D;
@@ -172,8 +156,16 @@ namespace UBZ.MultiGame.Owner
             rgbody = Components.Rigidbody2D;
             shadowTransform = Components.ShadowTransform;
             bodyTransform = GetComponent<Transform>();
+        }
+        #endregion
 
-            textMesh = Components.TextMesh;
+        #region func
+
+        public virtual void Init()
+        {
+            isDash = false;
+            canMove = true;
+            canBehavior = true;
         }
 
         // TODO : skill 임시로 대시로 적용, 나중에는 캐릭터 마다 스킬 적용 해야 할 수도?
@@ -209,6 +201,12 @@ namespace UBZ.MultiGame.Owner
 
         protected void InitStatusEffects()
         {
+            int controlTypeAbnormalStatusTypeLength = (int)ControlTypeAbnormalStatus.END;
+            isControlTypeAbnormalStatuses = new bool[controlTypeAbnormalStatusTypeLength];
+            controlTypeAbnormalStatusCoroutines = new Coroutine[controlTypeAbnormalStatusTypeLength];
+            controlTypeAbnormalStatusTime = new float[controlTypeAbnormalStatusTypeLength];
+            controlTypeAbnormalStatusesDurationMax = new float[controlTypeAbnormalStatusTypeLength];
+
             restrictMovingCount = 0;
             restrictBehaviorCount = 0;
             for (int i = 0; i < (int)ControlTypeAbnormalStatus.END; i++)
