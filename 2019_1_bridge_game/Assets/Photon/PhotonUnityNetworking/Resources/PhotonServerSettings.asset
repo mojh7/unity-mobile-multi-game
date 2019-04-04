@@ -31,9 +31,9 @@ MonoBehaviour:
   RpcList:
   - DestroySpaceship
   - Fire
-  - RespawnSpaceship
-  - Dash
+  - PlayerInit
   - PunPickup
   - PunRespawn
+  - RespawnSpaceship
   DisableAutoOpenWizard: 1
   ShowSettings: 0

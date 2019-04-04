@@ -315,8 +315,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         while (true)
         {
-
-
             /*
             int randomInt = 0;
             while (true)
@@ -330,38 +328,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         }
     }
 
-    private IEnumerator SpawnAsteroid()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(Random.Range(ASTEROIDS_MIN_SPAWN_TIME, ASTEROIDS_MAX_SPAWN_TIME));
-
-            Vector2 direction = Random.insideUnitCircle;
-            Vector3 position = Vector3.zero;
-
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
-            {
-                // Make it appear on the left/right side
-                position = new Vector3(Mathf.Sign(direction.x) * Camera.main.orthographicSize * Camera.main.aspect, 0, direction.y * Camera.main.orthographicSize);
-            }
-            else
-            {
-                // Make it appear on the top/bottom
-                position = new Vector3(direction.x * Camera.main.orthographicSize * Camera.main.aspect, 0, Mathf.Sign(direction.y) * Camera.main.orthographicSize);
-            }
-
-            // Offset slightly so we are not out of screen at creation time (as it would destroy the asteroid right away)
-            position -= position.normalized * 0.1f;
-
-
-            Vector3 force = -position.normalized * 1000.0f;
-            Vector3 torque = Random.insideUnitSphere * Random.Range(500.0f, 1500.0f);
-            object[] instantiationData = { force, torque, true };
-
-            PhotonNetwork.InstantiateSceneObject("BigAsteroid", position, Quaternion.Euler(Random.value * 360.0f, Random.value * 360.0f, Random.value * 360.0f), 0, instantiationData);
-        }
-    }
-
+    // TODO : 구조 언제든지 바뀔 수 있음.
     private IEnumerator EndOfGame(string winner, int score)
     {
         float timer = 5.0f;

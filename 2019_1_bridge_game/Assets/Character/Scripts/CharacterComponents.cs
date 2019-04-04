@@ -14,7 +14,7 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private BoxCollider2D hitBox;
     [SerializeField] private Transform shadowTransform;
 
-    [SerializeField] private TextMesh nickTextMesh;
+    [SerializeField] private TextMesh nickNameText;
 
     #endregion
 
@@ -75,11 +75,11 @@ public class CharacterComponents : MonoBehaviour
             return shadowTransform;
         }
     }
-    public TextMesh TextMesh
+    public TextMesh NickNameText
     {
         get
         {
-            return nickTextMesh;
+            return nickNameText;
         }
     }
 
