@@ -15,3 +15,7 @@ MonoBehaviour:
   id: 1
   name: kim
   gold: 0
+  sprite: {fileID: 21300000, guid: c32cd76ee6df42443af985eeb99ae180, type: 3}
+  genius: 60
+  sociability: 50
+  health: 40

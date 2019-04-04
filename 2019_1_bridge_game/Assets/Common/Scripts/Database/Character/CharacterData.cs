@@ -11,4 +11,7 @@ public class CharacterData : ScriptableObject
     public string name = "";
     public int gold;
     public Sprite sprite;
+    public int genius;
+    public int sociability;
+    public int health;
 }

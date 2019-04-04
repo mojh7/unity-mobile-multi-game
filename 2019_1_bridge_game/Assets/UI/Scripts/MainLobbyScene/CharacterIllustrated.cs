@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// TO DO
-// 캐릭터 획득 여부에 따른 잠금 표시
-public class UIillustratedBook : UIControl
+public class CharacterIllustrated : MonoBehaviour
 {
     [SerializeField] private GameObject characterllBook;
     [SerializeField] private Transform scrollRect;
-    [SerializeField] private IllustratedBookDetail bookDetail;
+    [SerializeField] private CharacterBookDetail bookDetail;
     [SerializeField] private CharacterDatabase ch_database;
 
     private List<GameObject> illustratedBook = new List<GameObject>();
@@ -31,14 +29,17 @@ public class UIillustratedBook : UIControl
         for (int i = 0; i < cnt; i++)
         {
             GameObject tmpCharacter = Instantiate(characterllBook, scrollRect);
-            IllustratedBook tmpIllustrateBook = tmpCharacter.GetComponent<IllustratedBook>();
+            CharacterBook tmpIllustrateBook = tmpCharacter.GetComponent<CharacterBook>();
 
             int id = data.dataList[i].id;
             string name = data.dataList[i].name;
             Sprite sprite = data.dataList[i].sprite;
+            int gen = data.dataList[i].genius;
+            int social = data.dataList[i].sociability;
+            int health = data.dataList[i].health;
 
             tmpIllustrateBook.Init(sprite, name);
-            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name));
+            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name, gen, social, health));
 
             illustratedBook.Add(tmpCharacter);
         }
@@ -48,8 +49,9 @@ public class UIillustratedBook : UIControl
 
     }
 
-    private void AddListenCharacterDetail(Sprite img, string name)
+    private void AddListenCharacterDetail(Sprite img, string name, int gen, int social, int health)
     {
-        bookDetail.SetBookDetail(img, name);
+        bookDetail.SetBookDetail(img, name, gen, social, health);
     }
 }
+

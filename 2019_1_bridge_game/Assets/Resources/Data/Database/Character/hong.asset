@@ -16,3 +16,6 @@ MonoBehaviour:
   name: hong
   gold: 200
   sprite: {fileID: 21300000, guid: ca26750c81f71c2418d25a9424a427a1, type: 3}
+  genius: 50
+  sociability: 50
+  health: 50

@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-// TO DO
-// 캐릭터 획득 여부에 따른 잠금 표시
-public class UIillustratedBook : UIControl
+public class UICloset : UIControl
 {
     [SerializeField] private GameObject characterllBook;
     [SerializeField] private Transform scrollRect;
@@ -24,8 +23,8 @@ public class UIillustratedBook : UIControl
     {
         Debug.Log("CharacterBook : Initialized");
         illustratedBook.Clear();
-        //CharacterDatabase data = DatabaseManager.Instance.characterData;
         CharacterDatabase data = ch_database;
+
         // 도감의 윗 줄 UI
         int cnt = data.dataList.Count;
         for (int i = 0; i < cnt; i++)
