@@ -7,6 +7,7 @@ TagManager:
   - Interactor
   - Bullet
   - BaseZone
+  - Skin
   layers:
   - Default
   - TransparentFX

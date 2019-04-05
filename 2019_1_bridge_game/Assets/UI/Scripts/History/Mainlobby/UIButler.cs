@@ -36,6 +36,7 @@ public class UIButler : UIControl
     }
     void Update()
     {
+        /*
         //초기화면 실행 후 터치 시
         if (Input.touchCount > 0)
         {
@@ -49,5 +50,7 @@ public class UIButler : UIControl
                 tcount++;
             }
         }
+        */
+
     }
 }

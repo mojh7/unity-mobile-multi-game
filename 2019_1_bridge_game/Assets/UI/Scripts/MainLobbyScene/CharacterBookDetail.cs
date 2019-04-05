@@ -5,14 +5,16 @@ using UnityEngine.UI;
 
 public class CharacterBookDetail : MonoBehaviour
 {
+    [SerializeField] private int id;
     [SerializeField] private Image image;
     [SerializeField] private Text nameText;
     [SerializeField] private Slider gen;
     [SerializeField] private Slider social;
     [SerializeField] private Slider health;
 
-    public void SetBookDetail(Sprite img, string name, int gen, int social, int health)
+    public void SetBookDetail(Sprite img, string name, int gen, int social, int health, int id)
     {
+        this.id = id;
         this.image.sprite = img;
         this.nameText.text = name;
         this.gen.value = gen;
@@ -21,4 +23,8 @@ public class CharacterBookDetail : MonoBehaviour
         Debug.Log("value : "+ gen + social + health);
     }
 
+    public int GetId()
+    {
+        return id;
+    }
 }

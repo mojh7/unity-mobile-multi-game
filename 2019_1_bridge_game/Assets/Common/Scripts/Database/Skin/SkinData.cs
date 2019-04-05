@@ -6,7 +6,8 @@ using UnityEngine;
 [System.Serializable]
 public class SkinData : ScriptableObject
 {   
-    public string character_name;
+    public int id;
     public string skin_name;
+    public string characteristic;
     public Sprite sprite;
 }

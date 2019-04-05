@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5a6d3a012a114d4bbc707a0874ad789, type: 3}
-  m_Name: hongskin
+  m_Name: kimskin
   m_EditorClassIdentifier: 
-  id: 0
-  skin_name: hongskin
-  characteristic: hong's skin1
-  sprite: {fileID: 21300036, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
+  id: 1
+  skin_name: kimskin
+  characteristic: kim's skin1
+  sprite: {fileID: 21300000, guid: 6688c7d2f5541c448b0c47cd8ab3d96b, type: 3}

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a6d3a012a114d4bbc707a0874ad789, type: 3}
   m_Name: hongskin2
   m_EditorClassIdentifier: 
-  character_name: hong
+  id: 0
   skin_name: hongskin2
-  sprite: {fileID: 0}
+  characteristic: hong's skin2
+  sprite: {fileID: 21300000, guid: b7e601737b87e9c49bc8e584ed62d141, type: 3}

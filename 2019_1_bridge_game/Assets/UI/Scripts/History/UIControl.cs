@@ -35,6 +35,7 @@ public class UIControl : MonoBehaviour
             Debug.Log("hide and animate");
             if (transform.GetComponent<Button>() != null)
                 transform.GetComponent<Button>().interactable = false;
+          
         }
         else
         {
