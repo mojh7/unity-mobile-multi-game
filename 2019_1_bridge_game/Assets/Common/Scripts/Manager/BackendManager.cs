@@ -16,8 +16,8 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     private const string stageTable     = "stage";      // private
     private const string itemTable      = "item";       // private
 
-    private List<string> PublicTables = new List<string>();
-    private List<string> PrivateTables = new List<string>();
+    private Dictionary<string, int> characterDic = new Dictionary<string, int>();
+    private Dictionary<string, int> bgmDic = new Dictionary<string, int>();
 
     #region Get / Set
     public void SetLoginData(string id, string pw)
@@ -109,11 +109,12 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     }
 
     // 게임 정보 수정
-    public void GameInfoUpdate(string table, string indate, Param param)
+    public bool GameInfoUpdate(string table, string indate, Param param)
     {
         BackendReturnObject isComplete = Backend.GameInfo.Update(table, indate, param);
 
-        Debug.Log(table + "update : " + isComplete.ToString());
+        Debug.Log(table + " update : " + isComplete.ToString());
+        return isComplete.IsSuccess();
     }
 
     // 게임 로그 생성 : 로그 타입, Param
@@ -172,6 +173,20 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
 
             IntoDataForJson(data, characterTable, key, val);
         }
+    }
+
+    // 캐릭터 구매 업데이트
+    public bool UserCharacterGetIntoBackend(string table, string name, int val)
+    {
+        bool isSuccess = UserItemDataUpdate(characterDic, "character", name, val);
+        return isSuccess;
+    }
+
+    // 음악 구매 업데이트
+    public bool UserBGMGetIntoBackend(string table, string name, int val)
+    {
+        bool isSuccess = UserItemDataUpdate(bgmDic, "bgm", name, val);
+        return isSuccess;
     }
 
     // 친구 요청
@@ -299,6 +314,44 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         }
     }
 
+    private bool UserItemDataUpdate(Dictionary<string, int> dic, string table, string name, int val)
+    {
+        string Indate = GetUserItemDicToJson();
+
+        foreach (var item in dic.Keys)
+        {
+            if (item.Equals(name)) { dic[item] = val; break; }
+        }
+
+        Param param = new Param();
+        param.Add(table, dic);
+
+        return GameInfoUpdate(itemTable, Indate, param);
+    }
+
+    // 외부 서버의 아이템 데이터를 받아옴 : indate
+    private string GetUserItemDicToJson()
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("item");
+        characterDic.Clear(); bgmDic.Clear();
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+            JsonData chaJson = data["rows"][0]["character"]["M"];
+            JsonData bgmJson = data["rows"][0]["bgm"]["M"];
+
+            foreach (var item in chaJson.Keys)
+                characterDic.Add(item, Convert.ToInt32(chaJson[item][0].ToString()));
+            foreach (var item in bgmJson.Keys)
+                bgmDic.Add(item, Convert.ToInt32(bgmJson[item][0].ToString()));
+
+            return data["rows"][0]["inDate"]["S"].ToString();
+        }
+        return null;
+    }
+
+    // 친구 목록
     private (int, string[], string[], string[]) FriendDataForJson(JsonData data)
     {
         string[] nick, Indate, timeAt;

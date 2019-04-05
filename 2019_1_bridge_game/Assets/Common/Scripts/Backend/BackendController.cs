@@ -6,12 +6,13 @@ using System;
 
 public class BackendController : MonoBehaviourSingleton<BackendController>
 {
-    private const string victoryDB  = "victory";
-    private const string defeatDB   = "defeat";
-    private const string stageDB    = "stage";
-    private const string coinDB     = "coin";
-    private const string levelDB    = "level";
-
+    private const string victoryDB   = "victory";
+    private const string defeatDB    = "defeat";
+    private const string stageDB     = "stage";
+    private const string coinDB      = "coin";
+    private const string levelDB     = "level";
+    private const string characterDB = "character";
+    private const string bgmDB       = "bgm";
 
 
     // 이후 rank 점수 추가 호출
@@ -49,6 +50,36 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
     {
         Debug.Log("Update to Backend : DB " + levelDB);
         BackendManager.Instance.UserDataUpdateIntoBackend(levelDB, 1);
+    }
+
+    // 아이템 획득 : character kim_default, 1
+    public void GetCharacterUpdateBackend(string name)
+    {
+        Debug.Log("Update to Backend : DB " + characterDB);
+        bool isSuccess = BackendManager.Instance.UserCharacterGetIntoBackend(characterDB, "kim_default", 0);
+        if (isSuccess)
+        {
+            Debug.Log(name + " : 구매 성공하였습니다."); // 구매 성공
+        }
+        else
+        {
+            Debug.Log(name + " : 구매 실패하였습니다.");// 구매 실패
+        }
+    }
+
+    // 아이템 획득 : bgm song_0, 1
+    public void GetBGMUpdateBackend(string name)
+    {
+        Debug.Log("Update to Backend : DB " + bgmDB);
+        bool isSuccess = BackendManager.Instance.UserBGMGetIntoBackend(bgmDB, "song_1", 0);
+        if (isSuccess)
+        {
+            Debug.Log(name + " : 구매 성공하였습니다."); // 구매 성공
+        }
+        else
+        {
+            Debug.Log(name + " : 구매 실패하였습니다.");// 구매 실패
+        }
     }
 
     // 닉네임 검색 후 친구요청 
