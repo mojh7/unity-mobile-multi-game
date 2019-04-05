@@ -15,7 +15,6 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     private const string rankTable      = "rank";       // public 
     private const string stageTable     = "stage";      // private
     private const string itemTable      = "item";       // private
-    private const string friendTable    = "friend";     // private
 
     private List<string> PublicTables = new List<string>();
     private List<string> PrivateTables = new List<string>();
@@ -103,17 +102,10 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
             { "song1", 1 },
             { "song2", 0 }
         };
-        param.Add("item", "null");
         param.Add("character", character);
         param.Add("bgm", bgm);
 
         InsertGameInfo(itemTable, param);
-
-        // 친구 기본 데이터
-        param.Clear();
-        param.Add("friend", "-");
-
-        InsertGameInfo(friendTable, param);
     }
 
     // 게임 정보 수정
@@ -124,11 +116,11 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         Debug.Log(table + "update : " + isComplete.ToString());
     }
 
-    // 게임 로그 생성
-    private void InsertLog(Param param)
+    // 게임 로그 생성 : 로그 타입, Param
+    private void InsertLog(string logType, Param param)
     {
         Debug.Log("-----------------Insert Log-----------------");
-        Debug.Log(Backend.GameInfo.InsertLog("update_log", param).ToString());
+        Debug.Log(Backend.GameInfo.InsertLog(logType, param).ToString());
     }
 
     // 데이터베이스 
@@ -142,8 +134,8 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         }
     }
 
-    // 게임 결과 
-    public void GameResultIntoBackend(string key)
+    // 게임 결과 : 랭크 점수 반영
+    public void GameResultIntoBackend(string key, int val)
     {
         GetUserInfo();
         BackendReturnObject isComplete = Backend.GameInfo.GetPublicContentsByGamerIndate("rank", Indate);
@@ -152,21 +144,175 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         {
             JsonData data = isComplete.GetReturnValuetoJSON();
 
-            if (data["rows"].Count > 0)
-            {
-                string value = data["rows"][0][key]["N"].ToString();
-                string rankIndate = data["rows"][0]["inDate"]["S"].ToString();
-
-                int result = Convert.ToInt32(value) + 1;
-                Param param = new Param();
-                param.Add(key, result);
-
-                GameInfoUpdate("rank", rankIndate, param);
-            }
-            else
-            {
-                Debug.Log("Error : no update to victory !");
-            }
+            IntoDataForJson(data, rankTable, key, val);
         }
+    }
+
+    // 스테이지 클리어
+    public void StageIncreaseIntoBackend(string key, int val)
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("stage");
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            IntoDataForJson(data, stageTable, key, val);
+        }
+    }
+
+    // 유저 정보 (코인, 레벨) 업데이트
+    public void UserDataUpdateIntoBackend(string key, int val)
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("character");
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            IntoDataForJson(data, characterTable, key, val);
+        }
+    }
+
+    // 친구 요청
+    public string FriendUpdateIntoBackend(string indate)
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.RequestFriend(indate);
+
+        if (isComplete.IsSuccess())
+        {
+            return isComplete.GetStatusCode();
+        }
+
+        return null;
+    }
+
+    // 친구 찾기 : 닉네임, null 이면 유저 없음
+    public string FindFriend(string nick)
+    {
+        BackendReturnObject isComplete = Backend.Social.GetGamerIndateByNickname(nick);
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+             return data["rows"][0]["inDate"]["S"].ToString();
+        }
+        return null;
+    }
+
+     // 친구 목록 : 개수, 닉네임, 식별키, 요청 시간
+    public (int, string[], string[], string[]) GetFriendList()
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.GetFriendList();
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            return FriendDataForJson(data);
+        }
+
+        return (0, null, null, null);
+    }
+
+    // 친구 요청 받은 목록 : 개수, 닉네임, 식별키, 요청 시간
+    public (int, string[], string[], string[]) FriendReceivedRequestList()
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.GetReceivedRequestList();
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            return FriendDataForJson(data);
+        }
+
+        return (0, null, null, null);
+    }
+
+    // 친구 요청 보낸 목록 : 닉네임, 식별키, 요청 시간
+    public (int, string[], string[], string[]) FriendSentRequestList()
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.GetSentRequestList();
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            return FriendDataForJson(data);
+        }
+
+        return (0, null, null, null);
+    }
+
+    // 친구 요청 철회
+    public bool FriendRevokeRequest(string indate)
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.RevokeSentRequest(indate);
+
+        return isComplete.IsSuccess();
+    }
+
+    // 친구 요청 수락
+    public bool FriendAcceptRequest(string indate)
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.AcceptFriend(indate);
+
+        return isComplete.IsSuccess();
+    }
+
+    // 친구 요청 거절
+    public bool FriendRejectRequest(string indate)
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.RejectFriend(indate);
+
+        return isComplete.IsSuccess();
+    }
+
+    // 친구 삭제
+    public bool FriendBreakRequest(string indate)
+    {
+        BackendReturnObject isComplete = Backend.Social.Friend.BreakFriend(indate);
+
+        return isComplete.IsSuccess();
+    }
+
+    private void IntoDataForJson(JsonData data, string table, string key, int val)
+    {
+        if (data["rows"].Count > 0)
+        {
+            string value = data["rows"][0][key]["N"].ToString();
+            string Indate = data["rows"][0]["inDate"]["S"].ToString();
+
+            int result = Convert.ToInt32(value) + val;
+            if (result < 0) return;
+
+            Param param = new Param();
+            param.Add(key, result);
+
+            GameInfoUpdate(table, Indate, param);
+        }
+        else
+        {
+            Debug.Log("Error : no update to victory !");
+        }
+    }
+
+    private (int, string[], string[], string[]) FriendDataForJson(JsonData data)
+    {
+        string[] nick, Indate, timeAt;
+        nick   = new string[data.Count];
+        Indate = new string[data.Count];
+        timeAt = new string[data.Count];
+
+        for (int i = 0; i < data.Count; i++)
+        {
+            nick[i]   = data["rows"][i]["nickname"]["S"].ToString();
+            Indate[i] = data["rows"][i]["inDate"]["S"].ToString();
+            timeAt[i] = data["rows"][i]["createdAt"]["S"].ToString(); // "2018-12-27T04:43:18.715Z"
+        }
+
+        return (data.Count, nick, Indate, timeAt);
     }
 }
