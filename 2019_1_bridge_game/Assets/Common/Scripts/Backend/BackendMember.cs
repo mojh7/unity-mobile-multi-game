@@ -32,6 +32,7 @@ public class BackendMember : MonoBehaviour
             else
             {
                 Debug.LogError("Failed to initialize the backend");
+                Backend.Initialize(bro => { });
             }
         });
     }

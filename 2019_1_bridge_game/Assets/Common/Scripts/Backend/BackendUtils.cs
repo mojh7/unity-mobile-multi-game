@@ -92,6 +92,13 @@ public class BackendUtils
         return true;
     }
 
+    public bool FriendRequestCheck(string code)
+    {
+        // 요청이 가득 찬 경우 or 요청을 다시 하였을 경우
+        if (code.Equals("412") || code.Equals("409")) return false;
+        return true;
+    }
+
     private void LoadBadWordFromCSV(string assetName)
     {
         wordHash = CSVReader.ReadHash("BadWord/" + assetName);
