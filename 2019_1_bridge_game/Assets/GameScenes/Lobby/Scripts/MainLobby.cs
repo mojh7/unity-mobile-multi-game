@@ -6,11 +6,13 @@ using UnityEngine.UI;
 public class MainLobby : MonoBehaviour
 {
     #region variables
+    [SerializeField] private FriendController friendController;
     #endregion
 
     #region unityFunc
     private void Start()
     {
+        friendController.Initialized();
     }
     #endregion
 

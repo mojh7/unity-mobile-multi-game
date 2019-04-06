@@ -100,57 +100,21 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
     }
 
     // 친구 요청 받은 목록 (개수, 닉네임, 식별키, 요청 시간)
-    public void GetFriendList()
+    public (int, string[], string[], string[]) GetFriendList()
     {
-        var list = BackendManager.Instance.GetFriendList();
-        int count = list.Item1;
-        if (count <= 0)
-        {
-            Debug.Log("친구 목록이 없습니다."); return;
-        }
-
-        string[] nick, Indate, timeAt;
-        nick    = list.Item2;
-        Indate  = list.Item3;
-        timeAt  = list.Item4;
-
-        // 목록 생성 처리
+        return BackendManager.Instance.GetFriendList();
     }
 
     // 친구 요청 받은 목록 (개수, 닉네임, 식별키, 요청 시간)
-    public void GetReceivedFriendRequestList()
+    public (int, string[], string[], string[]) GetReceivedFriendRequestList()
     {
-        var list = BackendManager.Instance.FriendReceivedRequestList();
-        int count = list.Item1;
-        if (count <= 0)
-        {
-            Debug.Log("친구 요청을 받은 목록이 없습니다."); return;
-        }
-
-        string[] nick, Indate, timeAt;
-        nick    = list.Item2;
-        Indate  = list.Item3;
-        timeAt  = list.Item4;
-
-        // 목록 생성 처리
+        return BackendManager.Instance.FriendReceivedRequestList();
     }
 
     // 친구 요청 보낸 목록 (개수, 닉네임, 식별키, 요청 시간)
-    public void GetSentFriendRequestList()
+    public (int, string[], string[], string[]) GetSentFriendRequestList()
     {
-        var list = BackendManager.Instance.FriendSentRequestList();
-        int count = list.Item1;
-        if (count <= 0)
-        {
-            Debug.Log("친구 요청을 보낸 목록이 없습니다."); return;
-        }
-
-        string[] nick, Indate, timeAt;
-        nick    = list.Item2;
-        Indate  = list.Item3;
-        timeAt  = list.Item4;
-
-        // 목록 생성 처리
+        return BackendManager.Instance.FriendSentRequestList();
     }
 
     // 친구요청 수락 : indate - 위 List에서 받아 옴.

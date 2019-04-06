@@ -354,6 +354,8 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     // 친구 목록
     private (int, string[], string[], string[]) FriendDataForJson(JsonData data)
     {
+        if (data.Count <= 0 || data["rows"].Count <= 0) return (0, null, null, null);
+
         string[] nick, Indate, timeAt;
         nick   = new string[data.Count];
         Indate = new string[data.Count];
