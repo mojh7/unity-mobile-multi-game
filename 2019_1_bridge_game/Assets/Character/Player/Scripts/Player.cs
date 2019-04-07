@@ -75,7 +75,7 @@ namespace UBZ.MultiGame.Owner
                 if (canMove)
                 {
                     bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
-                    Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
+                    //Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
                     if (Input.GetKey(KeyCode.W))
                     {
                         bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
@@ -113,7 +113,7 @@ namespace UBZ.MultiGame.Owner
                 //끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
                 else
                 {
-                    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 10.0f);
+                    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 5.0f);
                 }
             }
 
