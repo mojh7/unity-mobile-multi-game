@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UBZ.MultiGame.Owner.CharacterInfo;
+using Photon.Pun;
+using Photon.Realtime;
 
 namespace UBZ.MultiGame.Owner
 {
@@ -33,7 +34,7 @@ namespace UBZ.MultiGame.Owner
         //    AUTO, SEMIAUTO, MANUAL
         //}
     }
-
+    
     public abstract class Character : MonoBehaviour
     {
         #region constants
@@ -90,7 +91,6 @@ namespace UBZ.MultiGame.Owner
         protected LayerMask enemyLayer;
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
-        protected Vector3 fixedObjectScale;
         #endregion
 
         #region abnormalStatusVariables
@@ -164,7 +164,6 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region func
-
         public virtual void Init()
         {
             isDash = false;
