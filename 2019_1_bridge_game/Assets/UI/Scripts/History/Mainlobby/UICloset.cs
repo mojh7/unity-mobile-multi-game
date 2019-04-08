@@ -9,30 +9,25 @@ public class UICloset : UIControl
     [SerializeField] private Transform scrollRect;
     [SerializeField] private SkinBookDetail bookDetail;
     [SerializeField] private SkinDatabase ch_database;
-    [SerializeField] private CharacterIllustrated character;
-    [SerializeField] private Button exit;
+    [SerializeField] private UIBuying buyingpanel;
 
     private List<GameObject> illustratedBook = new List<GameObject>();
     private int ch_id;
     private GameObject target;
 
-    /*
-    private void Start()
-    {
-        LoadSkin();
-    }
-    */
     private void OnEnable()
     {
         Debug.Log("destroy");
         DestroySkin();
         LoadSkin();
     }
-    private void OnDisable()
+    private void Update()
     {
-        //Debug.Log("destroy");
-      //  DestroySkin();
+        Sprite sprite = bookDetail.GetImage();
+        string name = bookDetail.GetnameText();
+        bookDetail.GetButton().onClick.AddListener(() => AddListenBuying(sprite, name));
     }
+
     //캐릭터별로 스킨 로드
     public void LoadSkin()
     {
@@ -56,8 +51,7 @@ public class UICloset : UIControl
                 Sprite sprite = data.dataList[i].sprite;
                 string text = data.dataList[i].characteristic;
                 tmpIllustrateBook.Init(sprite, name);
-                tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name,text));
-
+                tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenSkinDetail(sprite, name,text));
                 illustratedBook.Add(tmpSkin);
                 
             }
@@ -84,9 +78,16 @@ public class UICloset : UIControl
 
     }
 
-    private void AddListenCharacterDetail(Sprite img, string name, string text)
+    private void AddListenSkinDetail(Sprite img, string name, string text)
     {
         bookDetail.SetBookDetail(img, name, text);
+
+    }
+
+    private void AddListenBuying(Sprite img, string name)
+    {
+        buyingpanel.setBuyingpanel(img, name);
+        buyingpanel.OnShow();
     }
 
     public int GetId()
