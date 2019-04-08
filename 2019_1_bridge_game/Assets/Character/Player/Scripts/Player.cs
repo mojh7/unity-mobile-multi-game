@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
+using UBZ.MultiGame.Owner.CharacterInfo;
 
 namespace UBZ.MultiGame.Owner
 {
@@ -25,6 +26,7 @@ namespace UBZ.MultiGame.Owner
         private new Rigidbody rigidbody;
         private new Collider collider;
         private new Renderer renderer;
+        private Vector3 currentPos;
         #endregion
 
         #region get / set
@@ -64,7 +66,7 @@ namespace UBZ.MultiGame.Owner
             if(null != bodyTransform)
                 spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
 
-            if (isDash)
+            if (IsBehavioring(BehaviorState.Dash))
                 return;
 
             if(photonView.IsMine)
@@ -105,16 +107,16 @@ namespace UBZ.MultiGame.Owner
             }
             else
             {
-                //끊어진 시간이 너무 길 경우(텔레포트)
-                if ((bodyTransform.position - currentPos).sqrMagnitude >= 5.0f * 5.0f)
-                {
-                    bodyTransform.position = currentPos;
-                }
-                //끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
-                else
-                {
-                    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 5.0f);
-                }
+                ////끊어진 시간이 너무 길 경우(텔레포트)
+                //if ((bodyTransform.position - currentPos).sqrMagnitude >= 5.0f * 5.0f)
+                //{
+                //    bodyTransform.position = currentPos;
+                //}
+                ////끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
+                //else
+                //{
+                //    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 5.0f);
+                //}
             }
 
             if(isRightDirection)
@@ -143,28 +145,6 @@ namespace UBZ.MultiGame.Owner
         // FIXME : 이제 로컬이 아닌 서버에서 닉네임을 받아드릴 것임.
         public override void Init()
         {
-            base.Init();
-            ownerType = CharacterInfo.OwnerType.PLAYER;
-            abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
-            directionVector = new Vector3(1, 0, 0);
-
-            Transform baseZoneTransform = null;
-            if (PunTeams.Team.RED == photonView.Owner.GetTeam())
-            {
-                baseZoneTransform = InGameManager.Instance.GetRedTeamBaseZone();
-            }
-            else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
-            {
-                baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
-            }
-
-            if (photonView.IsMine)
-            {
-                CameraController.Instance.AttachObject(this.transform); // get Camera
-                Components.DirectionArrow.SetBaseTown(baseZoneTransform);
-                InitController();
-            }
-
             photonView.RPC("PlayerInit", RpcTarget.All);
             //else
             //{
@@ -181,14 +161,19 @@ namespace UBZ.MultiGame.Owner
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
 
             //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
-
-            //Debug.Log("hpMax : " + hpMax);
         }
+           
+
 
         [PunRPC]
         private void PlayerInit()
         {
-            Debug.Log("PlayerInit : " + photonView.Owner.GetPlayerNumber() + ", " + photonView.Owner.GetTeam());
+            base.Init();
+            ownerType = CharacterInfo.OwnerType.PLAYER;
+            abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
+            directionVector = new Vector3(1, 0, 0);
+
+            Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
@@ -201,24 +186,32 @@ namespace UBZ.MultiGame.Owner
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
             }
-            else
-            {
-                Components.SpriteRenderer.color = Color.black;
-            }
 
-            //Components.NickNameText.text = photonView.Owner.NickName;
-            if (!photonView.IsMine)
+            if (photonView.IsMine)
+            {
+                if (PunTeams.Team.RED == photonView.Owner.GetTeam())
+                {
+                    baseZoneTransform = InGameManager.Instance.GetRedTeamBaseZone();
+                }
+                else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
+                {
+                    baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
+                }
+                CameraController.Instance.AttachObject(this.transform); // get Camera
+                Components.DirectionArrow.SetBaseTown(baseZoneTransform);
+                InitController();
+            }
+            else
             {
                 Components.DirectionArrow.RemoveDirectionArrow();
             }
         }
         #endregion
 
-        private Vector3 currentPos;
-
         #region func
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
+            //Debug.Log(Time.time);
             if (stream.IsWriting)
             {
                 stream.SendNext(bodyTransform.position);
@@ -265,7 +258,7 @@ namespace UBZ.MultiGame.Owner
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
-            if (!canMove || isDash)
+            if (!canMove || IsBehavioring(BehaviorState.Dash))
                 return;
 
             // player 자신

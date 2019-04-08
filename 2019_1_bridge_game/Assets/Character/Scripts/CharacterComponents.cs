@@ -13,8 +13,8 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private CircleCollider2D circleCollider2D;
     [SerializeField] private BoxCollider2D hitBox;
     [SerializeField] private Transform shadowTransform;
-
     [SerializeField] private TextMesh nickNameText;
+    [SerializeField] private GameObject dashEffect;
 
     #endregion
 
@@ -80,6 +80,13 @@ public class CharacterComponents : MonoBehaviour
         get
         {
             return nickNameText;
+        }
+    }
+    public GameObject DashEffect
+    {
+        get
+        {
+            return dashEffect;
         }
     }
 

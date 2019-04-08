@@ -29,6 +29,11 @@ namespace UBZ.MultiGame.Owner
             NONE, ALL
         }
 
+        public enum BehaviorState
+        {
+            Dash = 0x00000001,
+        }
+
         //public enum AimType
         //{
         //    AUTO, SEMIAUTO, MANUAL
@@ -80,8 +85,6 @@ namespace UBZ.MultiGame.Owner
         #region variables
         [SerializeField] protected Sprite sprite;
 
-        protected bool isDash;
-
         protected Vector3 directionVector;
         protected float directionDegree;  // 바라보는 각도(총구 방향)
         protected bool isRightDirection;    // character 방향이 우측이냐(true) 아니냐(flase = 좌측)
@@ -91,6 +94,7 @@ namespace UBZ.MultiGame.Owner
         protected LayerMask enemyLayer;
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
+        protected BehaviorState behaviorState;
         #endregion
 
         #region abnormalStatusVariables
@@ -160,16 +164,23 @@ namespace UBZ.MultiGame.Owner
             rgbody = Components.Rigidbody2D;
             shadowTransform = Components.ShadowTransform;
             bodyTransform = GetComponent<Transform>();
+            Components.DashEffect.SetActive(false);
         }
         #endregion
 
         #region func
         public virtual void Init()
         {
-            isDash = false;
+            behaviorState = 0;
             canMove = true;
             canBehavior = true;
         }
+
+        protected bool IsBehavioring(BehaviorState state)
+        {
+            return (behaviorState & state) == state;
+        }
+
 
         // TODO : skill 임시로 대시로 적용, 나중에는 캐릭터 마다 스킬 적용 해야 할 수도?
         public void OnSkill()
@@ -182,7 +193,7 @@ namespace UBZ.MultiGame.Owner
         {
             if (!canBehavior)
                 return;
-            if (isDash)
+            if (IsBehavioring(BehaviorState.Dash))
             {
                 StopCoroutine(checkingDashEnded);
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
@@ -190,10 +201,13 @@ namespace UBZ.MultiGame.Owner
 
             if (null == checkingDashEnded)
             {
-                isDash = true;
+                // TODO : 상태 추가, 제거, 아예 set하는 것들 함수화
+                behaviorState = behaviorState | BehaviorState.Dash;
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
             }
 
+            Components.DashEffect.SetActive(true);
+            Components.DashEffect.transform.rotation = Quaternion.Euler(0, 0, directionDegree); 
             rgbody.velocity = Vector3.zero;
             rgbody.AddForce(dashSpeed * GetDirVector());
         }
@@ -267,6 +281,27 @@ namespace UBZ.MultiGame.Owner
             }
         }
 
+        // TODO : 수정좀 해야될 듯.
+        /// <summary>
+        /// 행동 종료 요청이 들어온 행동 중에서 현재 행동 중이면 stop 처리
+        /// </summary>
+        /// <param name="stopState">종료시킬 행동, 다중 입력 가능</param>
+        protected void StopBehavior(BehaviorState stopState)
+        {
+            BehaviorState state = behaviorState & stopState;
+            
+            if(BehaviorState.Dash == (state & BehaviorState.Dash))
+            {
+                Components.DashEffect.SetActive(false);
+                if (null != checkingDashEnded)
+                {
+                    StopCoroutine(checkingDashEnded);
+                    checkingDashEnded = null;
+                }
+                behaviorState = behaviorState ^ BehaviorState.Dash;
+            }
+        }
+
         //protected abstract void StopControlTypeAbnormalStatus(ControlTypeAbnormalStatusType controlTypeAbnormalStatusType);
 
         public void ApplyStatusEffect(StatusEffectInfo statusEffectInfo)
@@ -287,7 +322,7 @@ namespace UBZ.MultiGame.Owner
                 return;
 
             int type = (int)ControlTypeAbnormalStatus.STUN;
-            //StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus.CHARM);
+            StopBehavior(BehaviorState.Dash);
             // 기존에 걸려있는 기절이 없을 때
             if (null == controlTypeAbnormalStatusCoroutines[type])
             {
@@ -337,8 +372,7 @@ namespace UBZ.MultiGame.Owner
                 if (rgbody.velocity.magnitude < 1f || dashDistanceTotal >= distance)
                 {
                     rgbody.velocity = Vector2.zero;
-                    checkingDashEnded = null;
-                    isDash = false;
+                    StopBehavior(BehaviorState.Dash);
                     break;
                 }
             }
