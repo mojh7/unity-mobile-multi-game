@@ -573,12 +573,23 @@ namespace Photon.Pun
 
         private static int sendFrequency = 50; // in miliseconds.
 
+        /*
         /// <summary>
         /// Defines how many times per second OnPhotonSerialize should be called on PhotonViews.
         /// </summary>
         /// <remarks>
         /// Choose this value in relation to PhotonNetwork.SendRate. OnPhotonSerialize will create updates and messages to be sent.<br/>
         /// A lower rate takes up less performance but will cause more lag.
+        /// </remarks>
+        */
+
+
+        /// <summary>
+        /// PhotonViews에서 OnPhotonSerialize를 초당 몇 번 호출해야하는지 정의합니다.
+        /// </summary>
+        /// <remarks>
+        /// PhotonNetwork.SendRate와 관련하여이 값을 선택하십시오. OnPhotonSerialize는 보낼 업데이트와 메시지를 생성합니다. <br/>
+        /// 낮은 속도는 성능이 떨어지지 만 더 많은 지연을 유발합니다.
         /// </remarks>
         public static int SerializationRate
         {
@@ -591,6 +602,7 @@ namespace Photon.Pun
             {
                 if (value > SendRate)
                 {
+                    // 오류: OnSerialize 비율을 전체 SendRate보다 높게 설정할 수 없습니다.
                     Debug.LogError("Error: Can not set the OnSerialize rate higher than the overall SendRate.");
                     value = SendRate;
                 }
@@ -603,6 +615,7 @@ namespace Photon.Pun
             }
         }
 
+        // 밀리 초 단위.나. 100 = 10ms / 초 가되는 100ms
         private static int serializationFrequency = 100; // in miliseconds. I.e. 100 = 100ms which makes 10 times/second
 
         /// <summary>

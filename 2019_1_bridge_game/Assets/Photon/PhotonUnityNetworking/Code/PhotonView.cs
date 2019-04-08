@@ -133,10 +133,12 @@ namespace Photon.Pun
         [SerializeField]
         private int viewIdField = 0;
 
+        // The ID of the PhotonView. Identifies it in a networked game (per room).
+        // See: [Network Instantiation](@ref instantiateManual)
         /// <summary>
-        /// The ID of the PhotonView. Identifies it in a networked game (per room).
+        /// PhotonView의 ID입니다. 네트워크 게임에서이를 식별합니다 (방당).
         /// </summary>
-        /// <remarks>See: [Network Instantiation](@ref instantiateManual)</remarks>
+        /// <remarks>참고 : [네트워크 인스턴스화] (@ref instantiateManual)</remarks>
         public int ViewID
         {
             get { return this.viewIdField; }

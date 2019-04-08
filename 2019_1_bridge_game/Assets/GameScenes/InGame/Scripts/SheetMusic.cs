@@ -6,11 +6,12 @@ using Photon.Pun.UtilityScripts;
 
 public class SheetMusic : PickupItem
 {
+    /*
     private static readonly int[] pianoIndex =
     {
         4, 5, 6, 4, 9, 6, 5, 9, 5, 4, 2, 6, 4, 3, 3, 2, 3, 4, 5, 1, 4, 5, 6, 7, 7, 6, 5, 4, 5,
 4, 5, 6, 4, 9, 6, 5, 9, 5, 4, 2, 2, 3, 4, 1, 1, 2, 3, 4, 5, 1, 4, 5, 6, 7, 7, 6, 5 ,4, 4 };
-    
+    */
 //6, 7, 8, 8, 8, 8, 8, 9, 8, 7,b ,6, 6 ,6, 6 ,6, 7, 6 ,5 ,4, 4, 4, 3, 2, 3, 3, 4 }
 //    }
 //    {
@@ -23,7 +24,8 @@ public class SheetMusic : PickupItem
         if (PickupIsMine)
         {
             //Debug.Log("I picked up something. That's a score!, " + pianoIndex.Length);
-            AudioManager.Instance.PlaySound(pianoIndex[(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % pianoIndex.Length)], SFXType.PIANO);
+            //AudioManager.Instance.PlaySound(pianoIndex[(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % pianoIndex.Length)], SFXType.PIANO);
+            AudioManager.Instance.PlaySound(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % 23, SFXType.TEMP);
             PhotonNetwork.LocalPlayer.AddNumSheetMusic(1);
         }
         else

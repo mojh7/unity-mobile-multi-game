@@ -21,6 +21,7 @@ public enum SFXType
     COMMON,
     UI,
     PIANO,
+    TEMP
 }
 
 [RequireComponent(typeof(AudioSource))]
@@ -29,16 +30,15 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
     #region variables
     //[Header("[PlayerPrefs Key]")]
     //[SerializeField] private string saveKey = "Option_Sound";
-    [SerializeField]
-    private AudioClip[] commonSfxList;
-    [SerializeField]
-    private AudioClip[] uiSfxList;
-    [SerializeField]
-    private AudioClip[] pianoSfxList;
+    [SerializeField] private AudioClip[] commonSfxList;
+    [SerializeField] private AudioClip[] uiSfxList;
+    [SerializeField] private AudioClip[] pianoSfxList;
+    [SerializeField] private AudioClip[] tempList;
 
     private Dictionary<string, AudioClip> commonSfxDictionary;
     private Dictionary<string, AudioClip> uiSfxDictionary;
     private Dictionary<string, AudioClip> pianoSfxDictionary;
+    private Dictionary<string, AudioClip> tempDictionary;
 
     private AudioSource audioSource;
     private float volume;
@@ -84,6 +84,14 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
                 pianoSfxDictionary[pianoSfxList[i].name] = pianoSfxList[i];
             }
         }
+        tempDictionary = new Dictionary<string, AudioClip>();
+        for (int i = 0; i < tempList.Length; i++)
+        {
+            if (!pianoSfxDictionary.ContainsKey(tempList[i].name))
+            {
+                pianoSfxDictionary[tempList[i].name] = tempList[i];
+            }
+        }
     }
     #endregion
 
@@ -115,6 +123,9 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
             case SFXType.PIANO:
                 _clip = pianoSfxList[sfxIndex];
                 break;
+            case SFXType.TEMP:
+                _clip = tempList[sfxIndex];
+                break;
             default:
                 break;
         }
@@ -143,6 +154,9 @@ public class SoundController : MonoBehaviourSingleton<SoundController>
                 break;
             case SFXType.PIANO:
                 _clip = pianoSfxDictionary[sfxName];
+                break;
+            case SFXType.TEMP:
+                _clip = tempDictionary[sfxName];
                 break;
             default:
                 break;

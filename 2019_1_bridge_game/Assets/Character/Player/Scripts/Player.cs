@@ -7,7 +7,7 @@ using Photon.Pun.UtilityScripts;
 
 namespace UBZ.MultiGame.Owner
 {
-    public class Player : Character
+    public class Player : Character, IPunObservable
     {
         #region constants
         #endregion
@@ -40,7 +40,6 @@ namespace UBZ.MultiGame.Owner
             renderer = GetComponent<Renderer>();
             objTransform = GetComponent<Transform>();
             scaleVector = Vector3.one;
-            fixedObjectScale = new Vector3(-1f, 1f, 1f);
             isRightDirection = true;
         }
 
@@ -64,6 +63,7 @@ namespace UBZ.MultiGame.Owner
 
             if(null != bodyTransform)
                 spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
+
             if (isDash)
                 return;
 
@@ -71,32 +71,66 @@ namespace UBZ.MultiGame.Owner
             {
                 directionVector = controller.GetMoveRecentNormalInputVector();
                 directionDegree = directionVector.GetDegFromVector();
+
+                if (canMove)
+                {
+                    bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
+                    //Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
+                    if (Input.GetKey(KeyCode.W))
+                    {
+                        bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
+                    }
+                    else if (Input.GetKey(KeyCode.S))
+                    {
+                        bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
+                    }
+                    if (Input.GetKey(KeyCode.D))
+                    {
+                        bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
+                    }
+                    else if (Input.GetKey(KeyCode.A))
+                    {
+                        bodyTransform.Translate(Vector2.left * movingSpeed * Time.deltaTime);
+                    }
+                }
+
                 if (-90 <= directionDegree && directionDegree < 90)
                 {
                     isRightDirection = true;
-                    scaleVector.x = 1f;
-                    fixedObjectScale.x = 1f;
-                    bodyTransform.localScale = scaleVector;
-                    nickNameTransform.localScale = fixedObjectScale;
-                    abnormalStatusTransform.localScale = fixedObjectScale;
-                    //spriteTransform.localScale = scaleVector;
                 }
                 else
                 {
                     isRightDirection = false;
-                    scaleVector.x = -1f;
-                    fixedObjectScale.x = -1f;
-                    bodyTransform.localScale = scaleVector;
-                    nickNameTransform.localScale = fixedObjectScale;
-                    abnormalStatusTransform.localScale = fixedObjectScale;
-                    //spriteTransform.localScale = scaleVector;
                 }
             }
+            else
+            {
+                //끊어진 시간이 너무 길 경우(텔레포트)
+                if ((bodyTransform.position - currentPos).sqrMagnitude >= 5.0f * 5.0f)
+                {
+                    bodyTransform.position = currentPos;
+                }
+                //끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
+                else
+                {
+                    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 5.0f);
+                }
+            }
+
+            if(isRightDirection)
+            {
+                scaleVector.x = 1f;
+            }
+            else
+            {
+                scaleVector.x = -1f;
+            }
+            spriteTransform.localScale = scaleVector;
         }
 
         void FixedUpdate()
         {
-            Move();
+            // Move();
         }
         #endregion
 
@@ -180,7 +214,23 @@ namespace UBZ.MultiGame.Owner
         }
         #endregion
 
+        private Vector3 currentPos;
+
         #region func
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(bodyTransform.position);
+                stream.SendNext(isRightDirection);
+            }
+            else
+            {
+                currentPos = (Vector3)stream.ReceiveNext();
+                isRightDirection = (bool)stream.ReceiveNext();
+            }
+        }
+
         public bool IsMine()
         {
             return photonView.IsMine;
@@ -224,26 +274,26 @@ namespace UBZ.MultiGame.Owner
                 if (rgbody)
                 {
                     rgbody.MovePosition(objTransform.position
-                    + controller.GetMovingInputVector() * (movingSpeed) * Time.fixedDeltaTime);
+                    + controller.GetMovingInputVector() * (movingSpeed) * Time.deltaTime);
                 }
 
 //#if UNITY_EDITOR
                 if (Input.GetKey(KeyCode.W))
                 {
-                    bodyTransform.Translate(Vector2.up * 5f * Time.fixedDeltaTime);
+                    bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
                 }
                 else if (Input.GetKey(KeyCode.S))
                 {
-                    bodyTransform.Translate(Vector2.down * 5f * Time.fixedDeltaTime);
+                    bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
                 }
 
                 if (Input.GetKey(KeyCode.D))
                 {
-                    bodyTransform.Translate(Vector2.right * 5f * Time.fixedDeltaTime);
+                    bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
                 }
                 else if (Input.GetKey(KeyCode.A))
                 {
-                    bodyTransform.Translate(Vector2.left * 5f * Time.fixedDeltaTime);
+                    bodyTransform.Translate(Vector2.left * movingSpeed * Time.fixedDeltaTime);
                 }
 //#endif
             }
@@ -261,7 +311,6 @@ namespace UBZ.MultiGame.Owner
             //    animationHandler.Idle();
             //}
         }
-
         #endregion
 
         #region abnormalStatusFunc

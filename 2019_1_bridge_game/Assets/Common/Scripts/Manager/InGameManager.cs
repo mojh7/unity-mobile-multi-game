@@ -128,6 +128,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     private void StartGame()
     {
         Debug.Log("Timer 다 되고 게임 스타트");
+        AudioManager.Instance.PlayMusic(4);
         // TODO : 조이스틱 on, Player 생성, 게임 시작!
         InGameUIManager.Instance.SetControllable(true);
 
