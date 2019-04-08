@@ -10,10 +10,10 @@ public class TeamBaseZone : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.GetComponent<UBZ.MultiGame.Owner.Player>().IsMine())
+        if (collision.CompareTag(UBZ.MultiGame.Owner.Player.PLAYER) && collision.GetComponent<UBZ.MultiGame.Owner.Player>().IsMine())
         {
             int numSheetMusic = PhotonNetwork.LocalPlayer.GetNumSheetMusic();
-            if(numSheetMusic > 0)
+            if (numSheetMusic > 0)
             {
                 AudioManager.Instance.PlaySound("ComboMax", SFXType.COMMON);
             }

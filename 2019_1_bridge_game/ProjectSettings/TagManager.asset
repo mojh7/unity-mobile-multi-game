@@ -8,6 +8,7 @@ TagManager:
   - Bullet
   - BaseZone
   - Skin
+  - Dash
   layers:
   - Default
   - TransparentFX

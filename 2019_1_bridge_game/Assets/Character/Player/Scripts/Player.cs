@@ -11,6 +11,7 @@ namespace UBZ.MultiGame.Owner
     public class Player : Character, IPunObservable
     {
         #region constants
+        public const string PLAYER = "Player";
         #endregion
 
         #region components
@@ -30,6 +31,10 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region get / set
+        public Photon.Pun.UtilityScripts.PunTeams GetTeam()
+        {
+            return team;
+        }
         #endregion
 
         #region unityFunc
@@ -58,11 +63,6 @@ namespace UBZ.MultiGame.Owner
             if (false == InGameUIManager.Instance.GetControllable())
                 return;
 
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                Dash(700f, 60f);
-            }
-
             if(null != bodyTransform)
                 spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
 
@@ -73,7 +73,10 @@ namespace UBZ.MultiGame.Owner
             {
                 directionVector = controller.GetMoveRecentNormalInputVector();
                 directionDegree = directionVector.GetDegFromVector();
-
+                if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    Dash(700f, 60f);
+                }
                 if (canMove)
                 {
                     bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
@@ -107,16 +110,16 @@ namespace UBZ.MultiGame.Owner
             }
             else
             {
-                ////끊어진 시간이 너무 길 경우(텔레포트)
-                //if ((bodyTransform.position - currentPos).sqrMagnitude >= 5.0f * 5.0f)
-                //{
-                //    bodyTransform.position = currentPos;
-                //}
-                ////끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
-                //else
-                //{
-                //    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 5.0f);
-                //}
+                //끊어진 시간이 너무 길 경우(텔레포트)
+                if ((bodyTransform.position - currentPos).sqrMagnitude >= 5.0f * 5.0f)
+                {
+                    bodyTransform.position = currentPos;
+                }
+                //끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
+                else
+                {
+                    bodyTransform.position = Vector3.Lerp(bodyTransform.position, currentPos, Time.deltaTime * 10.0f);
+                }
             }
 
             if(isRightDirection)
@@ -164,14 +167,15 @@ namespace UBZ.MultiGame.Owner
         }
            
 
-
+        
         [PunRPC]
         private void PlayerInit()
         {
             base.Init();
             ownerType = CharacterInfo.OwnerType.PLAYER;
-            abnormalImmune = CharacterInfo.AbnormalImmune.NONE;
+            abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
+
 
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
@@ -179,12 +183,14 @@ namespace UBZ.MultiGame.Owner
                 Components.SpriteRenderer.color = Color.red;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                Components.DashEffect.Init(PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                Components.DashEffect.Init(PunTeams.Team.BLUE);
             }
 
             if (photonView.IsMine)
@@ -353,6 +359,72 @@ namespace UBZ.MultiGame.Owner
         }
         #endregion
 
+        #region collision
+        /// <summary> 충돌 처리 Trigger </summary>
+        public void OnTriggerEnter2D(Collider2D coll)
+        {
+            CollisionBullet(ref coll);
+        }
+
+        /// <summary> Trigger </summary>
+        public void CollisionBullet(ref Collider2D coll)
+        {
+            //if(PunTeams.Team.RED == photonView.Owner.GetTeam())
+            //{
+            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER))
+            //    {
+            //        if (coll.CompareTag(DASH))
+            //        {
+            //            photonView.RPC("PlayerInit", RpcTarget.AllViaServer, coll.transform.position, );
+            //        }
+            //    }
+            //}
+            //else if(PunTeams.Team.BLUE == photonView.Owner.GetTeam())
+            //{
+            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER))
+            //    {
+            //        if (coll.CompareTag(DASH))
+            //        {
+            //            photonView.RPC("PlayerInit", RpcTarget.AllViaServer);
+            //        }
+            //    }
+            //}
+            //if (OwnerType.PLAYER == ownerType)
+            //{
+            //    // enemy 13, EnemyCanBlockBullet 20, EnemyCanReflectBullet 21
+            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, 13, 20, 21))
+            //    {
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            info.collisionProperties[i].Collision(ref coll);
+            //        }
+            //    }
+            //}
+            //else if (OwnerType.ENEMY == ownerType)
+            //{
+            //    // player 16, PlayerCanBlockBullet 18, PlayerCanReflectBullet 19
+            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, 16, 18, 19))
+            //    {
+            //        for (int i = 0; i < length; i++)
+            //        {
+            //            info.collisionProperties[i].Collision(ref coll);
+            //        }
+            //    }
+            //}
+        }
+        // TODO : .
+        public void HitDash(Vector2 pos, Vector2 dir)
+        {
+            photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir);
+        }
+        [PunRPC]
+        protected override void PunHitDash(Vector2 pos, Vector2 dir)
+        {
+            Debug.Log("hitDash : " + pos + ", " + dir);
+            KnockBack(500f, pos, dir, false);
+            Stun(1f, 1f);
+        }
+        #endregion
 
         #region coroutine
         protected override IEnumerator StunCoroutine(float effectiveTime)

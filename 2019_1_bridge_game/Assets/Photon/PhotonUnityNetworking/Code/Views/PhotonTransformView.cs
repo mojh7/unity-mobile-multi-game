@@ -59,9 +59,8 @@ namespace Photon.Pun
                 //끊어진 시간이 짧을 경우(자연스럽게 연결 - 데드레커닝)
                 else
                 {
-                    transform.position = Vector3.Lerp(transform.position, currentPos, lag);
+                    transform.position = Vector3.Lerp(transform.position, transform.position + m_NetworkPosition, Time.deltaTime * 10f);
                 }
-                transform.position = Vector3.MoveTowards(transform.position, this.m_NetworkPosition, this.m_Distance * (1.0f / PhotonNetwork.SerializationRate));
                 //transform.position = Vector3.MoveTowards(transform.position, this.m_NetworkPosition, this.m_Distance * (1.0f / PhotonNetwork.SerializationRate));
                 //transform.rotation = Quaternion.RotateTowards(transform.rotation, this.m_NetworkRotation, this.m_Angle * (1.0f / PhotonNetwork.SerializationRate));
             }
