@@ -13,9 +13,9 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private CircleCollider2D circleCollider2D;
     [SerializeField] private BoxCollider2D hitBox;
     [SerializeField] private Transform shadowTransform;
-
     [SerializeField] private TextMesh nickNameText;
-
+    [SerializeField] private DashEffect dashEffect;
+    
     #endregion
 
     #region parameter
@@ -82,13 +82,25 @@ public class CharacterComponents : MonoBehaviour
             return nickNameText;
         }
     }
-
+    public DashEffect DashEffect
+    {
+        get
+        {
+            return dashEffect;
+        }
+    }
+    public GameObject DashEffectObj { get; private set; }
 
     //public BuffManager BuffManager { get; private set; }
     public Rigidbody2D Rigidbody2D { get; private set; }
     public DirectionArrow DirectionArrow { get; private set; }
     //public AIController AIController { get; private set; }
     #endregion
+
+    private void Awake()
+    {
+        DashEffectObj = dashEffect.GetDashEffectObj();
+    }
 
     #region func
     public void Init()

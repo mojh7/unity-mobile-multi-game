@@ -24,9 +24,16 @@ namespace UBZ.MultiGame.Owner
         //    NONE, ALL
         //}
 
+        // TODO : -1 값 설정하면 다중 enum everyThing 이랑 겹치는지
         public enum AbnormalImmune
         {
-            NONE, ALL
+            ALL = 0x11111111,
+            STUN = 0x00000001,
+        }
+
+        public enum BehaviorState
+        {
+            Dash = 0x00000001,
         }
 
         //public enum AimType
@@ -38,10 +45,9 @@ namespace UBZ.MultiGame.Owner
     public abstract class Character : MonoBehaviour
     {
         #region constants
-        protected static readonly Color RED_COLOR = Color.red;
-        protected static readonly Color BURN_COLOR = new Color(1, 0, 0);
-        protected static readonly Color FREEZE_COLOR = new Color(.7f, .7f, 1);
-        protected static readonly Color POISON_COLOR = new Color(.7f, 1, .7f);
+        // TODO : 상수만 나중에 따로 다른 곳에 옮길 수도
+        protected const string DASH = "Dash";
+        protected readonly static StatusEffectInfo DASH_INFO = new StatusEffectInfo() { stun = 1f };
         #endregion
 
         #region Status
@@ -80,8 +86,6 @@ namespace UBZ.MultiGame.Owner
         #region variables
         [SerializeField] protected Sprite sprite;
 
-        protected bool isDash;
-
         protected Vector3 directionVector;
         protected float directionDegree;  // 바라보는 각도(총구 방향)
         protected bool isRightDirection;    // character 방향이 우측이냐(true) 아니냐(flase = 좌측)
@@ -91,6 +95,7 @@ namespace UBZ.MultiGame.Owner
         protected LayerMask enemyLayer;
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
+        protected BehaviorState behaviorState;
         #endregion
 
         #region abnormalStatusVariables
@@ -166,10 +171,16 @@ namespace UBZ.MultiGame.Owner
         #region func
         public virtual void Init()
         {
-            isDash = false;
+            behaviorState = 0;
             canMove = true;
             canBehavior = true;
         }
+
+        protected bool IsBehavioring(BehaviorState state)
+        {
+            return (behaviorState & state) == state;
+        }
+
 
         // TODO : skill 임시로 대시로 적용, 나중에는 캐릭터 마다 스킬 적용 해야 할 수도?
         public void OnSkill()
@@ -182,7 +193,7 @@ namespace UBZ.MultiGame.Owner
         {
             if (!canBehavior)
                 return;
-            if (isDash)
+            if (IsBehavioring(BehaviorState.Dash))
             {
                 StopCoroutine(checkingDashEnded);
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
@@ -190,10 +201,13 @@ namespace UBZ.MultiGame.Owner
 
             if (null == checkingDashEnded)
             {
-                isDash = true;
+                // TODO : 상태 추가, 제거, 아예 set하는 것들 함수화
+                behaviorState = behaviorState | BehaviorState.Dash;
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
             }
 
+            Components.DashEffectObj.SetActive(true);
+            Components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree); 
             rgbody.velocity = Vector3.zero;
             rgbody.AddForce(dashSpeed * GetDirVector());
         }
@@ -244,7 +258,7 @@ namespace UBZ.MultiGame.Owner
         /// <summary> 행동 방해 상태 이상 갯수 감소 및 공격 AI ON Check </summary>
         protected abstract void SubRetrictsBehaviorCount();
 
-        protected void StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus controlTypeAbnormalStatusType)
+        public void StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus controlTypeAbnormalStatusType)
         {
             int type = (int)controlTypeAbnormalStatusType;
             if (false == isControlTypeAbnormalStatuses[type])
@@ -267,6 +281,27 @@ namespace UBZ.MultiGame.Owner
             }
         }
 
+        // TODO : 수정좀 해야될 듯.
+        /// <summary>
+        /// 행동 종료 요청이 들어온 행동 중에서 현재 행동 중이면 stop 처리
+        /// </summary>
+        /// <param name="stopState">종료시킬 행동, 다중 입력 가능</param>
+        public void StopBehavior(BehaviorState stopState)
+        {
+            BehaviorState state = behaviorState & stopState;
+            
+            if(BehaviorState.Dash == (state & BehaviorState.Dash))
+            {
+                Components.DashEffectObj.SetActive(false);
+                if (null != checkingDashEnded)
+                {
+                    StopCoroutine(checkingDashEnded);
+                    checkingDashEnded = null;
+                }
+                behaviorState = behaviorState ^ BehaviorState.Dash;
+            }
+        }
+
         //protected abstract void StopControlTypeAbnormalStatus(ControlTypeAbnormalStatusType controlTypeAbnormalStatusType);
 
         public void ApplyStatusEffect(StatusEffectInfo statusEffectInfo)
@@ -278,25 +313,49 @@ namespace UBZ.MultiGame.Owner
                 KnockBack(statusEffectInfo);
 
             if (0 < statusEffectInfo.stun)
-                Stun(statusEffectInfo);
+                Stun(statusEffectInfo.stun, statusEffectInfo.stunChance);
         }
 
-        private void Stun(StatusEffectInfo info)
+        public void Stun(float effectiveTime, float chance)
         {
-            if (false == AbnormalChance(info.stunChance))
+            if (false == AbnormalChance(chance))
                 return;
 
             int type = (int)ControlTypeAbnormalStatus.STUN;
-            //StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus.CHARM);
+            StopBehavior(BehaviorState.Dash);
             // 기존에 걸려있는 기절이 없을 때
             if (null == controlTypeAbnormalStatusCoroutines[type])
             {
-                controlTypeAbnormalStatusCoroutines[type] = StartCoroutine(StunCoroutine(info.stun));
+                controlTypeAbnormalStatusCoroutines[type] = StartCoroutine(StunCoroutine(effectiveTime));
             }
             // 걸려있는 기절이 있을 때
             else
             {
-                controlTypeAbnormalStatusesDurationMax[type] = controlTypeAbnormalStatusTime[type] + info.stun;
+                controlTypeAbnormalStatusesDurationMax[type] = controlTypeAbnormalStatusTime[type] + effectiveTime;
+            }
+        }
+
+        public void KnockBack(float knockBack, Vector2 pos, Vector2 dir, bool positionBasedKnockBack)
+        {
+            StopBehavior(BehaviorState.Dash);
+            // 기본 상태에서 넉백
+            if (null == checkingknockBackEnded)
+            {
+                AddRetrictsMovingCount();
+                checkingknockBackEnded = StartCoroutine(CheckKnockbackEnded());
+            }
+
+            rgbody.velocity = Vector3.zero;
+
+            // bullet과 충돌 Object 위치 차이 기반의 넉백  
+            if (positionBasedKnockBack)
+            {
+                rgbody.AddForce(knockBack * ((Vector2)bodyTransform.position - pos).normalized);
+            }
+            // bullet 방향 기반의 넉백
+            else
+            {
+                rgbody.AddForce(knockBack * dir);
             }
         }
 
@@ -324,6 +383,11 @@ namespace UBZ.MultiGame.Owner
         }
         #endregion
 
+        #region collision
+        [PunRPC]
+        protected abstract void PunHitDash(Vector2 pos, Vector2 dir);
+        #endregion
+
         #region AbnormalCoroutine
         protected abstract IEnumerator StunCoroutine(float effectiveTime);
         protected IEnumerator CheckDashEnded(float distance)
@@ -337,8 +401,7 @@ namespace UBZ.MultiGame.Owner
                 if (rgbody.velocity.magnitude < 1f || dashDistanceTotal >= distance)
                 {
                     rgbody.velocity = Vector2.zero;
-                    checkingDashEnded = null;
-                    isDash = false;
+                    StopBehavior(BehaviorState.Dash);
                     break;
                 }
             }
