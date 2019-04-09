@@ -49,7 +49,7 @@ public class DashEffect : MonoBehaviour
         {
             Debug.Log("대쉬 충돌");
             coll.GetComponent<Player>().HitDash(player.GetPosition(), player.GetDirVector());
-            player.StopBehavior(UBZ.MultiGame.Owner.CharacterInfo.BehaviorState.Dash);
+            player.StopBehavior(UBZ.MultiGame.Owner.CharacterInfo.BehaviorState.DASH);
         }
     }
 }

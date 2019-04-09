@@ -5,14 +5,11 @@ using UnityEngine.EventSystems;
 
 public class SkillButton : BehaviorButtonBase
 {
-    [SerializeField] private Color EMPTY_COST_COLOR;
-    [SerializeField] private Color FILLED_COST_COLOR;
-
     public override void OnPointerDown(PointerEventData ped)
     {
         if(CanBehavior())
         {
-            character.OnSkill();
+            player.OnSkill();
         }
     }
 

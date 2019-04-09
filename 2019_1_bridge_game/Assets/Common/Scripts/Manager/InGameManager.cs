@@ -49,7 +49,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public Text InfoText;
     [SerializeField] private Transform redTeamSpawnPoint;
     [SerializeField] private Transform blueTeamSpawnPoint;
-
+    [SerializeField] private Sprite[] emoticonSprites;
     public GameObject[] sheetMusicPrefabs;
 
     public Text text;
@@ -75,6 +75,11 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
             case 1: return Color.blue;
             default: return Color.black;
         }
+    }
+
+    public Sprite GetEmoticonSprite(UBZ.MultiGame.Owner.CharacterInfo.EmoticonType type)
+    {
+        return emoticonSprites[(int)type];
     }
     #endregion
 

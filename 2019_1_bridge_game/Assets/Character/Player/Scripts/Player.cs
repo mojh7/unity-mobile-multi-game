@@ -12,6 +12,7 @@ namespace UBZ.MultiGame.Owner
     {
         #region constants
         public const string PLAYER = "Player";
+        public const string SHOW_EMOTICON = "ShowEmoticon";
         #endregion
 
         #region components
@@ -50,13 +51,13 @@ namespace UBZ.MultiGame.Owner
             isRightDirection = true;
         }
 
-        private void Start()
-        {
-            foreach (Renderer r in GetComponentsInChildren<Renderer>())
-            {
-                //r.material.color = InGame.GetPlayerColor(photonView.Owner.GetPlayerNumber());
-            }
-        }
+        //private void Start()
+        //{
+        //    foreach (Renderer r in GetComponentsInChildren<Renderer>())
+        //    {
+        //        //r.material.color = InGame.GetPlayerColor(photonView.Owner.GetPlayerNumber());
+        //    }
+        //}
 
         void Update()
         {
@@ -66,7 +67,7 @@ namespace UBZ.MultiGame.Owner
             if(null != bodyTransform)
                 spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
 
-            if (IsBehavioring(BehaviorState.Dash))
+            if (IsBehavioring(BehaviorState.DASH))
                 return;
 
             if(photonView.IsMine)
@@ -213,7 +214,7 @@ namespace UBZ.MultiGame.Owner
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
-            if (!canMove || IsBehavioring(BehaviorState.Dash))
+            if (!canMove || IsBehavioring(BehaviorState.DASH))
                 return;
 
             // player 자신
@@ -283,7 +284,7 @@ namespace UBZ.MultiGame.Owner
         public override void Dash(float dashSpeed, float distance)
         {
             base.Dash(dashSpeed, distance);
-            photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.Dash, true, directionDegree);
+            photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.DASH, true, directionDegree);
         }
 
         public override bool StopBehavior(BehaviorState stopState)
@@ -292,9 +293,21 @@ namespace UBZ.MultiGame.Owner
             //Debug.Log("stop behavior : " + result);
             if (result)
             {
-                photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.Dash, false, 0f);
+                photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.DASH, false, 0f);
             }
             return result;
+        }
+
+        
+        public void ShowEmoticon(EmoticonType type)
+        {
+            photonView.RPC("PunShowEmoticon", RpcTarget.AllViaServer, type);
+        }
+        [PunRPC]
+        public void PunShowEmoticon(EmoticonType type)
+        {
+            Debug.Log("ShowEmoticon : " + type);
+            Components.Emoticon.ShowEmoticon(type);
         }
         #endregion
 

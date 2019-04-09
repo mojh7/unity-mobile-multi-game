@@ -33,7 +33,15 @@ namespace UBZ.MultiGame.Owner
 
         public enum BehaviorState
         {
-            Dash = 0x00000001,
+            DASH = 0x00000001,
+        }
+
+        public enum EmoticonType
+        {
+            SMILE,
+            SAD,
+            FRUSTRATION,
+            QUESTION_MARK
         }
 
         //public enum AimType
@@ -196,7 +204,7 @@ namespace UBZ.MultiGame.Owner
         {
             if (!canBehavior)
                 return;
-            if (IsBehavioring(BehaviorState.Dash))
+            if (IsBehavioring(BehaviorState.DASH))
             {
                 StopCoroutine(checkingDashEnded);
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
@@ -205,7 +213,7 @@ namespace UBZ.MultiGame.Owner
             if (null == checkingDashEnded)
             {
                 // TODO : 상태 추가, 제거, 아예 set하는 것들 함수화
-                behaviorState = behaviorState | BehaviorState.Dash;
+                behaviorState = behaviorState | BehaviorState.DASH;
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
             }
             rgbody.velocity = Vector3.zero;
@@ -218,7 +226,7 @@ namespace UBZ.MultiGame.Owner
             //Debug.Log("DisplayEffect " + behaviorState + ", " + canDisplay + ", " + directionDegree);
             switch(behaviorState)
             {
-                case BehaviorState.Dash:
+                case BehaviorState.DASH:
                     Components.DashEffectObj.SetActive(canDisplay);
                     if(canDisplay)
                         Components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree);
@@ -306,14 +314,14 @@ namespace UBZ.MultiGame.Owner
         {
             BehaviorState state = behaviorState & stopState;
             
-            if(BehaviorState.Dash == (state & BehaviorState.Dash))
+            if(BehaviorState.DASH == (state & BehaviorState.DASH))
             {
                 if (null != checkingDashEnded)
                 {
                     StopCoroutine(checkingDashEnded);
                     checkingDashEnded = null;
                 }
-                behaviorState = behaviorState ^ BehaviorState.Dash;
+                behaviorState = behaviorState ^ BehaviorState.DASH;
                 return true;
             }
             return false;
@@ -339,7 +347,7 @@ namespace UBZ.MultiGame.Owner
                 return;
 
             int type = (int)ControlTypeAbnormalStatus.STUN;
-            StopBehavior(BehaviorState.Dash);
+            StopBehavior(BehaviorState.DASH);
             // 기존에 걸려있는 기절이 없을 때
             if (null == controlTypeAbnormalStatusCoroutines[type])
             {
@@ -354,7 +362,7 @@ namespace UBZ.MultiGame.Owner
 
         public void KnockBack(float knockBack, Vector2 pos, Vector2 dir, bool positionBasedKnockBack)
         {
-            StopBehavior(BehaviorState.Dash);
+            StopBehavior(BehaviorState.DASH);
             // 기본 상태에서 넉백
             if (null == checkingknockBackEnded)
             {
@@ -418,7 +426,7 @@ namespace UBZ.MultiGame.Owner
                 if (rgbody.velocity.magnitude < 1f || dashDistanceTotal >= distance)
                 {
                     rgbody.velocity = Vector2.zero;
-                    StopBehavior(BehaviorState.Dash);
+                    StopBehavior(BehaviorState.DASH);
                     break;
                 }
             }

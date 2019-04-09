@@ -17,7 +17,7 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
     #region controllComponents
     [SerializeField] private MovingJoystick movingJoystick;
     [SerializeField] private SkillButton skillBtn;
-    [SerializeField] private EmoticonButton[] emoticonBtnList;
+    [SerializeField] private EmoticonButton emoticonBtn;
     #endregion
 
     #region components
@@ -29,14 +29,11 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
     {
         touched = true;
     }
-    public void SetPlayer(UBZ.MultiGame.Owner.Character character, ref PlayerController controller)
+    public void SetPlayer(UBZ.MultiGame.Owner.Player player, ref PlayerController controller)
     {
-        movingJoystick.SetPlayer(character);
-        skillBtn.SetPlayer(character);
-        foreach(EmoticonButton emoticonBtn in emoticonBtnList)
-        {
-            emoticonBtn.SetPlayer(character);
-        }
+        movingJoystick.SetPlayer(player);
+        skillBtn.SetPlayer(player);
+        emoticonBtn.SetPlayer(player);
         controller = new PlayerController(movingJoystick);
     }
     void DrawMoveJoyStick()

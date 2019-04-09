@@ -13,13 +13,15 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected bool hasCoolTime;
     protected float cost; // 0~1f
     [SerializeField] protected float costFullRecoveryTime;
-    protected UBZ.MultiGame.Owner.Character character;
+    [SerializeField] protected Color EMPTY_COST_COLOR;
+    [SerializeField] protected Color FILLED_COST_COLOR;
+    protected UBZ.MultiGame.Owner.Player player;
     #endregion
 
     #region get / set
-    public void SetPlayer(UBZ.MultiGame.Owner.Character character)
+    public void SetPlayer(UBZ.MultiGame.Owner.Player player)
     {
-        this.character = character;
+        this.player = player;
     }
     #endregion
 

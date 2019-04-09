@@ -15,6 +15,7 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private Transform shadowTransform;
     [SerializeField] private TextMesh nickNameText;
     [SerializeField] private DashEffect dashEffect;
+    [SerializeField] private Emoticon emoticon;
     
     #endregion
 
@@ -91,6 +92,13 @@ public class CharacterComponents : MonoBehaviour
     }
     public GameObject DashEffectObj { get; private set; }
 
+    public Emoticon Emoticon
+    {
+        get
+        {
+            return emoticon;
+        }
+    }
     //public BuffManager BuffManager { get; private set; }
     public Rigidbody2D Rigidbody2D { get; private set; }
     public DirectionArrow DirectionArrow { get; private set; }
