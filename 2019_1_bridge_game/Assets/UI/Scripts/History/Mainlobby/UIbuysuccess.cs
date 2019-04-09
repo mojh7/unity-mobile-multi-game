@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UIbuysuccess : UIControl
 {
     [SerializeField] private bool is_on;
+    [SerializeField] private UIBuying buyingpanel;
+
     private void OnEnable()
     {
         is_on = true;
@@ -15,6 +17,7 @@ public class UIbuysuccess : UIControl
     {
         is_on = false;
         OnHide();
+        buyingpanel.OnHide();
     }
 
     public bool GetIs_on()

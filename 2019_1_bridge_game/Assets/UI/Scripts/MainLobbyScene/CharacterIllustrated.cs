@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterIllustrated : UIControl
+public class CharacterIllustrated : MonoBehaviour
 {
     [SerializeField] private GameObject characterllBook;
     [SerializeField] private Transform scrollRect;
@@ -11,8 +11,7 @@ public class CharacterIllustrated : UIControl
     [SerializeField] private CharacterDatabase ch_database;
     [SerializeField] private UICloset closet;
     [SerializeField] private Button closet_btn;
-
-    private GameObject target;
+    
     private List<GameObject> illustratedBook = new List<GameObject>();
     private int ch_id;
 
@@ -21,10 +20,6 @@ public class CharacterIllustrated : UIControl
         // 나중에 UI Controller로 옮길 것 !
         Initialized();
         closet_btn.onClick.AddListener(() => AddListenSkinDetail());
-    }
-    private void Update()
-    {
-        
     }
 
     // 시작 시, 한 번 캐릭터 데이터베이스 로드

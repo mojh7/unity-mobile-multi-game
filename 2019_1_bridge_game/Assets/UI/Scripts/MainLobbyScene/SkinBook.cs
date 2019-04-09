@@ -17,4 +17,5 @@ public class SkinBook : MonoBehaviour
     }
 
     public Button GetButton() { return detailBtn; }
+
 }

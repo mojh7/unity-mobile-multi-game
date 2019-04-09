@@ -13,7 +13,6 @@ public class UICloset : UIControl
 
     private List<GameObject> illustratedBook = new List<GameObject>();
     private int ch_id;
-    private GameObject target;
 
     private void OnEnable()
     {

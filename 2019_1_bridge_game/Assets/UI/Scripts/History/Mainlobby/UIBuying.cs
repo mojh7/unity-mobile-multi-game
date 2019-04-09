@@ -9,15 +9,6 @@ public class UIBuying : UIControl
     [SerializeField] private Text nameText;
     [SerializeField] private UIbuysuccess buysuccess;
 
-    private void Update()
-    {
-        if(buysuccess.GetIs_on() == false)
-        {
-            buysuccess.SetIs_on(true);
-            OnHide();
-        }
-    }
-    
     public void setBuyingpanel(Sprite image, string name)
     {
         this.image.sprite = image;
