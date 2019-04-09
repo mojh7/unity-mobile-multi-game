@@ -9,10 +9,7 @@ using UnityEngine;
 /* http://cafe.naver.com/unityhub
  * 제목 : 첫작품에 사용된 배경음악/사운드매니저 공유해봅니다
  */
-
 // 다른데서 가져와서 수정 조금한 코드
-
-
 
 public class AudioManager : MonoBehaviourSingleton<AudioManager>
 {
@@ -21,8 +18,9 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     private SoundController soundController;
     private float sfxVolume;
 
-    [Header("디버그용, 배경음악 안 듣고 싶을 때 꺼주세요")]
-    public bool canPlayMusic;
+    [Header("디버그 용, 배경 음악, 효과음 안 듣고 싶을 때 꺼주세요")]
+    [SerializeField] private bool canPlayMusic;
+    [SerializeField] private bool canPlaySFX;
     #endregion variables
 
     #region get / set
@@ -102,6 +100,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     /// <param name="soundtype">출력할 사운드 타입</param>
     public void PlaySound(int sfxIndex, SFXType sfxtype)
     {
+        if (!canPlaySFX)
+            return;
         soundController.Play(sfxIndex, sfxtype);
     }
 
@@ -112,6 +112,8 @@ public class AudioManager : MonoBehaviourSingleton<AudioManager>
     /// <param name="soundtype">출력할 사운드 타입</param>
     public void PlaySound(string sfxName, SFXType soundtype)
     {
+        if (!canPlaySFX)
+            return;
         soundController.Play(sfxName, soundtype);
     }
     #endregion

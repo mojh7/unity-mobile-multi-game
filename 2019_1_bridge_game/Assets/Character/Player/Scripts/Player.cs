@@ -149,11 +149,6 @@ namespace UBZ.MultiGame.Owner
         public override void Init()
         {
             photonView.RPC("PlayerInit", RpcTarget.All);
-            //else
-            //{
-            //    Components.DirectionArrow.RemoveDirectionArrow();
-            //}
-
             //Debug.Log(PhotonNetwork.LocalPlayer.GetPlayerNumber());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetScore());
@@ -215,6 +210,56 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region func
+        // 참고 : https://you-rang.tistory.com/193?category=764030
+        private void Move()
+        {
+            if (!canMove || IsBehavioring(BehaviorState.Dash))
+                return;
+
+            // player 자신
+            if (photonView.IsMine)
+            {
+                if (rgbody)
+                {
+                    rgbody.MovePosition(objTransform.position
+                    + controller.GetMovingInputVector() * (movingSpeed) * Time.deltaTime);
+                }
+
+                //#if UNITY_EDITOR
+                if (Input.GetKey(KeyCode.W))
+                {
+                    bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
+                }
+                else if (Input.GetKey(KeyCode.S))
+                {
+                    bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
+                }
+
+                if (Input.GetKey(KeyCode.D))
+                {
+                    bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
+                }
+                else if (Input.GetKey(KeyCode.A))
+                {
+                    bodyTransform.Translate(Vector2.left * movingSpeed * Time.fixedDeltaTime);
+                }
+                //#endif
+            }
+            else // 타 user player
+            {
+
+            }
+
+            //if (controller.GetMoveInputVector().sqrMagnitude > 0.1f)
+            //{
+            //    animationHandler.Walk();
+            //}
+            //else
+            //{
+            //    animationHandler.Idle();
+            //}
+        }
+
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             //Debug.Log(Time.time);
@@ -235,80 +280,21 @@ namespace UBZ.MultiGame.Owner
             return photonView.IsMine;
         }
 
-        //public override CustomObject Interact()
-        //{
-        //    float bestDistance = interactiveCollider2D.radius;
-        //    Collider2D bestCollider = null;
-
-        //    Collider2D[] collider2D = Physics2D.OverlapCircleAll(bodyTransform.position, interactiveCollider2D.radius, (1 << 1) | (1 << 9));
-
-        //    for (int i = 0; i < collider2D.Length; i++)
-        //    {
-        //        if (!collider2D[i].GetComponent<CustomObject>().GetAvailable())
-        //            continue;
-        //        float distance = Vector2.Distance(bodyTransform.position, collider2D[i].transform.position);
-
-        //        if (distance < bestDistance)
-        //        {
-        //            bestDistance = distance;
-        //            bestCollider = collider2D[i];
-        //        }
-        //    }
-
-        //    if (null == bestCollider)
-        //        return null;
-
-        //    return bestCollider.GetComponent<CustomObject>();
-        //}
-
-        // 참고 : https://you-rang.tistory.com/193?category=764030
-        private void Move()
+        public override void Dash(float dashSpeed, float distance)
         {
-            if (!canMove || IsBehavioring(BehaviorState.Dash))
-                return;
+            base.Dash(dashSpeed, distance);
+            photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.Dash, true, directionDegree);
+        }
 
-            // player 자신
-            if(photonView.IsMine)
+        public override bool StopBehavior(BehaviorState stopState)
+        {
+            bool result = base.StopBehavior(stopState);
+            //Debug.Log("stop behavior : " + result);
+            if (result)
             {
-                if (rgbody)
-                {
-                    rgbody.MovePosition(objTransform.position
-                    + controller.GetMovingInputVector() * (movingSpeed) * Time.deltaTime);
-                }
-
-//#if UNITY_EDITOR
-                if (Input.GetKey(KeyCode.W))
-                {
-                    bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
-                }
-                else if (Input.GetKey(KeyCode.S))
-                {
-                    bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
-                }
-
-                if (Input.GetKey(KeyCode.D))
-                {
-                    bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
-                }
-                else if (Input.GetKey(KeyCode.A))
-                {
-                    bodyTransform.Translate(Vector2.left * movingSpeed * Time.fixedDeltaTime);
-                }
-//#endif
+                photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.Dash, false, 0f);
             }
-            else // 타 user player
-            {
-
-            }
-
-            //if (controller.GetMoveInputVector().sqrMagnitude > 0.1f)
-            //{
-            //    animationHandler.Walk();
-            //}
-            //else
-            //{
-            //    animationHandler.Idle();
-            //}
+            return result;
         }
         #endregion
 
@@ -420,7 +406,7 @@ namespace UBZ.MultiGame.Owner
         [PunRPC]
         protected override void PunHitDash(Vector2 pos, Vector2 dir)
         {
-            Debug.Log("hitDash : " + pos + ", " + dir);
+            //Debug.Log("hitDash : " + pos + ", " + dir);
             KnockBack(500f, pos, dir, false);
             Stun(1f, 1f);
         }

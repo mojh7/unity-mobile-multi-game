@@ -42,11 +42,14 @@ namespace UBZ.MultiGame.Owner
         //}
     }
     
+    // TODO : Single, Multi game에 따른 클래스 설계 및 구현 다르게 해야되서 고민 좀 해야됨.
+
     public abstract class Character : MonoBehaviour
     {
         #region constants
         // TODO : 상수만 나중에 따로 다른 곳에 옮길 수도
         protected const string DASH = "Dash";
+        protected const string DISPLAY_EFFECT = "DisplayEffect";
         protected readonly static StatusEffectInfo DASH_INFO = new StatusEffectInfo() { stun = 1f };
         #endregion
 
@@ -189,7 +192,7 @@ namespace UBZ.MultiGame.Owner
             Debug.Log("스킬(대시) 사용");
         }
 
-        public void Dash(float dashSpeed, float distance)
+        public virtual void Dash(float dashSpeed, float distance)
         {
             if (!canBehavior)
                 return;
@@ -205,11 +208,24 @@ namespace UBZ.MultiGame.Owner
                 behaviorState = behaviorState | BehaviorState.Dash;
                 checkingDashEnded = StartCoroutine(CheckDashEnded(distance));
             }
-
-            Components.DashEffectObj.SetActive(true);
-            Components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree); 
             rgbody.velocity = Vector3.zero;
             rgbody.AddForce(dashSpeed * GetDirVector());
+        }
+
+        [PunRPC]
+        protected void DisplayEffect(BehaviorState behaviorState, bool canDisplay, float directionDegree)
+        {
+            //Debug.Log("DisplayEffect " + behaviorState + ", " + canDisplay + ", " + directionDegree);
+            switch(behaviorState)
+            {
+                case BehaviorState.Dash:
+                    Components.DashEffectObj.SetActive(canDisplay);
+                    if(canDisplay)
+                        Components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree);
+                    break;
+                default:
+                    break;
+            }
         }
         #endregion
 
@@ -286,20 +302,21 @@ namespace UBZ.MultiGame.Owner
         /// 행동 종료 요청이 들어온 행동 중에서 현재 행동 중이면 stop 처리
         /// </summary>
         /// <param name="stopState">종료시킬 행동, 다중 입력 가능</param>
-        public void StopBehavior(BehaviorState stopState)
+        public virtual bool StopBehavior(BehaviorState stopState)
         {
             BehaviorState state = behaviorState & stopState;
             
             if(BehaviorState.Dash == (state & BehaviorState.Dash))
             {
-                Components.DashEffectObj.SetActive(false);
                 if (null != checkingDashEnded)
                 {
                     StopCoroutine(checkingDashEnded);
                     checkingDashEnded = null;
                 }
                 behaviorState = behaviorState ^ BehaviorState.Dash;
+                return true;
             }
+            return false;
         }
 
         //protected abstract void StopControlTypeAbnormalStatus(ControlTypeAbnormalStatusType controlTypeAbnormalStatusType);

@@ -192,6 +192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canPlayMusic: 1
+  canPlaySFX: 1
 --- !u!1 &3560977558471945677
 GameObject:
   m_ObjectHideFlags: 0

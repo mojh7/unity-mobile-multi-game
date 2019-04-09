@@ -30,6 +30,7 @@ MonoBehaviour:
   RunInBackground: 1
   RpcList:
   - DestroySpaceship
+  - DisplayEffect
   - Fire
   - PlayerInit
   - PunHitDash
