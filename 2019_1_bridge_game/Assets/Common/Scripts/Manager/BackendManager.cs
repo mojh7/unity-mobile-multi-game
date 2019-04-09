@@ -6,6 +6,7 @@ using System;
 
 public class BackendManager : MonoBehaviourSingleton<BackendManager>
 {
+    #region variables
     private string id = "";
     private string pw = "";
     private string nick = "";
@@ -18,6 +19,7 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
 
     private Dictionary<string, int> characterDic = new Dictionary<string, int>();
     private Dictionary<string, int> bgmDic = new Dictionary<string, int>();
+    #endregion
 
     #region Get / Set
     public void SetLoginData(string id, string pw)
@@ -106,6 +108,21 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         param.Add("bgm", bgm);
 
         InsertGameInfo(itemTable, param);
+    }
+
+    // 유저의 정보 받아오기
+    public string GetUserData(string name, string type)
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("character");
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            return data["rows"][0][name][type].ToString();
+        }
+
+        return null;
     }
 
     // 게임 정보 수정

@@ -6,6 +6,7 @@ using System;
 
 public class BackendController : MonoBehaviourSingleton<BackendController>
 {
+    #region Variables
     private const string victoryDB   = "victory";
     private const string defeatDB    = "defeat";
     private const string stageDB     = "stage";
@@ -13,8 +14,9 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
     private const string levelDB     = "level";
     private const string characterDB = "character";
     private const string bgmDB       = "bgm";
+    #endregion
 
-
+    #region RANK
     // 이후 rank 점수 추가 호출
 
     // 승리하였을 시 호출 : +1
@@ -36,6 +38,26 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
     {
         Debug.Log("Update to Backend : DB " + stageDB);
         BackendManager.Instance.StageIncreaseIntoBackend(stageDB, 1);
+    }
+    #endregion
+
+    #region USER 
+    // 유저 코인 받아오기
+    public string GetUserCoinData()
+    {
+        return BackendManager.Instance.GetUserData("coin", "N");
+    }
+
+    // 유저 닉네임 받아오기
+    public string GetUserNickName()
+    {
+        return BackendManager.Instance.GetUserData("nickname", "S");
+    }
+
+    // 유저 레벨 받아오기
+    public string GetUserLevel()
+    {
+        return BackendManager.Instance.GetUserData("level", "N");
     }
 
     // 코인 업데이트
@@ -81,7 +103,9 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
             Debug.Log(name + " : 구매 실패하였습니다.");// 구매 실패
         }
     }
+    #endregion
 
+    #region FRIEND
     // 닉네임 검색 후 친구요청 
     public void AddFriendUpdateBackend(string nick)
     {
@@ -140,4 +164,5 @@ public class BackendController : MonoBehaviourSingleton<BackendController>
     {
         BackendManager.Instance.FriendBreakRequest(indate);
     }
+    #endregion
 }
