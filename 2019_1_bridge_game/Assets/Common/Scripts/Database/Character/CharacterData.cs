@@ -14,4 +14,6 @@ public class CharacterData : ScriptableObject
     public int genius;
     public int sociability;
     public int health;
+    public string playverText;
+    public string characteristic;
 }

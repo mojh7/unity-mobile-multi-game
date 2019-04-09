@@ -11,8 +11,10 @@ public class CharacterBookDetail : MonoBehaviour
     [SerializeField] private Slider gen;
     [SerializeField] private Slider social;
     [SerializeField] private Slider health;
+    [SerializeField] private Text playverText;
+    [SerializeField] private Text characteristic;
 
-    public void SetBookDetail(Sprite img, string name, int gen, int social, int health, int id)
+    public void SetBookDetail(Sprite img, string name, int gen, int social, int health, int id,string playverText, string characteristic)
     {
         this.id = id;
         this.image.sprite = img;
@@ -20,7 +22,8 @@ public class CharacterBookDetail : MonoBehaviour
         this.gen.value = gen;
         this.social.value = social;
         this.health.value = health;
-        Debug.Log("value : "+ gen + social + health);
+        this.playverText.text = playverText;
+        this.characteristic.text = characteristic;
     }
 
     public int GetId()

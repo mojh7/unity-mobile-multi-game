@@ -17,6 +17,7 @@ public class UIBuying : UIControl
             OnHide();
         }
     }
+    
     public void setBuyingpanel(Sprite image, string name)
     {
         this.image.sprite = image;
@@ -26,5 +27,10 @@ public class UIBuying : UIControl
     public void onBuysuccess()
     {
         buysuccess.OnShow();
+    }
+
+    public void hideBuying()
+    {
+        this.OnHide();
     }
 }

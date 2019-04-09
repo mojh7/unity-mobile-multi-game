@@ -47,9 +47,11 @@ public class CharacterIllustrated : UIControl
             int gen = data.dataList[i].genius;
             int social = data.dataList[i].sociability;
             int health = data.dataList[i].health;
+            string playverText = data.dataList[i].playverText;
+            string characteristic = data.dataList[i].characteristic;
 
             tmpIllustrateBook.Init(sprite, name);
-            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name, gen, social, health, id));
+            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name, gen, social, health, id, playverText, characteristic));
 
             illustratedBook.Add(tmpCharacter);
         }
@@ -59,9 +61,9 @@ public class CharacterIllustrated : UIControl
 
     }
 
-    private void AddListenCharacterDetail(Sprite img, string name, int gen, int social, int health, int id)
+    private void AddListenCharacterDetail(Sprite img, string name, int gen, int social, int health, int id, string playverText, string characteristic)
     {
-        bookDetail.SetBookDetail(img, name, gen, social, health, id);
+        bookDetail.SetBookDetail(img, name, gen, social, health, id, playverText, characteristic);
     }
     private void AddListenSkinDetail()
     {
