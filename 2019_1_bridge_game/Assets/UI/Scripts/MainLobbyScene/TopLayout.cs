@@ -15,7 +15,9 @@ public class TopLayout : MonoBehaviour
         RefreshTopLayout();
     }
 
-    private void RefreshTopLayout()
+    // TODO
+    // 아이템 구매 or 유저의 정보가 변할 때 꼭 호출.
+    public void RefreshTopLayout()
     {
         Debug.Log("Refresh Top Layout : User Data");
         nicknameText.text   = BackendController.Instance.GetUserNickName();

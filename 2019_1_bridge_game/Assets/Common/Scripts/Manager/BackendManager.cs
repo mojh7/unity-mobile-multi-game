@@ -111,9 +111,9 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     }
 
     // 유저의 정보 받아오기
-    public string GetUserData(string name, string type)
+    public string GetUserData(string table, string name, string type)
     {
-        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("character");
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents(table);
 
         if (isComplete.IsSuccess())
         {
@@ -122,6 +122,20 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
             return data["rows"][0][name][type].ToString();
         }
 
+        return null;
+    }
+
+    public string GetUserRankData(string name, string type)
+    {
+        GetUserInfo();
+        BackendReturnObject isComplete = Backend.GameInfo.GetPublicContentsByGamerIndate("rank", Indate);
+
+        if (isComplete.IsSuccess())
+        {
+            JsonData data = isComplete.GetReturnValuetoJSON();
+
+            return data["rows"][0][name][type].ToString();
+        }
         return null;
     }
 
@@ -310,6 +324,30 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
         return isComplete.IsSuccess();
     }
 
+    // 캐릭터 구매 정보 받아오기
+    public Dictionary<string, int> GetDictCharacter()
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("item");
+
+        if (isComplete.IsSuccess())
+        {
+            RefreshUserItemDict(isComplete.GetReturnValuetoJSON());
+        }
+        return characterDic;
+    }
+
+    // 음악 구매 정보 받아오기
+    public Dictionary<string, int> GetDictBgm()
+    {
+        BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("item");
+
+        if (isComplete.IsSuccess())
+        {
+            RefreshUserItemDict(isComplete.GetReturnValuetoJSON());
+        }
+        return bgmDic;
+    }
+
     private void IntoDataForJson(JsonData data, string table, string key, int val)
     {
         if (data["rows"].Count > 0)
@@ -350,22 +388,28 @@ public class BackendManager : MonoBehaviourSingleton<BackendManager>
     private string GetUserItemDicToJson()
     {
         BackendReturnObject isComplete = Backend.GameInfo.GetPrivateContents("item");
-        characterDic.Clear(); bgmDic.Clear();
 
         if (isComplete.IsSuccess())
         {
             JsonData data = isComplete.GetReturnValuetoJSON();
-            JsonData chaJson = data["rows"][0]["character"]["M"];
-            JsonData bgmJson = data["rows"][0]["bgm"]["M"];
-
-            foreach (var item in chaJson.Keys)
-                characterDic.Add(item, Convert.ToInt32(chaJson[item][0].ToString()));
-            foreach (var item in bgmJson.Keys)
-                bgmDic.Add(item, Convert.ToInt32(bgmJson[item][0].ToString()));
+            RefreshUserItemDict(data);
 
             return data["rows"][0]["inDate"]["S"].ToString();
         }
         return null;
+    }
+
+    // 유저의 아이템 데이터 받아오기
+    private void RefreshUserItemDict(JsonData data)
+    {
+        characterDic.Clear(); bgmDic.Clear();
+        JsonData chaJson = data["rows"][0]["character"]["M"];
+        JsonData bgmJson = data["rows"][0]["bgm"]["M"];
+
+        foreach (var item in chaJson.Keys)
+            characterDic.Add(item, Convert.ToInt32(chaJson[item][0].ToString()));
+        foreach (var item in bgmJson.Keys)
+            bgmDic.Add(item, Convert.ToInt32(bgmJson[item][0].ToString()));
     }
 
     // 친구 목록
