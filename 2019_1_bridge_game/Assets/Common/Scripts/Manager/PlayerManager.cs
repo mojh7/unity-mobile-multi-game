@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UBZ.MultiGame.Owner;
+using UBZ.Owner;
 
 public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
 {
@@ -9,12 +9,12 @@ public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
     [SerializeField]
     private GameObject playerPrefab;
     private GameObject playerObj;
-    private Player player;
+    private MultiPlayer player;
 
     #endregion
 
     #region getter
-    public Player GetPlayer()
+    public MultiPlayer GetPlayer()
     {
         return player;
     }
@@ -35,7 +35,7 @@ public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
     public void SpawnPlayer()
     {
         playerObj = Instantiate(playerPrefab, new Vector3(0.3f, 0.4f), Quaternion.identity);
-        player = playerObj.GetComponent<Player>();
+        player = playerObj.GetComponent<MultiPlayer>();
         player.Init();
         //// 저장된 데이터 없이 새로운 게임을 시작할 때
         //if (false == GameStateManager.Instance.GetLoadsGameData())
@@ -55,7 +55,7 @@ public class PlayerManager : MonoBehaviourSingleton<PlayerManager>
     public void FindPlayer()
     {
         playerObj = Instantiate(playerPrefab, new Vector3(7, 4, 0), Quaternion.identity);
-        player = playerObj.GetComponent<Player>();
+        player = playerObj.GetComponent<MultiPlayer>();
         player.Init();
         //// 저장된 데이터 없이 새로운 게임을 시작할 때
         //if (false == GameStateManager.Instance.GetLoadsGameData())

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UBZ.MultiGame.Owner.CharacterInfo;
+using UBZ.Owner.CharacterInfo;
 using Photon.Pun;
 using Photon.Realtime;
 
-namespace UBZ.MultiGame.Owner
+namespace UBZ.Owner
 {
     namespace CharacterInfo
     {
@@ -24,7 +24,7 @@ namespace UBZ.MultiGame.Owner
         //    NONE, ALL
         //}
 
-        // TODO : -1 값 설정하면 다중 enum everyThing 이랑 겹치는지
+        // TODO : -1 값 설정하면 다중 enum everyThing 이랑 겹치는지 테스트
         public enum AbnormalImmune
         {
             ALL = 0x11111111,
@@ -60,16 +60,7 @@ namespace UBZ.MultiGame.Owner
         protected const string DISPLAY_EFFECT = "DisplayEffect";
         protected readonly static StatusEffectInfo DASH_INFO = new StatusEffectInfo() { stun = 1f };
         #endregion
-
-        #region Status
-        [SerializeField] protected float movingSpeed;     // Character move Speed
-        //protected CharacterInfo.DamageImmune damageImmune;
-        protected CharacterInfo.AbnormalImmune abnormalImmune;
-        //protected CharacterInfo.AimType aimType;
-        //protected CharacterInfo.State characterState;
-        protected CharacterInfo.OwnerType ownerType;
-        #endregion
-
+        
         #region componets
         protected CharacterComponents Components;
         protected AbnormalComponents abnormalComponents;
@@ -95,19 +86,18 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region variables
+        [SerializeField] protected float movingSpeed;     // Character move Speed
         [SerializeField] protected Sprite sprite;
-
+        protected CharacterInfo.AbnormalImmune abnormalImmune;
+        protected CharacterInfo.OwnerType ownerType;
         protected Vector3 directionVector;
         protected float directionDegree;  // 바라보는 각도(총구 방향)
         protected bool isRightDirection;    // character 방향이 우측이냐(true) 아니냐(flase = 좌측)
-
         protected Color baseColor;
-
         protected LayerMask enemyLayer;
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
         protected BehaviorState behaviorState;
-        #endregion
 
         #region abnormalStatusVariables
         protected bool canMove;
@@ -122,6 +112,8 @@ namespace UBZ.MultiGame.Owner
 
         protected Coroutine checkingknockBackEnded;
         protected Coroutine checkingDashEnded;
+        #endregion
+
         #endregion
 
         #region get / set
@@ -235,7 +227,6 @@ namespace UBZ.MultiGame.Owner
                     break;
             }
         }
-        #endregion
 
         #region AbnormalStatusFunc
         protected abstract bool IsControlTypeAbnormal();
@@ -258,6 +249,9 @@ namespace UBZ.MultiGame.Owner
                 controlTypeAbnormalStatusesDurationMax[i] = 0;
             }
         }
+        #endregion
+
+
 
         /// <summary> 상태 이상 효과 적용 </summary>
         protected bool AbnormalChance(float appliedChance)
@@ -410,7 +404,7 @@ namespace UBZ.MultiGame.Owner
 
         #region collision
         [PunRPC]
-        protected abstract void PunHitDash(Vector2 pos, Vector2 dir);
+        protected virtual void PunHitDash(Vector2 pos, Vector2 dir) { }
         #endregion
 
         #region AbnormalCoroutine

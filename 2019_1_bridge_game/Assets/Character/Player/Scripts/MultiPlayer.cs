@@ -4,22 +4,19 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
-using UBZ.MultiGame.Owner.CharacterInfo;
+using UBZ.Owner.CharacterInfo;
 
-namespace UBZ.MultiGame.Owner
+namespace UBZ.Owner
 {
-    public class Player : Character, IPunObservable
+    public class MultiPlayer : Character, IPunObservable
     {
         #region constants
         public const string PLAYER = "Player";
         public const string SHOW_EMOTICON = "ShowEmoticon";
         #endregion
-
-        #region components
-        [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
-        #endregion
-
+        
         #region variables
+        [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
         private Photon.Pun.UtilityScripts.PunTeams team;
 
         private Transform objTransform;
@@ -140,6 +137,7 @@ namespace UBZ.MultiGame.Owner
         }
         #endregion
 
+        #region func
         #region initialzation
         private void InitController()
         {
@@ -209,8 +207,6 @@ namespace UBZ.MultiGame.Owner
             }
         }
         #endregion
-
-        #region func
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
@@ -260,7 +256,6 @@ namespace UBZ.MultiGame.Owner
             //    animationHandler.Idle();
             //}
         }
-
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             //Debug.Log(Time.time);
@@ -275,18 +270,15 @@ namespace UBZ.MultiGame.Owner
                 isRightDirection = (bool)stream.ReceiveNext();
             }
         }
-
         public bool IsMine()
         {
             return photonView.IsMine;
         }
-
         public override void Dash(float dashSpeed, float distance)
         {
             base.Dash(dashSpeed, distance);
             photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.DASH, true, directionDegree);
         }
-
         public override bool StopBehavior(BehaviorState stopState)
         {
             bool result = base.StopBehavior(stopState);
@@ -297,8 +289,6 @@ namespace UBZ.MultiGame.Owner
             }
             return result;
         }
-
-        
         public void ShowEmoticon(EmoticonType type)
         {
             photonView.RPC("PunShowEmoticon", RpcTarget.AllViaServer, type);
@@ -309,7 +299,6 @@ namespace UBZ.MultiGame.Owner
             Debug.Log("ShowEmoticon : " + type);
             Components.Emoticon.ShowEmoticon(type);
         }
-        #endregion
 
         #region abnormalStatusFunc
         protected override bool IsControlTypeAbnormal()
@@ -423,6 +412,7 @@ namespace UBZ.MultiGame.Owner
             KnockBack(500f, pos, dir, false);
             Stun(1f, 1f);
         }
+        #endregion
         #endregion
 
         #region coroutine

@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UBZ.MultiGame.Owner;
+using UBZ.Owner;
 using Photon.Pun.UtilityScripts;
 
 public class DashEffect : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private MultiPlayer player;
     [SerializeField] private GameObject parentObj;
 
     private const string PLAYER = "Player";
@@ -44,12 +44,12 @@ public class DashEffect : MonoBehaviour
     public void Collision(ref Collider2D coll)
     {
         // TODO : 논리식 생각 점 더하기
-        if ((PunTeams.Team.RED == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER) && coll.CompareTag(Player.PLAYER)) ||
-            PunTeams.Team.BLUE == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER) && coll.CompareTag(Player.PLAYER))
+        if ((PunTeams.Team.RED == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER) && coll.CompareTag(MultiPlayer.PLAYER)) ||
+            PunTeams.Team.BLUE == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER) && coll.CompareTag(MultiPlayer.PLAYER))
         {
             Debug.Log("대쉬 충돌");
-            coll.GetComponent<Player>().HitDash(player.GetPosition(), player.GetDirVector());
-            player.StopBehavior(UBZ.MultiGame.Owner.CharacterInfo.BehaviorState.DASH);
+            coll.GetComponent<MultiPlayer>().HitDash(player.GetPosition(), player.GetDirVector());
+            player.StopBehavior(UBZ.Owner.CharacterInfo.BehaviorState.DASH);
         }
     }
 }

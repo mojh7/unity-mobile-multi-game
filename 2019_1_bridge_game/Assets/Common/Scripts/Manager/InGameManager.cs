@@ -77,7 +77,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         }
     }
 
-    public Sprite GetEmoticonSprite(UBZ.MultiGame.Owner.CharacterInfo.EmoticonType type)
+    public Sprite GetEmoticonSprite(UBZ.Owner.CharacterInfo.EmoticonType type)
     {
         return emoticonSprites[(int)type];
     }
@@ -111,13 +111,13 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         GameObject playerObj = null;
         if (PunTeams.Team.RED == PhotonNetwork.LocalPlayer.GetTeam())
         {
-            playerObj = PhotonNetwork.Instantiate("Player", redTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
+            playerObj = PhotonNetwork.Instantiate("MultiPlayer", redTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
         }
         else if(PunTeams.Team.BLUE == PhotonNetwork.LocalPlayer.GetTeam())
         {
-            playerObj = PhotonNetwork.Instantiate("Player", blueTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
+            playerObj = PhotonNetwork.Instantiate("MultiPlayer", blueTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
         }
-        playerObj.GetComponent<UBZ.MultiGame.Owner.Player>().Init();
+        playerObj.GetComponent<UBZ.Owner.MultiPlayer>().Init();
     }
 
     public override void OnDisable()
