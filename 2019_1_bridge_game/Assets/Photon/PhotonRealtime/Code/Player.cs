@@ -361,7 +361,7 @@ namespace Photon.Realtime
 
         /// <summary> 새로운 플레이어 또는 원격 플레이어의 업데이트를받을 때의 캐시 속성. 동기화 된 업데이트에는 SetCustomProperties ()를 사용하십시오. </summary>
         /// <remarks>
-        ///이 명령은 CustomProperties 만 업데이트하고 서버로 보내지 않습니다.
+        /// 이 명령은 CustomProperties 만 업데이트하고 서버로 보내지 않습니다.
         /// 서버가 속성을 보내는 새로운 원격 플레이어를 만들 때 주로 사용됩니다.
         /// </remarks>
         public virtual void InternalCacheProperties(Hashtable properties)

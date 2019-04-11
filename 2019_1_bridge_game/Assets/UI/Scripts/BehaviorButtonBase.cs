@@ -35,6 +35,9 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
 
     protected bool CanBehavior()
     {
+        if (false == InGameUIManager.Instance.GetControllable())
+            return false;
+
         if (cost < costFullRecoveryTime)
         {
             UseAllCostFail();

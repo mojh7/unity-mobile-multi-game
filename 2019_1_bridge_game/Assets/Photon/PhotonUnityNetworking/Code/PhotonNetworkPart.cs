@@ -908,11 +908,19 @@ namespace Photon.Pun
         }
 
 
+        /*
         /// <summary>
         /// Removes the RPCs of someone else (to be used as master).
         /// This won't clean any local caches. It just tells the server to forget a player's RPCs and instantiates.
         /// </summary>
         /// <param name="actorNumber"></param>
+        */ 
+
+        /// <summary>
+        /// 다른 사람 (마스터로 사용됨)의 RPC를 제거합니다.
+        /// 로컬 캐시를 지우지 않습니다. 서버에 플레이어의 RPC를 잊어 버리고 인스턴스를 생성합니다.
+        /// </summary>
+        /// <param name = "actorNumber"> </param>
         public static void OpCleanActorRpcBuffer(int actorNumber)
         {
             RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };
@@ -921,10 +929,17 @@ namespace Photon.Pun
             //NetworkingClient.OpRaiseEvent(PunEvent.RPC, null, true, 0, new int[] { actorNumber }, EventCaching.RemoveFromRoomCache);
         }
 
+        /*
         /// <summary>
         /// Instead removing RPCs or Instantiates, this removed everything cached by the actor.
         /// </summary>
         /// <param name="actorNumber"></param>
+        */
+
+        /// <summary>
+        /// RPC 또는 Instantiates를 제거하는 대신 액터가 캐시 한 모든 것을 제거했습니다.
+        /// </summary>
+        /// <param name = "actorNumber"> </param>
         public static void OpRemoveCompleteCacheOfPlayer(int actorNumber)
         {
             RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };

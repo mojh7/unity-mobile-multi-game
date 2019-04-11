@@ -41,6 +41,8 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
     public const string RED_TEAM_PLAYER = "RedTeamPlayer";
     public const string BLUE_TEAM_PLAYER = "BlueTeamPlayer";
+
+    public const float DASH_STEALING_RATIO = 0.2f; //= 1/5
     #endregion
 
     #region variables

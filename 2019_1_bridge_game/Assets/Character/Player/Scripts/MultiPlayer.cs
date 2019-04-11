@@ -29,6 +29,11 @@ namespace UBZ.Owner
         #endregion
 
         #region get / set
+        public Photon.Realtime.Player GetUser()
+        {
+            return photonView.Owner;
+        }
+
         public Photon.Pun.UtilityScripts.PunTeams GetTeam()
         {
             return team;
@@ -170,21 +175,20 @@ namespace UBZ.Owner
             abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
 
-
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                Components.DashEffect.Init(PunTeams.Team.RED);
+                Components.DashEffect.Init(this, PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                Components.DashEffect.Init(PunTeams.Team.BLUE);
+                Components.DashEffect.Init(this, PunTeams.Team.BLUE);
             }
 
             if (photonView.IsMine)
@@ -401,16 +405,22 @@ namespace UBZ.Owner
             //}
         }
         // TODO : .
-        public void HitDash(Vector2 pos, Vector2 dir)
+        public void HitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player dashOwner)
         {
-            photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir);
+            Debug.Log("인생 : " + photonView.Owner.ActorNumber);
+            photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir, dashOwner);
         }
         [PunRPC]
-        protected override void PunHitDash(Vector2 pos, Vector2 dir)
+        protected override void PunHitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player user)
         {
-            //Debug.Log("hitDash : " + pos + ", " + dir);
             KnockBack(500f, pos, dir, false);
             Stun(1f, 1f);
+            if(photonView.IsMine)
+            {
+                int stolenSheetMusicCount = Mathf.CeilToInt((photonView.Owner.GetNumSheetMusic()) * InGameManager.DASH_STEALING_RATIO);
+                photonView.Owner.AddNumSheetMusic(-stolenSheetMusicCount);
+                user.AddNumSheetMusic(stolenSheetMusicCount);
+            }
         }
         #endregion
         #endregion

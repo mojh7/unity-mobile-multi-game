@@ -136,7 +136,7 @@ namespace Photon.Pun
         // The ID of the PhotonView. Identifies it in a networked game (per room).
         // See: [Network Instantiation](@ref instantiateManual)
         /// <summary>
-        /// PhotonView의 ID입니다. 네트워크 게임에서이를 식별합니다 (방당).
+        /// PhotonView의 ID입니다. 네트워크 게임에서 이를 식별합니다 (방당).
         /// </summary>
         /// <remarks>참고 : [네트워크 인스턴스화] (@ref instantiateManual)</remarks>
         public int ViewID

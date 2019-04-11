@@ -404,7 +404,7 @@ namespace UBZ.Owner
 
         #region collision
         [PunRPC]
-        protected virtual void PunHitDash(Vector2 pos, Vector2 dir) { }
+        protected virtual void PunHitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player user) { }
         #endregion
 
         #region AbnormalCoroutine
