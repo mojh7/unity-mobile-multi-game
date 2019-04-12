@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 660911240, guid: 77d6e49b5e6e74c909970a208a23105c, type: 3}
-  m_Name: TheBackendSettings
+  m_Script: {fileID: 11500000, guid: 24cb8983171e5d247b64751c07c91978, type: 3}
+  m_Name: BGMDatabase
   m_EditorClassIdentifier: 
-  clientAppID: 841a53b0-4a14-11e9-9b5a-d53eb14de92d449
-  signatureKey: 841a7ac0-4a14-11e9-9b5a-d53eb14de92d449
-  packageName: com.bridgeTeam.temp
-  isDevelop: 0
-  Version: 3.5.7
+  dataList:
+  - {fileID: 11400000, guid: e1996835ea629214ca1761c3a36597a0, type: 2}
+  - {fileID: 11400000, guid: 78cd006829a36ca44ab918654af28dbd, type: 2}

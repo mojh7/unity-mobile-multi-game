@@ -9,11 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 660911240, guid: 77d6e49b5e6e74c909970a208a23105c, type: 3}
-  m_Name: TheBackendSettings
+  m_Script: {fileID: 11500000, guid: e0e2c1015ac7dd346907a65f8c7e8ef0, type: 3}
+  m_Name: CoinDatabase
   m_EditorClassIdentifier: 
-  clientAppID: 841a53b0-4a14-11e9-9b5a-d53eb14de92d449
-  signatureKey: 841a7ac0-4a14-11e9-9b5a-d53eb14de92d449
-  packageName: com.bridgeTeam.temp
-  isDevelop: 0
-  Version: 3.5.7
+  dataList:
+  - {fileID: 11400000, guid: 19000399324702f4ebb78f660d5cee99, type: 2}
+  - {fileID: 11400000, guid: 5e710257637349241aaecff900fa17aa, type: 2}
