@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UBZ.MultiGame.Owner;
+using UBZ.Owner;
 using Photon.Pun.UtilityScripts;
 
 public class DashEffect : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    private MultiPlayer player;
     [SerializeField] private GameObject parentObj;
 
     private const string PLAYER = "Player";
@@ -14,8 +14,9 @@ public class DashEffect : MonoBehaviour
 
     public GameObject GetDashEffectObj() { return parentObj; }
 
-    public void Init(PunTeams.Team team)
+    public void Init(MultiPlayer player, PunTeams.Team team)
     {
+        this.player = player;
         this.team = team;
         if (PunTeams.Team.RED == team)
         {
@@ -25,7 +26,7 @@ public class DashEffect : MonoBehaviour
         {
             gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
         }
-        Debug.Log("dasheffect team : " + team);
+        //Debug.Log("dasheffect team : " + team);
         parentObj.SetActive(false);
     }
 
@@ -43,13 +44,14 @@ public class DashEffect : MonoBehaviour
     /// <summary> Trigger </summary>
     public void Collision(ref Collider2D coll)
     {
+        if (!player.IsMine())
+            return;
         // TODO : 논리식 생각 점 더하기
-        if ((PunTeams.Team.RED == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER) && coll.CompareTag(Player.PLAYER)) ||
-            PunTeams.Team.BLUE == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER) && coll.CompareTag(Player.PLAYER))
+        if ((PunTeams.Team.RED == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER) && coll.CompareTag(MultiPlayer.PLAYER)) ||
+            PunTeams.Team.BLUE == team && UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER) && coll.CompareTag(MultiPlayer.PLAYER))
         {
-            Debug.Log("대쉬 충돌");
-            coll.GetComponent<Player>().HitDash(player.GetPosition(), player.GetDirVector());
-            player.StopBehavior(UBZ.MultiGame.Owner.CharacterInfo.BehaviorState.DASH);
+            coll.GetComponent<MultiPlayer>().HitDash(player.GetPosition(), player.GetDirVector(), player.GetUser());
+            player.StopBehavior(UBZ.Owner.CharacterInfo.BehaviorState.DASH);
         }
     }
 }

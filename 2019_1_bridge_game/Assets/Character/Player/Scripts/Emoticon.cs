@@ -18,7 +18,7 @@ public class Emoticon : MonoBehaviour
         speechBubble.enabled = active;
     }
 
-    public void ShowEmoticon(UBZ.MultiGame.Owner.CharacterInfo.EmoticonType type)
+    public void ShowEmoticon(UBZ.Owner.CharacterInfo.EmoticonType type)
     {
         SetActiveSprites(true);
 

@@ -7,19 +7,17 @@ using UnityEngine.EventSystems;
 public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
 {
     #region variables
-    private const float COST_MAX = 1f;
-    [SerializeField] protected Image buttonImage;
-    [SerializeField] protected Image coolTimeImage;
+    [SerializeField] protected Image blackLayerImg;
+    [SerializeField] protected Image coolTimeDisplayImg;
+    [SerializeField] protected Text coolTimeDisplayTxt;
     [SerializeField] protected bool hasCoolTime;
     protected float cost; // 0~1f
     [SerializeField] protected float costFullRecoveryTime;
-    [SerializeField] protected Color EMPTY_COST_COLOR;
-    [SerializeField] protected Color FILLED_COST_COLOR;
-    protected UBZ.MultiGame.Owner.Player player;
+    protected UBZ.Owner.MultiPlayer player;
     #endregion
 
     #region get / set
-    public void SetPlayer(UBZ.MultiGame.Owner.Player player)
+    public void SetPlayer(UBZ.Owner.MultiPlayer player)
     {
         this.player = player;
     }
@@ -28,7 +26,7 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
     #region unityFunc
     private void Awake()
     {
-        cost = COST_MAX;
+        FillCostMax();
     }
     #endregion
 
@@ -37,7 +35,10 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
 
     protected bool CanBehavior()
     {
-        if (cost < COST_MAX)
+        if (false == InGameUIManager.Instance.GetControllable())
+            return false;
+
+        if (cost < costFullRecoveryTime)
         {
             UseAllCostFail();
             return false;
@@ -49,12 +50,14 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
         }
     }
 
-    protected virtual void FillCostMax()
+    protected void FillCostMax()
     {
-        cost = COST_MAX;
-        coolTimeImage.fillAmount = cost;
+        cost = costFullRecoveryTime;
+        coolTimeDisplayImg.fillAmount = 1f-cost;
+        blackLayerImg.enabled = false;
+        coolTimeDisplayTxt.text = string.Empty;
     }
-    protected virtual void UseAllCost()
+    protected void UseAllCost()
     {
         cost = 0f;
         StartCoroutine(DisplayCost());
@@ -67,14 +70,25 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
     #region coroutine
     protected virtual IEnumerator DisplayCost()
     {
-        // 본래 식 COST_MAX / ( costFullRecoveryTime / Time.fixedDeltaTime), COST_MAX = 1f 이라 간소화 함.
-        float RecoveryAmount = Time.fixedDeltaTime / costFullRecoveryTime;
+        blackLayerImg.enabled = true;
         while (true)
         {
-            coolTimeImage.fillAmount = cost;
+            if(costFullRecoveryTime - cost > 1.2f)
+            {
+                coolTimeDisplayTxt.text = Mathf.CeilToInt(costFullRecoveryTime - cost).ToString();
+            }
+            else if(costFullRecoveryTime - cost > 1f)
+            {
+                coolTimeDisplayTxt.text = "1";
+            }
+            else
+            {
+                coolTimeDisplayTxt.text = (((int)((costFullRecoveryTime - cost)*10))/10f).ToString();
+            }
+            coolTimeDisplayImg.fillAmount = 1-(cost / costFullRecoveryTime);
             yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
-            cost += RecoveryAmount;
-            if(cost >= COST_MAX)
+            cost += Time.fixedDeltaTime;
+            if(cost >= costFullRecoveryTime)
             {
                 FillCostMax();
                 break;

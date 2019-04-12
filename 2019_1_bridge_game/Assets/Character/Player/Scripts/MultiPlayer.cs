@@ -4,22 +4,19 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
-using UBZ.MultiGame.Owner.CharacterInfo;
+using UBZ.Owner.CharacterInfo;
 
-namespace UBZ.MultiGame.Owner
+namespace UBZ.Owner
 {
-    public class Player : Character, IPunObservable
+    public class MultiPlayer : Character, IPunObservable
     {
         #region constants
         public const string PLAYER = "Player";
         public const string SHOW_EMOTICON = "ShowEmoticon";
         #endregion
-
-        #region components
-        [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
-        #endregion
-
+        
         #region variables
+        [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
         private Photon.Pun.UtilityScripts.PunTeams team;
 
         private Transform objTransform;
@@ -32,6 +29,11 @@ namespace UBZ.MultiGame.Owner
         #endregion
 
         #region get / set
+        public Photon.Realtime.Player GetUser()
+        {
+            return photonView.Owner;
+        }
+
         public Photon.Pun.UtilityScripts.PunTeams GetTeam()
         {
             return team;
@@ -140,6 +142,7 @@ namespace UBZ.MultiGame.Owner
         }
         #endregion
 
+        #region func
         #region initialzation
         private void InitController()
         {
@@ -172,21 +175,20 @@ namespace UBZ.MultiGame.Owner
             abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
 
-
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.red;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                Components.DashEffect.Init(PunTeams.Team.RED);
+                Components.DashEffect.Init(this, PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
                 Components.SpriteRenderer.color = Color.blue;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                Components.DashEffect.Init(PunTeams.Team.BLUE);
+                Components.DashEffect.Init(this, PunTeams.Team.BLUE);
             }
 
             if (photonView.IsMine)
@@ -209,8 +211,6 @@ namespace UBZ.MultiGame.Owner
             }
         }
         #endregion
-
-        #region func
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
@@ -260,7 +260,6 @@ namespace UBZ.MultiGame.Owner
             //    animationHandler.Idle();
             //}
         }
-
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
             //Debug.Log(Time.time);
@@ -275,18 +274,15 @@ namespace UBZ.MultiGame.Owner
                 isRightDirection = (bool)stream.ReceiveNext();
             }
         }
-
         public bool IsMine()
         {
             return photonView.IsMine;
         }
-
         public override void Dash(float dashSpeed, float distance)
         {
             base.Dash(dashSpeed, distance);
             photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.DASH, true, directionDegree);
         }
-
         public override bool StopBehavior(BehaviorState stopState)
         {
             bool result = base.StopBehavior(stopState);
@@ -297,8 +293,6 @@ namespace UBZ.MultiGame.Owner
             }
             return result;
         }
-
-        
         public void ShowEmoticon(EmoticonType type)
         {
             photonView.RPC("PunShowEmoticon", RpcTarget.AllViaServer, type);
@@ -309,7 +303,6 @@ namespace UBZ.MultiGame.Owner
             Debug.Log("ShowEmoticon : " + type);
             Components.Emoticon.ShowEmoticon(type);
         }
-        #endregion
 
         #region abnormalStatusFunc
         protected override bool IsControlTypeAbnormal()
@@ -412,17 +405,24 @@ namespace UBZ.MultiGame.Owner
             //}
         }
         // TODO : .
-        public void HitDash(Vector2 pos, Vector2 dir)
+        public void HitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player dashOwner)
         {
-            photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir);
+            Debug.Log("인생 : " + photonView.Owner.ActorNumber);
+            photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir, dashOwner);
         }
         [PunRPC]
-        protected override void PunHitDash(Vector2 pos, Vector2 dir)
+        protected override void PunHitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player user)
         {
-            //Debug.Log("hitDash : " + pos + ", " + dir);
             KnockBack(500f, pos, dir, false);
             Stun(1f, 1f);
+            if(photonView.IsMine)
+            {
+                int stolenSheetMusicCount = Mathf.CeilToInt((photonView.Owner.GetNumSheetMusic()) * InGameManager.DASH_STEALING_RATIO);
+                photonView.Owner.AddNumSheetMusic(-stolenSheetMusicCount);
+                user.AddNumSheetMusic(stolenSheetMusicCount);
+            }
         }
+        #endregion
         #endregion
 
         #region coroutine
