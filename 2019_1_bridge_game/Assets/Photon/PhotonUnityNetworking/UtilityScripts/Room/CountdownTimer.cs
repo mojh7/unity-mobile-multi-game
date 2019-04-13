@@ -66,7 +66,7 @@ namespace Photon.Pun.UtilityScripts
         // 카운트 다운을 시각화하기위한 텍스트 구성 요소에 대한 참조
         [Header("Reference to a Text component for visualizing the countdown")]
         public Text Text;
-        public Text text2;
+        public Text timeTxt;
 
         [Header("Countdown time in seconds")]
         public float Countdown = 5.0f;
@@ -135,13 +135,13 @@ namespace Photon.Pun.UtilityScripts
                 countdown = gameTime - timer;
                 //Debug.Log((float)PhotonNetwork.Time + ", " + gameTime +", "+ startTime + ", " + timer + ", " + countdown);
 
-                text2.text = string.Format("Time : {0}", countdown.ToString("n2"));
+                timeTxt.text = string.Format("Time {0} : {1}", (int)(countdown / 60), (int)(countdown % 60));
                 if (countdown > 0.0f)
                 {
                     continue;
                 }
                 Debug.Log("GameTimer 끝 : " + Time.time);
-                text2.text = string.Empty;
+                timeTxt.text = string.Empty;
 
                 if (OnGameEndTimerHasExpired != null)
                 {

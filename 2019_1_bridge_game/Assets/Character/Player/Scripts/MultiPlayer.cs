@@ -417,7 +417,7 @@ namespace UBZ.Owner
             Stun(1f, 1f);
             if(photonView.IsMine)
             {
-                int stolenSheetMusicCount = Mathf.CeilToInt((photonView.Owner.GetNumSheetMusic()) * InGameManager.DASH_STEALING_RATIO);
+                int stolenSheetMusicCount = Mathf.CeilToInt((photonView.Owner.GetNumSheetMusic()) * InGameManager.DASH_OPPONENT_TEAM_STEALING_RATIO);
                 photonView.Owner.AddNumSheetMusic(-stolenSheetMusicCount);
                 user.AddNumSheetMusic(stolenSheetMusicCount);
             }
