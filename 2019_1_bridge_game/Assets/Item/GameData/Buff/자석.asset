@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fe4c24edb8a9774b811543d67f0132c, type: 3}
+  m_Name: "\uC790\uC11D"
+  m_EditorClassIdentifier: 
+  itemName: "\uC790\uC11D"
+  description: 
+  memo: 
+  sprite: {fileID: 0}
+  effectsApplyTypeList:
+  - target: 0
+    type: 1
+    effectiveTime: 3
+    effectsDataList:
+    - movingSpeedIncrementRate: 0
+      itemGettingRangeIncrementRate: 0.15
+      canSlide: 0
