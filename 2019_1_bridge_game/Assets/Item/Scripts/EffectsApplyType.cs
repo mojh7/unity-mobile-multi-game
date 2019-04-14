@@ -17,7 +17,7 @@ public class EffectsApplyType
     public float effectiveTime;
 
     [SerializeField]
-    protected EffectsData[] effectsDataList;
+    public EffectsData[] effectsDataList;
 
     //protected bool removable;
     //protected int itemId;

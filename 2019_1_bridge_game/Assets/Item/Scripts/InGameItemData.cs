@@ -13,7 +13,6 @@ public class InGameItemData : ItemData
     public EffectsApplyType[] effectsApplyTypeList;
     public void UseItem()
     {
-        for (int i = 0; i < effectsApplyTypeList.Length; i++)
-            effectsApplyTypeList[i].UseItem();
+        effectsApplyTypeList.UseItem();
     }
 }
