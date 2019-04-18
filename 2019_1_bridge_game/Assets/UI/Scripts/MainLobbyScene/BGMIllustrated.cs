@@ -46,10 +46,11 @@ public class BGMIllustrated : MonoBehaviour
             GameObject tmpBGM = Instantiate(bgmllBook, scrollRect);
             BGMBook tmpIllustrateBook = tmpBGM.GetComponent<BGMBook>();
 
+            int id = data.dataList[i].id;
             string name = data.dataList[i].name;
             AudioClip bgm = data.dataList[i].bgm;
 
-            tmpIllustrateBook.Init(bgm, name);
+            tmpIllustrateBook.Init(id, name);
             tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenBuying(name));
             Slider tmpslider = tmpIllustrateBook.GetSlider();
             audioSource = this.GetComponent<AudioSource>();

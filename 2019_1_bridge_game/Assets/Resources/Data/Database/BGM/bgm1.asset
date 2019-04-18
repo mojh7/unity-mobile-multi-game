@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: bgm1
   m_EditorClassIdentifier: 
   id: 1
-  name: bgm2
+  name: bgm1
   bgm: {fileID: 8300000, guid: f7c3d045b0b2e944ebe065cd5a177d65, type: 3}

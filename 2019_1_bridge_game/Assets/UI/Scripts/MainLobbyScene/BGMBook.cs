@@ -13,11 +13,10 @@ public class BGMBook : MonoBehaviour
     [SerializeField] private Button stop;
     [SerializeField] private Slider slider;
 
-    private AudioClip bgm;
-
-    public void Init(AudioClip bgm, string name)
+    private int id;
+    public void Init(int id, string name)
     {
-        this.bgm = bgm;
+        this.id = id;
         nameText.text = name;
     }
 
@@ -26,4 +25,5 @@ public class BGMBook : MonoBehaviour
     public Button GetPauseBtn() { return pause; }
     public Button GetStopBtn() { return stop; }
     public Slider GetSlider() { return slider; }
+
 }
