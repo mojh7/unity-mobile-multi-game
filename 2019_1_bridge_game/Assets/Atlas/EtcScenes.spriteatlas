@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 8c91c1bf7462a19469240734db360fd0, type: 3}
-    totalSpriteSurfaceArea: 997376
+    totalSpriteSurfaceArea: 1005568
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -55,7 +55,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c8382dc9f43f54844993c38ac5a00c92, type: 3}
   - {fileID: 21300000, guid: 67bdb55aa3da74a4ab9d5e3299278112, type: 3}
   - {fileID: 21300000, guid: ca26750c81f71c2418d25a9424a427a1, type: 3}
+  - {fileID: 21300000, guid: 2c1258dd13afb4d4a80aa91357874317, type: 3}
   - {fileID: 21300000, guid: c32cd76ee6df42443af985eeb99ae180, type: 3}
+  - {fileID: 21300000, guid: ffe3a8ae1490f8747afeda8f4f772d49, type: 3}
   m_PackedSpriteNamesToIndex:
   - unbazi_animation-4
   - unbazi_animation-7
@@ -66,6 +68,8 @@ SpriteAtlas:
   - unbazi_animation-5
   - Bridge_Logo
   - sheet_music
+  - temp
   - unbazi_animation-0
+  - sheet_music_bundle
   m_Tag: EtcScenes
   m_IsVariant: 0

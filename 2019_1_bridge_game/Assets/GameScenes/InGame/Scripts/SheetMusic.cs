@@ -6,6 +6,7 @@ using Photon.Pun.UtilityScripts;
 
 public class SheetMusic : PickupItem
 {
+    [SerializeField] private int numberOfAcquiredSheetMusic = 1;
     /*
     private static readonly int[] pianoIndex =
     {
@@ -21,12 +22,13 @@ public class SheetMusic : PickupItem
 //}
     protected override void OnPickedUp()
     {
-        if (PickupIsMine)
+        if (pickupIsMine)
         {
             //Debug.Log("I picked up something. That's a score!, " + pianoIndex.Length);
             //AudioManager.Instance.PlaySound(pianoIndex[(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % pianoIndex.Length)], SFXType.PIANO);
+            // TODO : 음악에 마다 효과음 갯수 다르니 고려해서 수정해야 됨.
             AudioManager.Instance.PlaySound(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % 23, SFXType.TEMP);
-            PhotonNetwork.LocalPlayer.AddNumSheetMusic(1);
+            PhotonNetwork.LocalPlayer.AddNumSheetMusic(numberOfAcquiredSheetMusic);
         }
         else
         {
