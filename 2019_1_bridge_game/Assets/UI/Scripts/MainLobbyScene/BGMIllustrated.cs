@@ -10,12 +10,10 @@ public class BGMIllustrated : MonoBehaviour
     [SerializeField] private Transform scrollRect;
     [SerializeField] private BGMDatabase bgm_database;
     [SerializeField] private UIBuying buyingpanel;
-    [SerializeField] private Sprite pause;
 
     private List<GameObject> illustratedBook = new List<GameObject>();
     private AudioSource audioSource;
     private Slider slider;
-    private Sprite current;
 
     private void Start()
     {
@@ -109,17 +107,6 @@ public class BGMIllustrated : MonoBehaviour
         }
         slider.value = 0;
     }
-    /*
-    private int findObject(AudioClip bgm)
-    {
-        int cnt = illustratedBook.Count;
-        for(int i = 0; i < cnt; i++)
-        {
-            if (bgm == illustratedBook[i].GetComponent<BGMBook>().GetBGM()) { 
-                return i;
-            }
-        }
-        return -1;
-    }
-    */
+
+
 }

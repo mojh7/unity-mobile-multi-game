@@ -22,9 +22,8 @@ public class UICloset : UIControl
     }
     private void Update()
     {
-        Sprite sprite = bookDetail.GetImage();
         string name = bookDetail.GetnameText();
-        bookDetail.GetButton().onClick.AddListener(() => AddListenBuying(sprite, name));
+        bookDetail.GetButton().onClick.AddListener(() => AddListenBuying(name));
     }
 
     //캐릭터별로 스킨 로드
@@ -83,9 +82,9 @@ public class UICloset : UIControl
 
     }
 
-    private void AddListenBuying(Sprite img, string name)
+    private void AddListenBuying( string name)
     {
-        buyingpanel.setBuyingpanel(img, name);
+        buyingpanel.setBuyingpanel(name);
         buyingpanel.OnShow();
     }
 

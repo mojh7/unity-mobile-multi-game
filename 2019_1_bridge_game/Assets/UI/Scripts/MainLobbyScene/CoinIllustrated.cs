@@ -33,17 +33,17 @@ public class CoinIllustrated : MonoBehaviour
             Sprite sprite = data.dataList[i].sprite;
 
             tmpIllustrateBook.Init(sprite, name);
-            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenBuying(sprite, name));
+            tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenBuying(name));
             illustratedBook.Add(tmpCoin);
         }
         coinllBook.SetActive(false);
         //illustratedBook[0].GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
     }
 
-    private void AddListenBuying(Sprite img, string name)
+    private void AddListenBuying( string name)
     {
         Debug.Log("show buying panel");
-        buyingpanel.setBuyingpanel(img, name);
+        buyingpanel.setBuyingpanel(name);
         buyingpanel.OnShow();
     }
 

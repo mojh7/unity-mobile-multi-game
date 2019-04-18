@@ -5,24 +5,35 @@ using UnityEngine.UI;
 
 public class UIBuying : UIControl
 {
-    [SerializeField] private Image image;
+    [SerializeField] private Text itemCoin;
     [SerializeField] private Text nameText;
     [SerializeField] private UIbuysuccess buysuccess;
+    [SerializeField] private UIbuysuccess buyfail;
+    private int tcoin;
 
-    public void setBuyingpanel(Sprite image, string name)
+
+    public void setBuyingpanel(string name, int coin)
     {
-        this.image.sprite = image;
         nameText.text = name;
+        itemCoin.text = coin.ToString();
     }
+
     public void setBuyingpanel(string name)
     {
-        image.gameObject.SetActive(false);
-        nameText.rectTransform.position = image.rectTransform.position;
         nameText.text = name;
     }
-
     public void onBuysuccess()
     {
+        //코인 잔액 비교
+        /*
+        if(tcoin <= int.Parse(BackendController.Instance.GetUserCoinData()))
+        {
+            buysuccess.OnShow();
+        }
+        else
+        {
+            buyfail.OnShow();
+        }*/
         buysuccess.OnShow();
     }
 
