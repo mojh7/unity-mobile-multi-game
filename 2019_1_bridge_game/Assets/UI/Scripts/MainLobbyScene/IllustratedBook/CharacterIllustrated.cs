@@ -44,7 +44,19 @@ public class CharacterIllustrated : MonoBehaviour
             int health = data.dataList[i].health;
             string playverText = data.dataList[i].playverText;
             string characteristic = data.dataList[i].characteristic;
+            /*
 
+           if (BackendController.Instance.GetBgmDIct().ContainsKey(name))
+           {
+               //해금되지 않은 캐릭터
+               if(BackendController.Instance.GetBgmDIct().ContainsValue(0))
+               {
+                   tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenBuying(name));
+               }
+           }
+
+
+            */
             tmpIllustrateBook.Init(sprite, name);
             tmpIllustrateBook.GetButton().onClick.AddListener(() => AddListenCharacterDetail(sprite, name, gen, social, health, id, playverText, characteristic));
 

@@ -5,52 +5,67 @@ using UnityEngine.UI;
 
 public class UIButler : UIControl
 {
-    private Touch tempTouchs;
-    private int tcount;
+    [SerializeField] private GameObject butler_img;
+    [SerializeField] private GameObject butler_img2;
+    [SerializeField] private GameObject scriptpanel;
+    [SerializeField] private GameObject illustrated;
+    [SerializeField] private GameObject firstscript;
 
-    void OnEnable()
+
+    private void Start()
     {
-        //첫실행여부
-
         PlayerPrefs.SetInt("Tutorial_Start", PlayerPrefs.GetInt("Tutorial_Start", 0));
+    }
+
+    private void OnDisable()
+    {
+        butler_img.SetActive(false);
+        scriptpanel.SetActive(false);
+        illustrated.SetActive(false);
+    }
+    public void touched()
+    {
+        transform.parent.GetComponent<Animator>().SetBool("touch", true);
+        Debug.Log("touched");
+    }
+
+
+    override 
+    public void OnShow()
+    {
         //debug용
-       // PlayerPrefs.SetInt("Tutorial_Start", 0);
-        //첫실행시 대사 출력
+        PlayerPrefs.SetInt("Tutorial_Start", 0);
+ 
         if (PlayerPrefs.GetInt("Tutorial_Start") == 0)
         {
-            Debug.Log("First execution");
             PlayerPrefs.SetInt("Tutorial_Start", 1);
+            butler_img.SetActive(false);
+            scriptpanel.SetActive(false);
+            illustrated.SetActive(false);
 
-            //대사출력
-            GameObject.Find("butler_panel").transform.Find("initialscript_panel").gameObject.SetActive(true);
-            PlayerPrefs.Save();
+            transform.parent.GetComponent<Animator>().SetBool("first", true);
+            Debug.Log(transform.parent.GetComponent<Animator>().GetBool("first"));
         }
-        //나머지 실행
-        else if (PlayerPrefs.GetInt("Tutorial_Start") != 0)
-        {
-            Debug.Log("Extra execution");
-            GameObject.Find("butler_panel").transform.Find("IllustrateBook_panel").gameObject.SetActive(true);
-            GameObject.Find("butler_panel").transform.Find("butlerscript_panel").gameObject.SetActive(true);
-        }
-        tcount = 0;
-    }
-    void Update()
-    {
-        /*
-        //초기화면 실행 후 터치 시
-        if (Input.touchCount > 0)
-        {
-            tempTouchs = Input.GetTouch(0);
-            if (tempTouchs.phase == TouchPhase.Ended && tcount == 0)
-            {
-                Debug.Log("Touched");
-                GameObject.Find("butler_panel").transform.Find("initialscript_panel").gameObject.SetActive(false);
-                GameObject.Find("butler_panel").transform.Find("IllustrateBook_panel").gameObject.SetActive(true);
-                GameObject.Find("butler_panel").transform.Find("butlerscript_panel").gameObject.SetActive(true);
-                tcount++;
-            }
-        }
-        */
 
+        else
+        {
+            transform.parent.GetComponent<Animator>().SetBool("first", false);
+            butler_img2.SetActive(false);
+            firstscript.SetActive(false);
+        }
+
+        if (transform.parent.GetComponent<Animator>() != null)
+        {
+            transform.parent.GetComponent<Animator>().SetBool("open", true);
+            Debug.Log("show and animate");
+
+            if (transform.GetComponent<Button>() != null)
+                transform.GetComponent<Button>().interactable = true;
+        }
+        else
+        {
+            Debug.Log("show");
+            gameObject.SetActive(true);
+        }
     }
 }

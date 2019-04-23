@@ -21,18 +21,7 @@ public class BGMIllustrated : MonoBehaviour
     }
     private void Update()
     {
-        if (slider != null)
-        {
-            if (audioSource.isPlaying == true)
-            {
-                slider.value += Time.deltaTime;
-            }
-            else
-            {
-                if (slider.maxValue == slider.value)
-                    slider.value = 0;
-            }
-        }
+        moveSlider();
     }
 
     public void Initialized() {
@@ -56,14 +45,17 @@ public class BGMIllustrated : MonoBehaviour
             audioSource = this.GetComponent<AudioSource>();
             tmpIllustrateBook.GetPlayBtn().onClick.AddListener(() => AddListenPlay(bgm, tmpslider));
             tmpIllustrateBook.GetPauseBtn().onClick.AddListener(()=> AddListenPause(bgm));
-            tmpIllustrateBook.GetStopBtn().onClick.AddListener(() => AddListenStop());
+            tmpIllustrateBook.GetStopBtn().onClick.AddListener(() => AddListenStop(tmpslider));
             illustratedBook.Add(tmpBGM);
         }
         bgmllBook.SetActive(false);
     }
-
     private void AddListenBuying(string name)
     {
+        if (audioSource.isPlaying == true)
+        {
+            audioSource.Stop();
+        }
         Debug.Log("show buying panel");
         buyingpanel.setBuyingpanel(name);
         buyingpanel.OnShow();
@@ -87,10 +79,17 @@ public class BGMIllustrated : MonoBehaviour
         {
             audioSource.UnPause();
         }
+        /*
+        else if(audioSource.clip == bgm && audioSource.isPlaying == true)
+        {
+            audioSource.UnPause();
+            audioSource.clip = bgm;
+            audioSource.Play();
+        }*/
     }
     private void AddListenPause(AudioClip bgm)
     {
-        if(audioSource.isPlaying == true)
+        if (audioSource.isPlaying == true)
         {
             audioSource.Pause();
             AudioManager.Instance.ResumeMusic();
@@ -98,16 +97,30 @@ public class BGMIllustrated : MonoBehaviour
     }
 
 
-    private void AddListenStop()
+    private void AddListenStop(Slider slider)
     {
         if (audioSource.isPlaying == true)
         {
-
             audioSource.Stop();
             AudioManager.Instance.ResumeMusic();
         }
         slider.value = 0;
     }
 
+    private void moveSlider()
+    {
+        if (slider != null)
+        {
+            if (audioSource.isPlaying == true)
+            {
+                slider.value += Time.deltaTime;
+            }
+            else
+            {
+                if (slider.maxValue == slider.value)
+                    slider.value = 0;
+            }
+        }
+    }
 
 }

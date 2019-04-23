@@ -92,6 +92,10 @@ public class UIDJ : UIControl
 
     private void AddListenBuying(string name)
     {
+        if(audioSource.isPlaying == true)
+        {
+            audioSource.Stop();
+        }
         Debug.Log("show buying panel");
         buyingpanel.setBuyingpanel(name);
         buyingpanel.OnShow();
