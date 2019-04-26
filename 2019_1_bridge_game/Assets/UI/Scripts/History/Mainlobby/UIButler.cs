@@ -34,7 +34,7 @@ public class UIButler : UIControl
     public void OnShow()
     {
         //debug용
-        PlayerPrefs.SetInt("Tutorial_Start", 0);
+       // PlayerPrefs.SetInt("Tutorial_Start", 0);
  
         if (PlayerPrefs.GetInt("Tutorial_Start") == 0)
         {
@@ -44,7 +44,20 @@ public class UIButler : UIControl
             illustrated.SetActive(false);
 
             transform.parent.GetComponent<Animator>().SetBool("first", true);
-            Debug.Log(transform.parent.GetComponent<Animator>().GetBool("first"));
+            if (transform.parent.GetComponent<Animator>() != null)
+            {
+                transform.parent.GetComponent<Animator>().SetBool("open", true);
+                Debug.Log("show and animate");
+
+                if (transform.GetComponent<Button>() != null)
+                    transform.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                Debug.Log("show");
+                gameObject.SetActive(true);
+            }
+            transform.parent.GetComponent<Animator>().SetBool("first", false);
         }
 
         else

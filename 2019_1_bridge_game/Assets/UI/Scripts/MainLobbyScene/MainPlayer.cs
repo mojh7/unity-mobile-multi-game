@@ -25,7 +25,6 @@ public class MainPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("move");
         Move();
     }
 
