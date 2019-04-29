@@ -7,7 +7,6 @@ TagManager:
   - Interactor
   - Bullet
   - BaseZone
-  - Skin
   - Dash
   layers:
   - Default

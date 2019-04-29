@@ -46,4 +46,5 @@ public class MainPlayer : MonoBehaviour
     {
         _transform.Translate(_moveVector * MoveSpeed * Time.deltaTime);
     }
+
 }
