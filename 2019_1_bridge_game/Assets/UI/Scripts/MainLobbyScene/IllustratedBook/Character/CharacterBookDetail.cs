@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//캐릭터 정보 창
 public class CharacterBookDetail : MonoBehaviour
 {
     [SerializeField] private int id;

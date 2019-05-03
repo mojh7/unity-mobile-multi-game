@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//스킨 도감(옷장)
 public class UICloset : UIControl
 {
+    #region variable
     [SerializeField] private GameObject skinllBook;
     [SerializeField] private Transform scrollRect;
     [SerializeField] private SkinBookDetail bookDetail;
@@ -13,19 +15,25 @@ public class UICloset : UIControl
 
     private List<GameObject> illustratedBook = new List<GameObject>();
     private int ch_id;
+    #endregion
 
+    #region Unityfuc
     private void OnEnable()
     {
-        Debug.Log("destroy");
+        //Debug.Log("destroy");
+        //기존 옷장 파괴 후 새 옷장 로드
         DestroySkin();
         LoadSkin();
     }
     private void Update()
     {
         string name = bookDetail.GetnameText();
+        //스킨 별로 구매 창 업데이트
         bookDetail.GetButton().onClick.AddListener(() => AddListenBuying(name));
     }
+    #endregion
 
+    #region fuc
     //캐릭터별로 스킨 로드
     public void LoadSkin()
     {
@@ -56,12 +64,12 @@ public class UICloset : UIControl
         }
 
         Destroy(skinllBook);
-       //skinllBook.SetActive(false);
         skinllBook = illustratedBook[0];
         illustratedBook[0].GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
         
     }
 
+   //이전 패널 삭제
    private void DestroySkin()
     {
 
@@ -76,12 +84,13 @@ public class UICloset : UIControl
 
     }
 
+    //스킨 창 정보 업데이트
     private void AddListenSkinDetail(Sprite img, string name, string text)
     {
         bookDetail.SetBookDetail(img, name, text);
 
     }
-
+    //구매창 업데이트 및 활성화
     private void AddListenBuying( string name)
     {
         buyingpanel.setBuyingpanel(name);
@@ -97,5 +106,5 @@ public class UICloset : UIControl
     {
         ch_id = id;
     }
-
+    #endregion
 }

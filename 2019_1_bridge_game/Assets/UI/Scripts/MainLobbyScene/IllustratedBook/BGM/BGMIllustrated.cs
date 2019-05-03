@@ -3,46 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//BGM 상점 도감
 [RequireComponent(typeof(AudioSource))]
-public class UIDJ : UIControl
+public class BGMIllustrated : MonoBehaviour
 {
     #region variable
     [SerializeField] private GameObject bgmllBook;
     [SerializeField] private Transform scrollRect;
     [SerializeField] private BGMDatabase bgm_database;
     [SerializeField] private UIBuying buyingpanel;
-    [SerializeField] private UIChoose choosepanel;
 
     private List<GameObject> illustratedBook = new List<GameObject>();
     private AudioSource audioSource;
     private Slider slider;
-    #endregion variable
+    #endregion
 
+    #region Unityfuc
     private void Start()
     {
         Initialized();
     }
     private void Update()
     {
-        //슬라이더 움직이기
-        /*
-        if (slider != null)
-        {
-            if (audioSource.isPlaying == true)
-            {
-                slider.value += Time.deltaTime;
-            }
-            else
-            {
-                if (slider.maxValue == slider.value)
-                    slider.value = 0;
-            }
-        }*/
+        //음악 슬라이더 이동
         moveSlider();
     }
+    #endregion
 
-    public void Initialized()
-    {
+    #region fuc
+    //BGM 상점 초기화
+    public void Initialized() {
         illustratedBook.Clear();
         //CharacterDatabase data = DatabaseManager.Instance.characterData;
         BGMDatabase data = bgm_database;
@@ -58,41 +48,21 @@ public class UIDJ : UIControl
             AudioClip bgm = data.dataList[i].bgm;
 
             tmpIllustrateBook.Init(id, name);
+            tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenBuying(name));
             Slider tmpslider = tmpIllustrateBook.GetSlider();
             audioSource = this.GetComponent<AudioSource>();
-
             tmpIllustrateBook.GetPlayBtn().onClick.AddListener(() => AddListenPlay(bgm, tmpslider));
-            tmpIllustrateBook.GetPauseBtn().onClick.AddListener(() => AddListenPause(bgm));
+            tmpIllustrateBook.GetPauseBtn().onClick.AddListener(()=> AddListenPause(bgm));
             tmpIllustrateBook.GetStopBtn().onClick.AddListener(() => AddListenStop(tmpslider));
-
-            /*
-           
-            if (BackendController.Instance.GetBgmDIct().ContainsKey(name))
-            {
-                //구매되지 않은 bgm
-                if(BackendController.Instance.GetBgmDIct().ContainsValue(0))
-                {
-                    tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenBuying(name));
-                }
-                //구매완료된 bgm
-                else
-                {
-                    tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenSwith());
-                }
-            }
-
-
-             */
-            //tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenBuying(name));
-            tmpIllustrateBook.GetBuyingBtn().onClick.AddListener(() => AddListenSwith(id,name));
             illustratedBook.Add(tmpBGM);
         }
         bgmllBook.SetActive(false);
     }
 
+    //bgm 이름 클릭시 - 구매상태X 일때
     private void AddListenBuying(string name)
     {
-        if(audioSource.isPlaying == true)
+        if (audioSource.isPlaying == true)
         {
             audioSource.Stop();
         }
@@ -101,10 +71,10 @@ public class UIDJ : UIControl
         buyingpanel.OnShow();
     }
 
-
+    //play 버튼 클릭시
     private void AddListenPlay(AudioClip bgm, Slider slider)
     {
-
+        //플레이 중인 음악이 없을 때
         if (audioSource.clip == null || audioSource.clip != bgm || audioSource.isPlaying == false)
         {
             AudioManager.Instance.PauseMusic();
@@ -115,18 +85,14 @@ public class UIDJ : UIControl
             audioSource.Play();
         }
 
+        //음악이 플레이 중 일 때
         else if (audioSource.clip == bgm && audioSource.isPlaying == false)
         {
             audioSource.UnPause();
         }
-        /*
-        else if(audioSource.clip == bgm && audioSource.isPlaying == true)
-        {
-            audioSource.UnPause();
-            audioSource.clip = bgm;
-            audioSource.Play();
-        }*/
     }
+
+    //pause 버튼 클릭시
     private void AddListenPause(AudioClip bgm)
     {
         if (audioSource.isPlaying == true)
@@ -136,9 +102,10 @@ public class UIDJ : UIControl
         }
     }
 
-
+    //stop 버튼 클릭시
     private void AddListenStop(Slider slider)
     {
+        //플레이 중
         if (audioSource.isPlaying == true)
         {
             audioSource.Stop();
@@ -147,20 +114,7 @@ public class UIDJ : UIControl
         slider.value = 0;
     }
 
-    private void AddListenSwith(int id, string name)
-    {
-        choosepanel.SetItem(name);
-        UIManager.Instance.ShowNew(choosepanel);
-        if(audioSource.clip != null)
-        {
-            audioSource.Stop();
-            slider.value = 0;
-        }
-        audioSource.clip = null;
-
-        AudioManager.Instance.PlayMusic(id);
-    }
-    
+    //bgm-슬라이더 표시
     private void moveSlider()
     {
         if (slider != null)
@@ -176,5 +130,5 @@ public class UIDJ : UIControl
             }
         }
     }
-
+    #endregion
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//UIBuying에서 애니메이션&setactive 제어
+//Buysuccess & Buyfail 둘 다 사용
 public class UIbuysuccess : UIControl
 {
     [SerializeField] private bool is_on;
@@ -18,15 +20,6 @@ public class UIbuysuccess : UIControl
         is_on = false;
         OnHide();
         buyingpanel.OnHide();
-    }
-
-    public bool GetIs_on()
-    {
-        return is_on;
-    }
-    public void SetIs_on(bool ison)
-    {
-        is_on = ison;
     }
 
 }

@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CoinBook : MonoBehaviour
+//캐릭터 도감 버튼
+public class CharacterBook : MonoBehaviour
 {
-    [SerializeField] private Text nameText;
     [SerializeField] private Image image;
-    [SerializeField] private Button buyingbtn;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Button detailBtn;
+
 
     public void Init(Sprite sprite, string name)
     {
@@ -15,5 +17,5 @@ public class CoinBook : MonoBehaviour
         nameText.text = name;
     }
 
-    public Button GetButton() { return buyingbtn; }
+    public Button GetButton() { return detailBtn; }
 }

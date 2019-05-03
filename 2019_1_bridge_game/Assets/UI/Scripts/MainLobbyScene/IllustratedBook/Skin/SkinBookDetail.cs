@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//스킨 정보 창
 public class SkinBookDetail : MonoBehaviour
 {
     [SerializeField] private Image image;

@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//스킨 도감 버튼
 public class SkinBook : MonoBehaviour
 {
     [SerializeField] private Image image;
