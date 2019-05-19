@@ -14,13 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\uC18D\uB3C4 \uC99D\uAC00"
   description: 
-  memo: 
   sprite: {fileID: 0}
-  effectsApplyTypeList:
-  - target: 0
-    type: 1
-    effectiveTime: 3
-    effectsDataList:
-    - movingSpeedIncrementRate: 0.1
-      itemGettingRangeIncrementRate: 0
-      canSlide: 0
+  itemType: 1
+  effectiveTime: 3
+  itemEffectsDataList:
+  - target: 1
+    movingSpeedModified: 0.1
+    itemGettingRangeModified: 0
+    canSlide: 0
+  memo: "3\uCD08 \uC544\uAD70 \uD300\uC6D0 \uC18D\uB3C4 +10%"

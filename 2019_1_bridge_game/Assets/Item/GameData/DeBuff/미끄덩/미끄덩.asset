@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fe4c24edb8a9774b811543d67f0132c, type: 3}
-  m_Name: "\uC790\uC11D"
+  m_Name: "\uBBF8\uB044\uB369"
   m_EditorClassIdentifier: 
-  itemName: "\uC790\uC11D"
+  itemName: "\uBBF8\uB044\uB369"
   description: 
-  memo: 
   sprite: {fileID: 0}
-  effectsApplyTypeList:
+  itemType: 0
+  effectiveTime: 0
+  itemEffectsDataList:
   - target: 0
-    type: 1
-    effectiveTime: 3
-    effectsDataList:
-    - movingSpeedIncrementRate: 0
-      itemGettingRangeIncrementRate: 0.15
-      canSlide: 0
+    movingSpeedModified: 0
+    itemGettingRangeModified: 0
+    canSlide: 1
+  memo: "\uAC1C\uC778 \uB514\uBC84\uD504, \uCDA9\uB3CC \uC624\uBE0C\uC81D\uD2B8\uC5D0
+    \uBD80\uB52A\uD790 \uB54C \uAE4C\uC9C0"

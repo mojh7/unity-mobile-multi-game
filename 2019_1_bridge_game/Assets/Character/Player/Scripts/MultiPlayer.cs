@@ -84,6 +84,8 @@ namespace UBZ.Owner
                 {
                     bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
                     //Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
+
+                    // for debug
                     if (Input.GetKey(KeyCode.W))
                     {
                         bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
