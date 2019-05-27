@@ -22,4 +22,7 @@ MonoBehaviour:
   - movingSpeedModified: -0.5
     itemAcquisitionRangeModified: 0
     canSlide: 0
+  particleName: RegenerateGreen
+  particleScale: {x: 0.5, y: 0.5, z: 1}
+  particleDuration: 5
   memo: "5\uCD08 \uAC1C\uC778 \uB514\uBC84\uD504, \uC18D\uB3C4 -5%"

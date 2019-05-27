@@ -52,6 +52,15 @@ public class CharacterStatsEffectsManager : MonoBehaviour
         if (null == itemData)
             return;
         
+        if(typeof(InGameItemData) == itemData.GetType())
+        {
+            InGameItemData data = (InGameItemData)itemData;
+            if(string.Empty != data.particleName)
+            {
+                ParticleManager.Instance.PlayParticle(data.particleName, Vector2.zero, data.particleScale, owner.GetbodyTransform(), data.particleDuration);
+            }
+        }
+
         switch (itemData.itemType)
         {
             case ItemType.CONSUMABLE:

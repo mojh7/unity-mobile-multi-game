@@ -17,10 +17,13 @@ MonoBehaviour:
   sprite: {fileID: 21300006, guid: c2c69fa48d015a54983b0ebc8f88e5fc, type: 3}
   itemType: 0
   effectiveTime: 0
+  target: 0
   itemEffectsDataList:
-  - target: 0
-    movingSpeedModified: 0
-    itemGettingRangeModified: 0
+  - movingSpeedModified: 0
+    itemAcquisitionRangeModified: 0
     canSlide: 1
+  particleName: RegenerateModular
+  particleScale: {x: 0.5, y: 0.5, z: 1}
+  particleDuration: 2
   memo: "\uAC1C\uC778 \uB514\uBC84\uD504, \uCDA9\uB3CC \uC624\uBE0C\uC81D\uD2B8\uC5D0
     \uBD80\uB52A\uD790 \uB54C \uAE4C\uC9C0"
