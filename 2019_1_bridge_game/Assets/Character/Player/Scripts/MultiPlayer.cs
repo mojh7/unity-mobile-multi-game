@@ -27,6 +27,8 @@ namespace UBZ.Owner
         private new Renderer renderer;
         private Vector3 currentPos;
         private bool canSlide;
+        [SerializeField] private Sprite redTemaRing;
+        [SerializeField] private Sprite blueTemaRing;
         #endregion
 
         #region get / set
@@ -175,14 +177,14 @@ namespace UBZ.Owner
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
-                components.SpriteRenderer.color = Color.red;
+                components.ShadowRenderer.sprite = redTemaRing;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 components.DashEffect.Init(this, PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
-                components.SpriteRenderer.color = Color.blue;
+                components.ShadowRenderer.sprite = blueTemaRing;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 components.DashEffect.Init(this, PunTeams.Team.BLUE);

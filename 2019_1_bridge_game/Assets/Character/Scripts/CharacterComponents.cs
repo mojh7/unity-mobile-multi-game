@@ -11,7 +11,7 @@ public class CharacterComponents : MonoBehaviour
     //[SerializeField] private AnimationHandler animationHandler;
     [SerializeField] private BoxCollider2D itemAcquisitionCollider;
     [SerializeField] private BoxCollider2D hitBox;
-    [SerializeField] private Transform shadowTransform;
+    [SerializeField] private SpriteRenderer shadowRenderer;
     [SerializeField] private TextMesh nickNameText;
     [SerializeField] private DashEffect dashEffect;
     [SerializeField] private Emoticon emoticon;
@@ -61,11 +61,11 @@ public class CharacterComponents : MonoBehaviour
             return hitBox;
         }
     }
-    public Transform ShadowTransform
+    public SpriteRenderer ShadowRenderer
     {
         get
         {
-            return shadowTransform;
+            return shadowRenderer;
         }
     }
     public TextMesh NickNameText
