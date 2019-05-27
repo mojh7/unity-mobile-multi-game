@@ -53,7 +53,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: d102358daa898d441b70ffbcb3a9e629, type: 3}
-    totalSpriteSurfaceArea: 198638
+    totalSpriteSurfaceArea: 215022
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -80,6 +80,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 88d8886458b6dc243b2522092675fee2, type: 3}
   - {fileID: 21300000, guid: d626fe3738227b449893571bda159f1b, type: 3}
   - {fileID: 21300000, guid: 7111592c7993d0348babb5db76b89eb0, type: 3}
+  - {fileID: 21300000, guid: ba0f512e80eb3004291f538afdc6be47, type: 3}
   - {fileID: 21300004, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300002, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300000, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
@@ -107,6 +108,7 @@ SpriteAtlas:
   - tempEmoticon
   - SpeechBubble
   - temp_skill_icon2
+  - Sliding
   - Old enemies_2
   - Old enemies_1
   - Old enemies_0

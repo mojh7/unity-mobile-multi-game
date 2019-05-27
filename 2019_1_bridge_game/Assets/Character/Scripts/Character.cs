@@ -4,9 +4,11 @@ using UnityEngine;
 using UBZ.Owner.CharacterInfo;
 using Photon.Pun;
 using Photon.Realtime;
-
+using UBZ.Item;
 namespace UBZ.Owner
 {
+    public enum ControlTypeAbnormalStatus { STUN, SLIDING, END }
+
     namespace CharacterInfo
     {
         public enum OwnerType
@@ -29,6 +31,7 @@ namespace UBZ.Owner
         {
             ALL = 0x11111111,
             STUN = 0x00000001,
+            SLIDING = 0x00000002
         }
 
         public enum BehaviorState
@@ -62,32 +65,21 @@ namespace UBZ.Owner
         #endregion
         
         #region componets
-        protected CharacterComponents Components;
+        protected CharacterComponents components;
         protected AbnormalComponents abnormalComponents;
-        protected SpriteRenderer spriteRenderer;
-        protected Transform spriteTransform;
-        protected Transform nickNameTransform;
-        protected Transform abnormalStatusTransform;
-        protected CircleCollider2D interactiveCollider2D;
-        //protected AnimationHandler animationHandler;
-        //protected BuffManager buffManager;
         protected Rigidbody2D rgbody;
-        //protected AIController aiController;
-        protected Transform shadowTransform;
         protected Transform bodyTransform;
 
         public SpriteRenderer SpriteRenderer
         {
             get
             {
-                return spriteRenderer;
+                return components.SpriteRenderer;
             }
         }
         #endregion
 
         #region variables
-        [SerializeField] protected float movingSpeed;     // Character move Speed
-        [SerializeField] protected Sprite sprite;
         protected CharacterInfo.AbnormalImmune abnormalImmune;
         protected CharacterInfo.OwnerType ownerType;
         protected Vector3 directionVector;
@@ -98,7 +90,7 @@ namespace UBZ.Owner
         /// <summary> owner 좌/우 바라볼 때 spriteObject scale 조절에 쓰일 player scale, 우측 (1, 1, 1), 좌측 : (-1, 1, 1) </summary>
         protected Vector3 scaleVector;
         protected BehaviorState behaviorState;
-
+        [SerializeField] protected CharacterStatsEffectsManager statsEffectsManager;
         #region abnormalStatusVariables
         protected bool canMove;
         protected bool canBehavior;
@@ -114,6 +106,12 @@ namespace UBZ.Owner
         protected Coroutine checkingDashEnded;
         #endregion
 
+        [SerializeField] protected float movingSpeed;     // Character move Speed
+        [SerializeField] protected Sprite sprite;
+        // TODO : 캐릭터 실질 스탯들 나중에 scriptableObject의 변수들로 옮길 예정
+        // 디버그용 inspector노출을 위해 SerializeField
+        [SerializeField] protected float movingSpeedOriginal;
+        [SerializeField] protected Vector2 itemAcquisitionRangeOriginal;
         #endregion
 
         #region get / set
@@ -121,6 +119,10 @@ namespace UBZ.Owner
         //{
         //    return Components;
         //}
+        public CharacterStatsEffectsManager GetStatsEffectsManager()
+        {
+            return statsEffectsManager;
+        }
         public virtual bool GetRightDirection()
         {
             return isRightDirection;
@@ -156,18 +158,14 @@ namespace UBZ.Owner
         {
             InitStatusEffects();
 
-            Components = GetComponent<CharacterComponents>();
-            Components.Init();
+            components = GetComponent<CharacterComponents>();
+            components.Init();
             abnormalComponents = GetComponent<AbnormalComponents>();
-            spriteRenderer = Components.SpriteRenderer;
-            spriteTransform = Components.SpriteTransform;
-            nickNameTransform = Components.NickNameText.transform;
-            abnormalStatusTransform = abnormalComponents.AbnormalStatusTransform;
-            interactiveCollider2D = Components.InteractiveCollider2D;
             //animationHandler = Components.AnimationHandler;
-            rgbody = Components.Rigidbody2D;
-            shadowTransform = Components.ShadowTransform;
+            rgbody = components.Rigidbody2D;
             bodyTransform = GetComponent<Transform>();
+            statsEffectsManager = GetComponent<CharacterStatsEffectsManager>();
+            statsEffectsManager.SetOwner(this);
         }
         #endregion
 
@@ -219,9 +217,9 @@ namespace UBZ.Owner
             switch(behaviorState)
             {
                 case BehaviorState.DASH:
-                    Components.DashEffectObj.SetActive(canDisplay);
+                    components.DashEffectObj.SetActive(canDisplay);
                     if(canDisplay)
-                        Components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree);
+                        components.DashEffectObj.transform.rotation = Quaternion.Euler(0, 0, directionDegree);
                     break;
                 default:
                     break;
@@ -294,6 +292,11 @@ namespace UBZ.Owner
                     SubRetrictsMovingCount();
                     SubRetrictsBehaviorCount();
                     break;
+                case ControlTypeAbnormalStatus.SLIDING:
+                    abnormalComponents.SlidingEffect.SetActive(false);
+                    SubRetrictsMovingCount();
+                    SubRetrictsBehaviorCount();
+                    break;
                 default:
                     break;
             }
@@ -354,6 +357,16 @@ namespace UBZ.Owner
             }
         }
 
+        public void Sliding()
+        {
+            int type = (int)ControlTypeAbnormalStatus.SLIDING;
+            StopBehavior(BehaviorState.DASH);
+            if (null == controlTypeAbnormalStatusCoroutines[type])
+            {
+                controlTypeAbnormalStatusCoroutines[type] = StartCoroutine(SlidingCoroutine());
+            }
+        }
+
         public void KnockBack(float knockBack, Vector2 pos, Vector2 dir, bool positionBasedKnockBack)
         {
             StopBehavior(BehaviorState.DASH);
@@ -402,6 +415,27 @@ namespace UBZ.Owner
         }
         #endregion
 
+        #region statsfunc
+        public virtual void PickUpInGameItem(UBZ.Item.InGameBuffType inGameBuffType) { }
+
+        public virtual void RunOutOfBuffTime(string itemName) { }
+
+        [PunRPC]
+        protected virtual void AddInGameItem(InGameBuffType inGameBuffType) { }
+        [PunRPC]
+        protected virtual void RemoveInGameItem(string itemName) { }
+
+        public virtual void ApplyItemEffect()
+        {
+            ItemEffectsData itemEffectsTotal = statsEffectsManager.ItemEffectsTotal;
+        }
+
+        // total을 안 거치고 바로 효과 적용하기 위해 구분함, 소모형 아이템 용 함수
+        public virtual void ApplyConsumableItem(ItemEffectsData itemUseEffect)
+        {
+        }
+        #endregion
+
         #region collision
         [PunRPC]
         protected virtual void PunHitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player user) { }
@@ -409,6 +443,7 @@ namespace UBZ.Owner
 
         #region AbnormalCoroutine
         protected abstract IEnumerator StunCoroutine(float effectiveTime);
+        protected abstract IEnumerator SlidingCoroutine();
         protected IEnumerator CheckDashEnded(float distance)
         {
             float dashDistanceTotal = 0;

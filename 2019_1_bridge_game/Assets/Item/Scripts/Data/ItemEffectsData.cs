@@ -8,11 +8,9 @@ namespace UBZ.Item
     [System.Serializable]
     public class ItemEffectsData
     {
-        public ItemTarget target;
-
         // 합 연산
         public float movingSpeedModified;
-        public float itemGettingRangeModified;
+        public float itemAcquisitionRangeModified;
         // 곱 연산
 
         // flag

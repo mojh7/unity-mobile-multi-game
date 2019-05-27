@@ -7,6 +7,7 @@ public class AbnormalComponents : MonoBehaviour
     #region components
     [SerializeField] private Transform abnormalStatusTransform;
     [SerializeField] private GameObject stunEffect;
+    [SerializeField] private GameObject slidingEffect;
     #endregion
 
     #region parameter
@@ -23,6 +24,14 @@ public class AbnormalComponents : MonoBehaviour
         get
         {
             return stunEffect;
+        }
+    }
+
+    public GameObject SlidingEffect
+    {
+        get
+        {
+            return slidingEffect;
         }
     }
     #endregion

@@ -4,7 +4,6 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Interactor
   - Bullet
   - BaseZone
   - Dash
@@ -23,11 +22,11 @@ TagManager:
   - CollisionLevelObject
   - RedTeamPlayer
   - BlueTeamPlayer
-  - SheetMusic
+  - InGameItem
   - RedTeamBaseZone
   - BlueTeamBaseZone
   - Player
-  - 
+  - ItemAcquisition
   - 
   - 
   - 

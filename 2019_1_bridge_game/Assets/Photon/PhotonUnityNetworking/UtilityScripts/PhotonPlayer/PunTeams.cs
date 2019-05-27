@@ -43,7 +43,6 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>The main list of teams with their player-lists. Automatically kept up to date.</summary>
         /// <remarks>Note that this is static. Can be accessed by PunTeam.PlayersPerTeam. You should not modify this.</remarks>
         */
-
         /// <summary> 플레이어 목록이 있는 팀의 주요 목록. 자동으로 최신 상태로 유지됩니다. </summary>
         /// <remarks> 이것은 정적이라는 점에 유의하십시오. PunTeam.PlayersPerTeam에서 액세스 할 수 있습니다. 이것을 수정해서는 안됩니다. </remarks>
         public static Dictionary<Team, List<Player>> PlayersPerTeam;
@@ -51,7 +50,6 @@ namespace Photon.Pun.UtilityScripts
         // <summary>Defines the player custom property name to use for team affinity of "this" player.</summary>
         /// <summary>"this"플레이어의 팀 유사성에 사용할 플레이어 사용자 정의 속성 이름을 정의합니다.</summary>
         public const string TeamPlayerProp = "team";
-
 
         #region Events by Unity and Photon
 
@@ -70,8 +68,12 @@ namespace Photon.Pun.UtilityScripts
             PlayersPerTeam = new Dictionary<Team, List<Player>>();
         }
 
-        /// <summary>Needed to update the team lists when joining a room.</summary>
-        /// <remarks>Called by PUN. See enum MonoBehaviourPunCallbacks for an explanation.</remarks>
+
+
+        /*/// <summary>Needed to update the team lists when joining a room.</summary>
+        /// <remarks>Called by PUN. See enum MonoBehaviourPunCallbacks for an explanation.</remarks>*/
+        /// <summary> 방에 들어갈 때 팀 목록을 업데이트 해야합니다. </summary>
+        /// <remarks> PUN이 부름. 설명을 보려면 enum MonoBehaviourPunCallbacks를 참조하십시오. </remarks>
         public override void OnJoinedRoom()
         {
             Debug.Log("팀 조인드 룸");
@@ -83,8 +85,12 @@ namespace Photon.Pun.UtilityScripts
             Start();
         }
 
+        /*
         /// <summary>Refreshes the team lists. It could be a non-team related property change, too.</summary>
         /// <remarks>Called by PUN. See enum MonoBehaviourPunCallbacks for an explanation.</remarks>
+        */
+        /// <summary> 팀 목록을 새로 고칩니다. 팀과 관련없는 속성 변경 일 수도 있습니다. </summary>
+        /// <remarks> PUN이 부름. 설명을 보려면 enum MonoBehaviourPunCallbacks를 참조하십시오. </remarks>
         public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
         {
             this.UpdateTeams();
@@ -135,8 +141,7 @@ namespace Photon.Pun.UtilityScripts
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
                 Player player = PhotonNetwork.PlayerList[i];
-                Team playerTeam = player.GetTeam();
-                PlayersPerTeam[playerTeam].Add(player);
+                PlayersPerTeam[player.GetTeam()].Add(player);
                 //Debug.Log("i : " + player.ActorNumber + ", " + playerTeam);
             }
         }

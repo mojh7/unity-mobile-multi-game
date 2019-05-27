@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using UBZ.Owner.CharacterInfo;
+using UBZ.Item;
 
 namespace UBZ.Owner
 {
@@ -17,7 +18,6 @@ namespace UBZ.Owner
         
         #region variables
         [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
-        private Photon.Pun.UtilityScripts.PunTeams team;
 
         private Transform objTransform;
 
@@ -26,6 +26,7 @@ namespace UBZ.Owner
         private new Collider collider;
         private new Renderer renderer;
         private Vector3 currentPos;
+        private bool canSlide;
         #endregion
 
         #region get / set
@@ -34,9 +35,9 @@ namespace UBZ.Owner
             return photonView.Owner;
         }
 
-        public Photon.Pun.UtilityScripts.PunTeams GetTeam()
+        public PunTeams.Team GetTeam()
         {
-            return team;
+            return photonView.Owner.GetTeam();
         }
         #endregion
 
@@ -53,21 +54,13 @@ namespace UBZ.Owner
             isRightDirection = true;
         }
 
-        //private void Start()
-        //{
-        //    foreach (Renderer r in GetComponentsInChildren<Renderer>())
-        //    {
-        //        //r.material.color = InGame.GetPlayerColor(photonView.Owner.GetPlayerNumber());
-        //    }
-        //}
-
         void Update()
         {
             if (false == InGameUIManager.Instance.GetControllable())
                 return;
 
             if(null != bodyTransform)
-                spriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
+                components.SpriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
 
             if (IsBehavioring(BehaviorState.DASH))
                 return;
@@ -80,29 +73,29 @@ namespace UBZ.Owner
                 {
                     Dash(700f, 60f);
                 }
-                if (canMove)
-                {
-                    bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
-                    //Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
+                //if (canMove)
+                //{
+                //    bodyTransform.Translate(controller.GetMovingInputVector() * movingSpeed * Time.deltaTime);
+                //    //Debug.Log((1.0f / PhotonNetwork.SerializationRate) + ", " + Time.deltaTime);
 
-                    // for debug
-                    if (Input.GetKey(KeyCode.W))
-                    {
-                        bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
-                    }
-                    else if (Input.GetKey(KeyCode.S))
-                    {
-                        bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
-                    }
-                    if (Input.GetKey(KeyCode.D))
-                    {
-                        bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
-                    }
-                    else if (Input.GetKey(KeyCode.A))
-                    {
-                        bodyTransform.Translate(Vector2.left * movingSpeed * Time.deltaTime);
-                    }
-                }
+                //    // for debug
+                //    if (Input.GetKey(KeyCode.W))
+                //    {
+                //        bodyTransform.Translate(Vector2.up * movingSpeed * Time.deltaTime);
+                //    }
+                //    else if (Input.GetKey(KeyCode.S))
+                //    {
+                //        bodyTransform.Translate(Vector2.down * movingSpeed * Time.deltaTime);
+                //    }
+                //    if (Input.GetKey(KeyCode.D))
+                //    {
+                //        bodyTransform.Translate(Vector2.right * movingSpeed * Time.deltaTime);
+                //    }
+                //    else if (Input.GetKey(KeyCode.A))
+                //    {
+                //        bodyTransform.Translate(Vector2.left * movingSpeed * Time.deltaTime);
+                //    }
+                //}
 
                 if (-90 <= directionDegree && directionDegree < 90)
                 {
@@ -135,16 +128,17 @@ namespace UBZ.Owner
             {
                 scaleVector.x = -1f;
             }
-            spriteTransform.localScale = scaleVector;
+            components.SpriteTransform.localScale = scaleVector;
         }
 
         void FixedUpdate()
         {
-            // Move();
+            Move();
         }
         #endregion
 
         #region func
+
         #region initialzation
         private void InitController()
         {
@@ -154,7 +148,9 @@ namespace UBZ.Owner
         // FIXME : 이제 로컬이 아닌 서버에서 닉네임을 받아드릴 것임.
         public override void Init()
         {
+            InGameManager.Instance.SetMultiPlayer(this);
             photonView.RPC("PlayerInit", RpcTarget.All);
+            /*
             //Debug.Log(PhotonNetwork.LocalPlayer.GetPlayerNumber());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetTeam());
             //Debug.Log(PhotonNetwork.LocalPlayer.GetScore());
@@ -163,11 +159,9 @@ namespace UBZ.Owner
             //Components.InteractiveCollider2D.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
             //textMesh.text = GameDataManager.Instance.userData.GetNickname();
-
             //animationHandler.Init(this, PlayerManager.Instance.runtimeAnimator);
+            */
         }
-           
-
         
         [PunRPC]
         private void PlayerInit()
@@ -176,21 +170,22 @@ namespace UBZ.Owner
             ownerType = CharacterInfo.OwnerType.PLAYER;
             abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
+            InGameManager.Instance.AddMultiPlayerInTeam(this);
 
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())
             {
-                Components.SpriteRenderer.color = Color.red;
+                components.SpriteRenderer.color = Color.red;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                Components.DashEffect.Init(this, PunTeams.Team.RED);
+                components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                components.DashEffect.Init(this, PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
-                Components.SpriteRenderer.color = Color.blue;
+                components.SpriteRenderer.color = Color.blue;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                Components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                Components.DashEffect.Init(this, PunTeams.Team.BLUE);
+                components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                components.DashEffect.Init(this, PunTeams.Team.BLUE);
             }
 
             if (photonView.IsMine)
@@ -204,15 +199,16 @@ namespace UBZ.Owner
                     baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
                 }
                 CameraController.Instance.AttachObject(this.transform); // get Camera
-                Components.DirectionArrow.SetBaseTown(baseZoneTransform);
+                components.DirectionArrow.SetBaseTown(baseZoneTransform);
                 InitController();
             }
             else
             {
-                Components.DirectionArrow.RemoveDirectionArrow();
+                components.DirectionArrow.RemoveDirectionArrow();
             }
         }
         #endregion
+
         // 참고 : https://you-rang.tistory.com/193?category=764030
         private void Move()
         {
@@ -303,7 +299,7 @@ namespace UBZ.Owner
         public void PunShowEmoticon(EmoticonType type)
         {
             Debug.Log("ShowEmoticon : " + type);
-            Components.Emoticon.ShowEmoticon(type);
+            components.Emoticon.ShowEmoticon(type);
         }
 
         #region abnormalStatusFunc
@@ -332,7 +328,7 @@ namespace UBZ.Owner
                 canMove = true;
             }
         }
-        /// <summary> 공격 방해 상태 이상 갯수 증가 및 공격 AI OFF Check </summary>
+        /// <summary> 행동 방해 상태 이상 갯수 증가 및 공격 AI OFF Check </summary>
         protected override void AddRetrictsBehaviorCount()
         {
             restrictBehaviorCount += 1;
@@ -341,7 +337,7 @@ namespace UBZ.Owner
                 canBehavior = false;
             }
         }
-        /// <summary> 공격 방해 상태 이상 갯수 감소 및 공격 AI ON Check </summary>
+        /// <summary> 행동 방해 상태 이상 갯수 감소 및 공격 AI ON Check </summary>
         protected override void SubRetrictsBehaviorCount()
         {
             restrictBehaviorCount -= 1;
@@ -353,63 +349,88 @@ namespace UBZ.Owner
         }
         #endregion
 
-        #region collision
-        /// <summary> 충돌 처리 Trigger </summary>
-        public void OnTriggerEnter2D(Collider2D coll)
+        #region statsfunc
+        public override void ApplyItemEffect()
         {
-            CollisionBullet(ref coll);
+            base.ApplyItemEffect();
+            ItemEffectsData itemEffectsTotal = statsEffectsManager.ItemEffectsTotal;
+            movingSpeed = movingSpeedOriginal * itemEffectsTotal.movingSpeedModified;
+            components.ItemAcquisitionCollider.size = itemAcquisitionRangeOriginal * Mathf.Sqrt(itemEffectsTotal.itemAcquisitionRangeModified);
         }
 
-        /// <summary> Trigger </summary>
-        public void CollisionBullet(ref Collider2D coll)
+        public override void ApplyConsumableItem(ItemEffectsData itemEffectsData)
         {
-            //if(PunTeams.Team.RED == photonView.Owner.GetTeam())
-            //{
-            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.BLUE_TEAM_PLAYER))
-            //    {
-            //        if (coll.CompareTag(DASH))
-            //        {
-            //            photonView.RPC("PlayerInit", RpcTarget.AllViaServer, coll.transform.position, );
-            //        }
-            //    }
-            //}
-            //else if(PunTeams.Team.BLUE == photonView.Owner.GetTeam())
-            //{
-            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, InGameManager.RED_TEAM_PLAYER))
-            //    {
-            //        if (coll.CompareTag(DASH))
-            //        {
-            //            photonView.RPC("PlayerInit", RpcTarget.AllViaServer);
-            //        }
-            //    }
-            //}
-            //if (OwnerType.PLAYER == ownerType)
-            //{
-            //    // enemy 13, EnemyCanBlockBullet 20, EnemyCanReflectBullet 21
-            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, 13, 20, 21))
-            //    {
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            info.collisionProperties[i].Collision(ref coll);
-            //        }
-            //    }
-            //}
-            //else if (OwnerType.ENEMY == ownerType)
-            //{
-            //    // player 16, PlayerCanBlockBullet 18, PlayerCanReflectBullet 19
-            //    if (UtilityClass.CheckLayer(coll.gameObject.layer, 16, 18, 19))
-            //    {
-            //        for (int i = 0; i < length; i++)
-            //        {
-            //            info.collisionProperties[i].Collision(ref coll);
-            //        }
-            //    }
-            //}
+            if(true == itemEffectsData.canSlide)
+            {
+                Sliding();
+            }
         }
+
+        public override void PickUpInGameItem(UBZ.Item.InGameBuffType inGameBuffType)
+        {
+            ItemData itemData = InGameDataBase.Instance.GetInGameItemData(inGameBuffType);
+            switch (itemData.target)
+            {
+                case ItemTarget.SELF:
+                    photonView.RPC("AddInGameItem", RpcTarget.AllViaServer, inGameBuffType);
+                    break;
+                case ItemTarget.OUR_TEAM:
+                    foreach(MultiPlayer multiPlayer in InGameManager.Instance.GetMultiPlayersPerTeam(GetTeam()))
+                    {
+                        if (null == multiPlayer) 
+                            continue;
+                        Debug.Log(GetTeam() + "팀 버프 적용 " + multiPlayer.GetUser().NickName);
+                        multiPlayer.ApplyTeamBuff(inGameBuffType);
+                    }
+                    break;
+                case ItemTarget.OPPONENT_TEAM:
+                    // 현재 적팀 대상 효과 아이템 없음. 0526
+                    break;
+            }
+        }
+
+        public void ApplyTeamBuff(InGameBuffType inGameBuffType)
+        {
+            photonView.RPC("AddInGameItem", RpcTarget.AllViaServer, inGameBuffType);
+        }
+
+        public override void RunOutOfBuffTime(string itemName)
+        {
+            photonView.RPC("RemoveInGameItem", RpcTarget.AllViaServer, itemName);
+        }
+
+
+        // scriptbaleObejct
+        [PunRPC]
+        protected override void AddInGameItem(InGameBuffType inGameBuffType)
+        {
+            Debug.Log(inGameBuffType + " 아이템 적용, isMine : " + photonView.IsMine);
+            statsEffectsManager.AddInGameItem(InGameDataBase.Instance.GetInGameItemData(inGameBuffType), photonView.IsMine);
+        }
+
+        [PunRPC]
+        protected override void RemoveInGameItem(string itemName)
+        {
+            Debug.Log(itemName + " 버프 종료, isMine : " + photonView.IsMine);
+            statsEffectsManager.RemoveItemEffect(InGameDataBase.Instance.GetInGameItemData(itemName));
+        }
+        #endregion
+
+
+        #region collision
+        private void OnCollisionEnter2D(Collision2D coll)
+        {
+         if (UtilityClass.CheckLayer(coll.gameObject.layer, 10))
+            {
+                Debug.Log("벽 충돌");
+                canSlide = false;
+            }   
+        }
+       
         // TODO : .
         public void HitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player dashOwner)
         {
-            Debug.Log("인생 : " + photonView.Owner.ActorNumber);
+            //Debug.Log(photonView.Owner.ActorNumber);
             photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir, dashOwner);
         }
         [PunRPC]
@@ -440,7 +461,7 @@ namespace UBZ.Owner
             controlTypeAbnormalStatusesDurationMax[type] = effectiveTime;
             while (controlTypeAbnormalStatusTime[type] <= controlTypeAbnormalStatusesDurationMax[type])
             {
-                if (abnormalImmune == CharacterInfo.AbnormalImmune.ALL)
+                if (CharacterInfo.AbnormalImmune.STUN == (abnormalImmune & CharacterInfo.AbnormalImmune.STUN))
                 {
                     controlTypeAbnormalStatusesDurationMax[type] = 0;
                     break;
@@ -448,8 +469,34 @@ namespace UBZ.Owner
                 controlTypeAbnormalStatusTime[type] += Time.fixedDeltaTime;
                 yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
             }
-
             StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus.STUN);
+        }
+
+        protected override IEnumerator SlidingCoroutine()
+        {
+            canSlide = true;
+            int type = (int)ControlTypeAbnormalStatus.SLIDING;
+            abnormalComponents.SlidingEffect.SetActive(true);
+            AddRetrictsMovingCount();
+            AddRetrictsBehaviorCount();
+            //animationHandler.Idle();
+            isControlTypeAbnormalStatuses[type] = true;
+            Vector2 dirVector = controller.GetMoveRecentNormalInputVector();
+            Debug.Log("sliding 코루틴 시작, " + dirVector);
+            while (CharacterInfo.AbnormalImmune.SLIDING != (abnormalImmune & CharacterInfo.AbnormalImmune.SLIDING))
+            {
+                if(IsMine())
+                {
+                    bodyTransform.Translate(dirVector * movingSpeed * Time.fixedDeltaTime);
+                }
+                if (false == canSlide)
+                {
+                    Debug.Log("sliding 코루틴 종료");
+                    break;
+                }
+                yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
+            }
+            StopControlTypeAbnormalStatus(ControlTypeAbnormalStatus.SLIDING);
         }
 
         #endregion

@@ -21,6 +21,11 @@ namespace UBZ.Owner
             throw new System.NotImplementedException();
         }
 
+        protected override IEnumerator SlidingCoroutine()
+        {
+            throw new System.NotImplementedException();
+        }
+
         protected override IEnumerator StunCoroutine(float effectiveTime)
         {
             throw new System.NotImplementedException();

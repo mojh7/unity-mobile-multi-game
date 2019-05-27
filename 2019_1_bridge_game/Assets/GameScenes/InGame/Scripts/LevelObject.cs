@@ -11,6 +11,7 @@ public abstract class LevelObject : MonoBehaviour
 
 public abstract class LevelObjectPun : Photon.Pun.MonoBehaviourPun
 {
+    public virtual void Init() { }
 }
 
 public abstract class PickupItem : LevelObjectPun, IPunObservable
@@ -56,13 +57,15 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
     {
         // we only call Pickup() if "our" character collides with this PickupItem.
         // note: if you "position" remote characters by setting their translation, triggers won't be hit.
-        PhotonView otherpv = other.GetComponent<PhotonView>();
+        PhotonView otherpv = other.GetComponent<ItemAcquisitionCollider>().OwnerPhotonView;
         if (this.pickupOnTrigger && otherpv != null && otherpv.IsMine)
         {
             //Debug.Log("OnTriggerEnter() calls Pickup().");
             this.Pickup();
         }
     }
+
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -80,7 +83,6 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
         }
     }
 
-
     public void Pickup()
     {
         if (this.sentPickup)
@@ -92,7 +94,6 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
         this.sentPickup = true;
         this.photonView.RPC("PunPickup", RpcTarget.AllViaServer);
     }
-
 
     /// <summary>Makes use of RPC PunRespawn to drop an item (sent through server for all).</summary>
     public void Drop()
@@ -111,7 +112,6 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
             this.photonView.RPC("PunRespawn", RpcTarget.AllViaServer, newPosition);
         }
     }
-
 
     [PunRPC]
     public void PunPickup(PhotonMessageInfo msgInfo)
@@ -141,7 +141,7 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
         }
         */
 
-        OnPickedUp();
+         OnPickedUp();
 
         // setup a respawn (or none, if the item has to be dropped)
         if (secondsBeforeRespawn <= 0)

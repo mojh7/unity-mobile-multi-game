@@ -9,8 +9,7 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private Transform spriteTransform;
     [SerializeField] private Animator animator;
     //[SerializeField] private AnimationHandler animationHandler;
-    [SerializeField] private CircleCollider2D interactiveCollider2D;
-    [SerializeField] private CircleCollider2D circleCollider2D;
+    [SerializeField] private BoxCollider2D itemAcquisitionCollider;
     [SerializeField] private BoxCollider2D hitBox;
     [SerializeField] private Transform shadowTransform;
     [SerializeField] private TextMesh nickNameText;
@@ -48,18 +47,11 @@ public class CharacterComponents : MonoBehaviour
     //        return animationHandler;
     //    }
     //}
-    public CircleCollider2D InteractiveCollider2D
+    public BoxCollider2D ItemAcquisitionCollider
     {
         get
         {
-            return interactiveCollider2D;
-        }
-    }
-    public CircleCollider2D CircleCollider2D
-    {
-        get
-        {
-            return circleCollider2D;
+            return itemAcquisitionCollider;
         }
     }
     public BoxCollider2D HitBox

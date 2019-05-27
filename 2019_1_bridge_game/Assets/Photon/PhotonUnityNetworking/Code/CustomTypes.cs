@@ -15,10 +15,15 @@ namespace Photon.Pun
     using Photon.Realtime;
     using ExitGames.Client.Photon;
 
-
+    /*
     /// <summary>
     /// Internally used class, containing de/serialization methods for various Unity-specific classes.
     /// Adding those to the Photon serialization protocol allows you to send them in events, etc.
+    /// </summary>
+    /// */
+    /// <summary>
+    /// 내부적으로 사용되는 클래스로, 다양한 Unity 관련 클래스의 직렬화 / 직렬화 메소드를 포함합니다.
+    /// 이들을 Photon 직렬화 프로토콜에 추가하면 이벤트 등으로 보낼 수 있습니다.
     /// </summary>
     internal static class CustomTypes
     {

@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 4730009498385442}
   - component: {fileID: 58011598732478186}
   m_Layer: 9
-  m_Name: InteractCollider
+  m_Name: ItemAcquisitionCollider
   m_TagString: Interactor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -409,6 +409,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movingSpeed: 5
   sprite: {fileID: 0}
+  movingSpeedOriginal: 5
+  itemAcquisitionRangeOriginal: {x: 0, y: 0}
 --- !u!114 &2229958685411066148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -424,11 +426,13 @@ MonoBehaviour:
   spriteRenderer: {fileID: 212996303362089752}
   spriteTransform: {fileID: 4172594114710642}
   animator: {fileID: 0}
-  interactiveCollider2D: {fileID: 58011598732478186}
+  itemAcquisitionCollider: {fileID: 58011598732478186}
   circleCollider2D: {fileID: 0}
   hitBox: {fileID: 4194384749232524592}
   shadowTransform: {fileID: 4172594114710642}
-  nickTextMesh: {fileID: 8278562547826957171}
+  nickNameText: {fileID: 0}
+  dashEffect: {fileID: 0}
+  emoticon: {fileID: 0}
 --- !u!114 &1010957338601700066
 MonoBehaviour:
   m_ObjectHideFlags: 0

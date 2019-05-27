@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\uBBF8\uB044\uB369"
   description: 
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300006, guid: c2c69fa48d015a54983b0ebc8f88e5fc, type: 3}
   itemType: 0
   effectiveTime: 0
   itemEffectsDataList:

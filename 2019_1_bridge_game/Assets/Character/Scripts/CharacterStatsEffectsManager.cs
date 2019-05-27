@@ -5,9 +5,9 @@ using UBZ.Owner;
 using UBZ.Item;
 
 // TODO : 미구현, 멀티플레이 구현이랑도 연관되서 생각 해야 됨.
+// 코루틴 써야되서 모노비헤이어 상속 받아야 됨. 코루틴 따른 클래스에서 사용하게 되면 모노비헤이어 상속 안 받아도 됨
 public class CharacterStatsEffectsManager : MonoBehaviour
 {
-
     public enum ItemEffectUpdateType { ADD, REMOVE }
 
     #region variables
@@ -16,37 +16,28 @@ public class CharacterStatsEffectsManager : MonoBehaviour
     private List<ItemData> passiveItemDataList;
 
     private UBZ.Owner.Character owner;
-    private ItemEffectsData itemEffectsTotal;
+    public ItemEffectsData ItemEffectsTotal { get; private set; }
     #endregion
 
     #region get / set
-
-    /// <summary>
-    /// owner 설정, owner 누구 껀지 꼭 구분 필요합니다. Init 이후의 함수 실행해주심 됨.
-    /// </summary>
     public void SetOwner(Character owner)
     {
         this.owner = owner;
     }
     #endregion
 
-    #region initFunc
-    public void Init()
+    #region unityFunc
+    private void Awake()
     {
         inGameItemDataList = new List<ItemData>();
         buffItemDataList = new List<ItemData>();
         passiveItemDataList = new List<ItemData>();
-        InitEffectsTotal();
-    }
 
-    /// <summary> 캐릭터 대상 효과 종합 초기화 </summary>
-    public void InitEffectsTotal()
-    {
-        itemEffectsTotal = new ItemEffectsData
+        ItemEffectsTotal = new ItemEffectsData
         {
             // 합 연산
             movingSpeedModified = 1f,
-            itemGettingRangeModified = 1f,
+            itemAcquisitionRangeModified = 1f,
             // 곱 연산
 
             // on / off 속성
@@ -56,7 +47,7 @@ public class CharacterStatsEffectsManager : MonoBehaviour
     #endregion
 
     #region func
-    public void AddInGameItem(ItemData itemData)
+    public void AddInGameItem(ItemData itemData, bool isMine)
     {
         if (null == itemData)
             return;
@@ -64,16 +55,20 @@ public class CharacterStatsEffectsManager : MonoBehaviour
         switch (itemData.itemType)
         {
             case ItemType.CONSUMABLE:
-                // TODO
+                foreach (ItemEffectsData itemEffectData in itemData.itemEffectsDataList)
+                    owner.ApplyConsumableItem(itemEffectData);
                 break;
             case ItemType.BUFF:
                 // TODO : Buff icon display ui show
                 buffItemDataList.Add(itemData);
                 UpdateEffectsTotal(itemData.itemEffectsDataList, ItemEffectUpdateType.ADD);
-                StartCoroutine(RemoveBuffEffects(itemData));
+                if(isMine)
+                {
+                    StartCoroutine(RemoveBuffEffects(itemData));
+                }
                 break;
             case ItemType.PASSIVE:
-                // TODO : 계획에 따라서 인게임 아이템 = 패시브 아이템으로 보던지 아웃게임에서 코스튬, 펫 등 기타 요소로 아이템 효과 보는 것이 생기면 알맞게 수정할 예정
+                // TODO : 기획에 따라서 인게임 아이템 = 패시브 아이템으로 보던지 아웃게임에서 코스튬, 펫 등 기타 요소로 아이템 효과 보는 것이 생기면 알맞게 수정할 예정
                 inGameItemDataList.Add(itemData);
                 passiveItemDataList.Add(itemData);
                 UpdateEffectsTotal(itemData.itemEffectsDataList, ItemEffectUpdateType.ADD);
@@ -121,8 +116,8 @@ public class CharacterStatsEffectsManager : MonoBehaviour
         for (int i = 0; i < itemEffectsDataList.Length; i++)
         {
             // 합 연산
-            itemEffectsTotal.movingSpeedModified += itemEffectsDataList[i].movingSpeedModified * sign;
-            itemEffectsTotal.itemGettingRangeModified += itemEffectsDataList[i].itemGettingRangeModified * sign;
+            ItemEffectsTotal.movingSpeedModified += itemEffectsDataList[i].movingSpeedModified * sign;
+            ItemEffectsTotal.itemAcquisitionRangeModified += itemEffectsDataList[i].itemAcquisitionRangeModified * sign;
 
             // 곱 연산
             /*
@@ -136,18 +131,19 @@ public class CharacterStatsEffectsManager : MonoBehaviour
             }*/
 
             // bool형 on / off 종류, 해당 되는 항목들은 아이템 등록시 true, 제거시 false로 total 정보를 설정 함.
-            if (itemEffectsDataList[i].canSlide)
-                itemEffectsTotal.canSlide = boolSign;
+            //if (itemEffectsDataList[i].canSlide)
+            //    ItemEffectsTotal.canSlide = boolSign;
         }
-        // owner.ApplyItemEffect();
+        owner.ApplyItemEffect();
         // PassiveItemForDebug.Instance.UpdateEffectTotalValueText();
     }
     #endregion
             
     private IEnumerator RemoveBuffEffects(ItemData itemData)
     {
-        float time = 0;
         yield return YieldInstructionCache.WaitForSeconds(itemData.effectiveTime);
-        RemoveItemEffect(itemData);
+        owner.RunOutOfBuffTime(itemData.itemName);
+        //owner.RunOutOfBuffTime(itemData);
+        //RemoveItemEffect(itemData);
     }
 }

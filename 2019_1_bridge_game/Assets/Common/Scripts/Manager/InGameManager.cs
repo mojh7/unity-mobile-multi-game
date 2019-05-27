@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using UBZ.Item;
+using UBZ.Owner;
 
 /// <summary>
 /// 능률 상승 유용한 단축키 모음!
@@ -28,13 +31,6 @@ public class VisaulStudioShortcutKey
 public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 {
     #region Constants
-    public const float ASTEROIDS_MIN_SPAWN_TIME = 5.0f;
-    public const float ASTEROIDS_MAX_SPAWN_TIME = 10.0f;
-
-    public const float PLAYER_RESPAWN_TIME = 4.0f;
-
-    public const int PLAYER_MAX_LIVES = 3;
-
     public const string PLAYER_LIVES = "PlayerLives";
     public const string PLAYER_READY = "IsPlayerReady";
     public const string PLAYER_LOADED_LEVEL = "PlayerLoadedLevel";
@@ -54,11 +50,16 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     [SerializeField] private Transform blueTeamSpawnPoint;
     [SerializeField] private Sprite[] emoticonSprites;
     public GameObject[] sheetMusicPrefabs;
+    [SerializeField] private InGameItemData[] inGameItemData;
 
     public Text text;
 
+    public static Dictionary<PunTeams.Team, List<MultiPlayer>> multiPlayersPerTeam;
+
     // 이후 랜덤한 위치를 유동적으로 대입
     [SerializeField] private Transform baseTowns;
+    private UBZ.Owner.MultiPlayer multiPlayer;
+    
     #endregion
 
     #region get / set
@@ -84,12 +85,38 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         return emoticonSprites[(int)type];
     }
+    public InGameItemData GetInGameItemData(int index)
+    {
+        if (index > inGameItemData.Length)
+            return null;
+        return inGameItemData[index];
+    }
+    public UBZ.Owner.MultiPlayer GetMultiPlayer()
+    {
+        return multiPlayer;
+    }
+
+    public List<UBZ.Owner.MultiPlayer> GetMultiPlayersPerTeam(PunTeams.Team team)
+    {
+        return multiPlayersPerTeam[team];
+    }
+
+    public void SetMultiPlayer(UBZ.Owner.MultiPlayer multiPlayer)
+    {
+        this.multiPlayer = multiPlayer;
+    }
     #endregion
 
     #region unityFunc
     private void Awake()
     {
         Instance = this;
+        multiPlayersPerTeam = new Dictionary<PunTeams.Team, List<MultiPlayer>>();
+        Array enumVals = Enum.GetValues(typeof(PunTeams.Team));
+        foreach (var enumVal in enumVals)
+        {
+            multiPlayersPerTeam[(PunTeams.Team)enumVal] = new List<MultiPlayer>();
+        }
     }
 
     public override void OnEnable()
@@ -108,6 +135,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
 
+        // 일단 여기서 임시로 플레이어 생성, 팀 결정
         PhotonNetwork.LocalPlayer.SetTeam((PhotonNetwork.LocalPlayer.GetPlayerNumber() % 2) == 0? PunTeams.Team.RED : PunTeams.Team.BLUE);
         Debug.Log("Player Number : " + PhotonNetwork.LocalPlayer.GetPlayerNumber() + ", Team : " + PhotonNetwork.LocalPlayer.GetTeam());
 
@@ -133,6 +161,12 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     #endregion
 
     #region func
+    public void AddMultiPlayerInTeam(MultiPlayer multiPlayer)
+    {
+        multiPlayersPerTeam[multiPlayer.GetTeam()].Add(multiPlayer);
+    }
+
+
     private void StartGame()
     {
         Debug.Log("Timer 다 되고 게임 스타트");
@@ -292,11 +326,11 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
     {
-        if (changedProps.ContainsKey(PLAYER_LIVES))
-        {
-            CheckEndOfGame();
-            return;
-        }
+        //if (changedProps.ContainsKey(PLAYER_LIVES))
+        //{
+        //    CheckEndOfGame();
+        //    return;
+        //}
 
         if (!PhotonNetwork.IsMasterClient)
         {

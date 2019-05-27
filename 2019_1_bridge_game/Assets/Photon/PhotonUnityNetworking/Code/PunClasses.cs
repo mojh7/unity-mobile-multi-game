@@ -48,7 +48,6 @@ namespace Photon.Pun
     using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 
-
     //// <summary>Replacement for RPC attribute with different name. Used to flag methods as remote-callable.</summary>
     /// <summary> RPC 속성을 다른 이름으로 대체합니다. 메소드를 원격 호출 가능으로 플래그 지정하는 데 사용됩니다. </summary>
     public class PunRPC : Attribute
@@ -359,12 +358,24 @@ namespace Photon.Pun
 
         /// <summary>
         /// Called when the local user/client left a room, so the game's logic can clean up it's internal state.
+        /// 로컬 사용자 / 클라이언트가 방을 떠날 때 호출되므로 게임 논리가 내부 상태를 정리할 수 있습니다.
         /// </summary>
         /// <remarks>
         /// When leaving a room, the LoadBalancingClient will disconnect the Game Server and connect to the Master Server.
         /// This wraps up multiple internal actions.
         ///
         /// Wait for the callback OnConnectedToMaster, before you use lobbies and join or create rooms.
+        /// </remarks>
+        /// 
+
+        /// <summary>
+        /// 로컬 사용자 / 클라이언트가 방을 떠날 때 호출되므로 게임 논리가 내부 상태를 정리할 수 있습니다.
+        /// </summary>
+        /// <remarks>
+        /// 방을 떠날 때, LoadBalancingClient는 게임 서버를 분리하고 마스터 서버에 연결합니다.
+        /// 여러 개의 내부 동작을 마무리합니다.
+        ///
+        /// 로비를 사용하고 회의실에 가입하거나 회의실을 만들기 전에 콜백 OnConnectedToMaster를 기다립니다.
         /// </remarks>
         public virtual void OnLeftRoom()
         {
