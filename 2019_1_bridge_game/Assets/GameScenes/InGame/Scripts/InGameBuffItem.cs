@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace UBZ.Item
 {
@@ -17,26 +18,21 @@ namespace UBZ.Item
 public class InGameBuffItem : PickupItem
 {
     private static int NUM_BUFF_ITEM = 4;
-    [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private UBZ.Item.InGameBuffType type;
 
-    private void OnEnable()
+    [Photon.Pun.PunRPC]
+    private void SetInGameBuffType(UBZ.Item.InGameBuffType type)
     {
-        Init();
-    }
-
-    public override void Init()
-    {
-        spriteRenderer.sprite = InGameDataBase.Instance.GetInGameItemData(type).sprite;
-
+        this.type = type;
     }
 
     protected override void OnPickedUp()
     {
         if (pickupIsMine)
         {
-            //InGameManager.Instance.GetMultiPlayer().AddInGameItem(InGameDataBase.Instance.GetInGameItemData(type));
             InGameManager.Instance.GetMultiPlayer().PickUpInGameItem(type);
+            UBZ.Item.InGameBuffType sentType = InGameDataBase.Instance.GetInGameItemType();
+            this.photonView.RPC("SetInGameBuffType", RpcTarget.AllViaServer, sentType);
         }
         else
         {

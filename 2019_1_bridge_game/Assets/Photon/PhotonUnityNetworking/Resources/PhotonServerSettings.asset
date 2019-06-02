@@ -40,5 +40,6 @@ MonoBehaviour:
   - PunShowEmoticon
   - RemoveInGameItem
   - RespawnSpaceship
+  - SetInGameBuffType
   DisableAutoOpenWizard: 1
   ShowSettings: 0

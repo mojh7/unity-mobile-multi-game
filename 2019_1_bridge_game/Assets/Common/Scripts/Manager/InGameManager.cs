@@ -148,7 +148,8 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         {
             playerObj = PhotonNetwork.Instantiate("MultiPlayer", blueTeamSpawnPoint.position, Quaternion.Euler(Vector3.zero));
         }
-        playerObj.GetComponent<UBZ.Owner.MultiPlayer>().Init();
+        if(null != playerObj)
+            playerObj.GetComponent<UBZ.Owner.MultiPlayer>().Init();
     }
 
     public override void OnDisable()

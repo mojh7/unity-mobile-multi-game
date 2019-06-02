@@ -23,6 +23,14 @@ public class InGameDataBase : MonoBehaviourSingleton<InGameDataBase>
     {
         return inGameItemDataList[(int)type];
     }
+    /// <summary>
+    /// 버프, 디버프 랜덤
+    /// </summary>
+    /// <returns></returns>
+    public UBZ.Item.InGameBuffType GetInGameItemType()
+    {
+        return (UBZ.Item.InGameBuffType)Random.Range(0, inGameItemDataList.Length);
+    }
     #endregion
 
     #region unityFunc

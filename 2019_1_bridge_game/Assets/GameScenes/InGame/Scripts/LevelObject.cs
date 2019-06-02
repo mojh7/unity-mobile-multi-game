@@ -11,11 +11,14 @@ public abstract class LevelObject : MonoBehaviour
 
 public abstract class LevelObjectPun : Photon.Pun.MonoBehaviourPun
 {
-    public virtual void Init() { }
+
 }
 
 public abstract class PickupItem : LevelObjectPun, IPunObservable
 {
+    #region variables
+    [SerializeField] private Transform spriteTransform;
+    [SerializeField] private bool canPlayUpDownAnim = false;
     [SerializeField] private float secondsBeforeRespawn = 1f;
 
     /*
@@ -46,7 +49,14 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
     // <summary>Timestamp when to respawn the item (compared to PhotonNetwork.time). </summary>
     /// <summary>항목을 언제 다시 생성할지 타임 스탬프 (PhotonNetwork.time과 비교).</summary>
     [SerializeField] private double timeOfRespawn;    // PickupItem이 다시 생기면 새로운 플레이어를 업데이트 하고 싶을 때 필요합니다.
-    // needed when we want to update new players when a PickupItem respawns
+                                                      // needed when we want to update new players when a PickupItem respawns
+    #endregion
+
+    private void Awake()
+    {
+        if(canPlayUpDownAnim)
+            StartCoroutine(UpDownMoveAnim());
+    }
 
     /// <summary></summary>
     public int ViewID { get { return this.photonView.ViewID; } }
@@ -64,8 +74,6 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
             this.Pickup();
         }
     }
-
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -208,7 +216,18 @@ public abstract class PickupItem : LevelObjectPun, IPunObservable
         }
     }
 
-
+    private IEnumerator UpDownMoveAnim()
+    {
+        float time = 0;
+        Vector3 pos = Vector3.zero;
+        while(true)
+        {
+            spriteTransform.localPosition = pos;
+            pos.y = 0.1f*Mathf.Sin(time);
+            time += Time.fixedDeltaTime * 5f;
+            yield return YieldInstructionCache.WaitForSeconds(Time.fixedDeltaTime);
+        }
+    }
 }
 
 public abstract class CollisionLevelObject : LevelObject
