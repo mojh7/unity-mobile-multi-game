@@ -19,7 +19,7 @@ public abstract class JoystickBase : MonoBehaviour, IDragHandler, IPointerUpHand
     [SerializeField]
     protected Image joystickImage;                 // 움직일 image, 작은 원
     private Vector3 inputVector;                // 입력 중일 때의 vector 값
-    private Vector3 recentNormalInputVector;   // 터치 다운, 업에 상관없이 가장 최근 입력된 노말 벡터 
+    private Vector3 recentNormalInputVector = Vector3.right;   // 터치 다운, 업에 상관없이 가장 최근 입력된 노말 벡터 
     protected UBZ.Owner.Character character;
     protected bool isTouchDown = false;
     #endregion

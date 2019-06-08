@@ -53,10 +53,14 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: d102358daa898d441b70ffbcb3a9e629, type: 3}
-    totalSpriteSurfaceArea: 215022
+    totalSpriteSurfaceArea: 664525
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300006, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
+  - {fileID: 21300004, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
+  - {fileID: 21300002, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
+  - {fileID: 21300000, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
   - {fileID: 21300000, guid: a68eb572f9c70cf4b8cbe4be0c220d25, type: 3}
   - {fileID: 21300014, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
   - {fileID: 21300012, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
@@ -78,13 +82,20 @@ SpriteAtlas:
   - {fileID: 21300030, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
   - {fileID: 21300000, guid: 2f21322487c506d4ca68f4ed5dd7e7c0, type: 3}
   - {fileID: 21300000, guid: 88d8886458b6dc243b2522092675fee2, type: 3}
+  - {fileID: 21300000, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
+  - {fileID: 21300000, guid: 42dc7a3623cac4a48bc4cde83f171e94, type: 3}
   - {fileID: 21300000, guid: d626fe3738227b449893571bda159f1b, type: 3}
   - {fileID: 21300000, guid: 7111592c7993d0348babb5db76b89eb0, type: 3}
   - {fileID: 21300000, guid: ba0f512e80eb3004291f538afdc6be47, type: 3}
   - {fileID: 21300004, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300002, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300000, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
+  - {fileID: 21300000, guid: 3a4c41afead654645bec475fa5e79ad3, type: 3}
   m_PackedSpriteNamesToIndex:
+  - S_WALK_3
+  - S_WALK_2
+  - S_WALK_1
+  - S_WALK_0
   - temp_skill_icon
   - 136214-emoticon-set_7
   - 136214-emoticon-set_6
@@ -106,11 +117,14 @@ SpriteAtlas:
   - 136214-emoticon-set_15
   - circleShadow
   - tempEmoticon
+  - F_WALK
+  - S_STAND_0
   - SpeechBubble
   - temp_skill_icon2
   - Sliding
   - Old enemies_2
   - Old enemies_1
   - Old enemies_0
+  - F_BREATHE
   m_Tag: Character
   m_IsVariant: 0

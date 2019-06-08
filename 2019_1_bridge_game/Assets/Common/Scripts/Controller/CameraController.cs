@@ -50,6 +50,11 @@ public class CameraController : MonoBehaviourSingleton<CameraController>
         cameraTransform.parent = targetTransform;
         cameraTransform.localPosition = zeroPos;
     }
+    public void AttachObject(Transform targetTransform, Vector2 localPosition)
+    {
+        cameraTransform.parent = targetTransform;
+        cameraTransform.localPosition = new Vector3(localPosition.x, localPosition.y, cameraDepth);
+    }
     public void FindOther(Vector2 dest)
     {
         cameraTransform.position = new Vector3(dest.x, dest.y, cameraDepth);

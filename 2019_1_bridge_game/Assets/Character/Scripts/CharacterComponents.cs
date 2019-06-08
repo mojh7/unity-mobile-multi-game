@@ -7,10 +7,9 @@ public class CharacterComponents : MonoBehaviour
     #region components
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Transform spriteTransform;
-    [SerializeField] private Animator animator;
+    [SerializeField] private CharacterAnimHandler animHandler;
     //[SerializeField] private AnimationHandler animationHandler;
     [SerializeField] private BoxCollider2D itemAcquisitionCollider;
-    [SerializeField] private BoxCollider2D hitBox;
     [SerializeField] private SpriteRenderer shadowRenderer;
     [SerializeField] private TextMesh nickNameText;
     [SerializeField] private DashEffect dashEffect;
@@ -33,11 +32,11 @@ public class CharacterComponents : MonoBehaviour
             return spriteTransform;
         }
     }
-    public Animator Animator
+    public CharacterAnimHandler AnimHandler
     {
         get
         {
-            return animator;
+            return animHandler;
         }
     }
     //public AnimationHandler AnimationHandler
@@ -52,13 +51,6 @@ public class CharacterComponents : MonoBehaviour
         get
         {
             return itemAcquisitionCollider;
-        }
-    }
-    public BoxCollider2D HitBox
-    {
-        get
-        {
-            return hitBox;
         }
     }
     public SpriteRenderer ShadowRenderer

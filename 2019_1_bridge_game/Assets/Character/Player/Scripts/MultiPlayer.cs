@@ -18,6 +18,7 @@ namespace UBZ.Owner
         
         #region variables
         [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
+        [SerializeField] private MultiPlayerAnimHandler AnimController;
 
         private Transform objTransform;
 
@@ -179,14 +180,14 @@ namespace UBZ.Owner
             {
                 components.ShadowRenderer.sprite = redTemaRing;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
-                components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
+                //components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.RED_TEAM_PLAYER);
                 components.DashEffect.Init(this, PunTeams.Team.RED);
             }
             else if (PunTeams.Team.BLUE == photonView.Owner.GetTeam())
             {
                 components.ShadowRenderer.sprite = blueTemaRing;
                 gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
-                components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
+                //components.HitBox.gameObject.layer = LayerMask.NameToLayer(InGameManager.BLUE_TEAM_PLAYER);
                 components.DashEffect.Init(this, PunTeams.Team.BLUE);
             }
 
@@ -200,7 +201,7 @@ namespace UBZ.Owner
                 {
                     baseZoneTransform = InGameManager.Instance.GetBlueTeamBaseZone();
                 }
-                CameraController.Instance.AttachObject(this.transform); // get Camera
+                CameraController.Instance.AttachObject(this.transform, new Vector2(0, 0.5f)); // get Camera
                 components.DirectionArrow.SetBaseTown(baseZoneTransform);
                 InitController();
             }
@@ -245,6 +246,15 @@ namespace UBZ.Owner
                     bodyTransform.Translate(Vector2.left * movingSpeed * Time.fixedDeltaTime);
                 }
                 //#endif
+
+                if (controller.GetMovingInputVector().sqrMagnitude > 0.1f)
+                {
+                    components.AnimHandler.Walk();
+                }
+                else
+                {
+                    components.AnimHandler.Idle();
+                }
             }
             else // 타 user player
             {
