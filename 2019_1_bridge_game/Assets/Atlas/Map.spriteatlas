@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 2b4fe9a2c4c37154db1fc346fdb6e663, type: 3}
-    totalSpriteSurfaceArea: 1690860
+    totalSpriteSurfaceArea: 2396652
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -54,10 +54,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 63179c61e4c56664da5aa63716100486, type: 3}
   - {fileID: 21300000, guid: 9779f09186bf93649835384ed7392a90, type: 3}
   - {fileID: 21300000, guid: 614c60c1e8b59be4191be26770597518, type: 3}
+  - {fileID: 21300000, guid: ea3f48c1c458b0d4aab6f99ff0ced388, type: 3}
   - {fileID: 21300000, guid: d68d8ce14052fc0489b5d39ef11e10f9, type: 3}
   - {fileID: 21300000, guid: 290640f1a97e6dc41a59a0915364330d, type: 3}
   - {fileID: 21300000, guid: 687df8136a4f05143afc2c59a6a4766f, type: 3}
   - {fileID: 21300000, guid: 4c7c71231a5d9e345aff5a39394408df, type: 3}
+  - {fileID: 21300000, guid: 8a03d8438725a7847b1f16c36f60d4eb, type: 3}
   - {fileID: 21300000, guid: 2573ca63c0b371f408dd7614a72b9286, type: 3}
   - {fileID: 21300000, guid: c9732d63a9af24246855e2f49aca094b, type: 3}
   - {fileID: 21300000, guid: b7e601737b87e9c49bc8e584ed62d141, type: 3}
@@ -84,6 +86,7 @@ SpriteAtlas:
   - {fileID: 21300020, guid: b3205583295d6fb44a45ba7cf44d9c90, type: 3}
   - {fileID: 21300000, guid: 590f6ac36162b6c4fbdbc2ca026b6bea, type: 3}
   - {fileID: 21300000, guid: c5b90d84c79ea4d499903e54a081522d, type: 3}
+  - {fileID: 21300000, guid: c197aca48613c4b4d829bfe8fd2ea75e, type: 3}
   - {fileID: 21300000, guid: 25d5a525b5e671647b350b936394f1f4, type: 3}
   - {fileID: 21300000, guid: 5084e0b555ec6bc4595a18789afc0442, type: 3}
   - {fileID: 21300000, guid: 610a4fc59c59a974088124d99dbbd55b, type: 3}
@@ -110,6 +113,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 4134554afbebe9d44bba54dea395f532, type: 3}
   - {fileID: 21300000, guid: c3753c4a6d59a43449952210b27baaa7, type: 3}
   - {fileID: 21300000, guid: 5d46956ac44a28e49a624c971bdccf2f, type: 3}
+  - {fileID: 21300000, guid: 342b1a7afc81abe47ace3bd4df220ef5, type: 3}
   - {fileID: 21300000, guid: f581bb9a5f6dff248b157d3053efdd7c, type: 3}
   - {fileID: 21300000, guid: 86a112aabca254743a8a339ff51452f3, type: 3}
   - {fileID: 21300000, guid: 2feebaba8fcae0d42a3d65b6d455d8b5, type: 3}
@@ -132,6 +136,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: b168255d2f7725148a3861f177484b19, type: 3}
   - {fileID: 21300000, guid: b5e2957d65dddef4bb71ce9fb9668ed2, type: 3}
   - {fileID: 21300000, guid: 5e8ea1dd52e801042ab63da476eab4d9, type: 3}
+  - {fileID: 21300000, guid: f81b962eac4699048b24e2eb5177ede5, type: 3}
   - {fileID: 21300000, guid: 7e89043e2a3ed6e4d91eae87d031bfc5, type: 3}
   - {fileID: 21300000, guid: 76177b6ec193a6144b3b8ec7e8b7a42d, type: 3}
   - {fileID: 21300000, guid: 7b118f9ebdf204c4aafd97a2003f824c, type: 3}
@@ -152,10 +157,12 @@ SpriteAtlas:
   - tile019
   - tile013
   - tile016
+  - object_flagpillar
   - tile039
   - default_pillar_01
   - tile027
   - tile022
+  - object_pillar
   - arch_02
   - tile029
   - team_base_tiles_0
@@ -182,6 +189,7 @@ SpriteAtlas:
   - 03_Castle_Tiles_10
   - flag_pillar_04
   - tile043
+  - object_obstacle
   - tile034
   - tile050
   - tile007
@@ -208,6 +216,7 @@ SpriteAtlas:
   - tile028
   - tile056
   - tile045
+  - object_arch
   - tile030
   - arch_09
   - flag_pillar_07
@@ -230,6 +239,7 @@ SpriteAtlas:
   - tile015
   - default_pillar_03
   - tile017
+  - object_walldeco
   - tile002
   - tile046
   - tile044
