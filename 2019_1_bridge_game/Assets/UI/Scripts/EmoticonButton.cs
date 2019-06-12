@@ -11,6 +11,7 @@ public class EmoticonButton : BehaviorButtonBase
     {
         if (CanBehavior())
         {
+            ControllerUI.Instance.EmoticonButtonClicked();
             player.ShowEmoticon(emoticonType);
         }
     }

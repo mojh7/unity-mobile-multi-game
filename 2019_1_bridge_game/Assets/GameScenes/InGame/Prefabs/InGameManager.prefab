@@ -96,11 +96,6 @@ MonoBehaviour:
   InfoText: {fileID: 0}
   redTeamSpawnPoint: {fileID: 0}
   blueTeamSpawnPoint: {fileID: 0}
-  emoticonSprites:
-  - {fileID: 21300000, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300032, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300010, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300000, guid: 88d8886458b6dc243b2522092675fee2, type: 3}
   sheetMusicPrefabs:
   - {fileID: 0}
   inGameItemData: []
@@ -179,6 +174,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 017421eeb1af41349a909fc70d9ef2f0, type: 2}
   - {fileID: 11400000, guid: 749d8f07ba09874479bf9964f46158b8, type: 2}
   - {fileID: 11400000, guid: e31c9c0b0ffe5e546815ce01f0c43dcc, type: 2}
+  emoticonSprites:
+  - {fileID: 21300000, guid: cc3f831fe6a946245ae09d6073c7357e, type: 3}
+  - {fileID: 21300000, guid: 2098764f434468a428d86167625786d6, type: 3}
+  - {fileID: 21300000, guid: f57dbe86e7412044a99a2dc27cea77cf, type: 3}
 --- !u!1 &3567601061274922690
 GameObject:
   m_ObjectHideFlags: 0

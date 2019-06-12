@@ -11,14 +11,16 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
     [SerializeField] protected Image coolTimeDisplayImg;
     [SerializeField] protected Text coolTimeDisplayTxt;
     [SerializeField] protected bool hasCoolTime;
-    protected float cost; // 0~1f
     [SerializeField] protected float costFullRecoveryTime;
+    protected float cost; // 0~1f
+    private Coroutine displayCostCoroutine;
     protected UBZ.Owner.MultiPlayer player;
     #endregion
 
     #region get / set
     public void SetPlayer(UBZ.Owner.MultiPlayer player)
     {
+        Debug.Log(Time.time);
         this.player = player;
     }
     #endregion
@@ -26,11 +28,16 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
     #region unityFunc
     private void Awake()
     {
-        FillCostMax();
+        Init();
     }
     #endregion
 
     #region func
+    protected virtual void Init()
+    {
+        FillCostMax();
+    }
+
     public abstract void OnPointerDown(PointerEventData ped);
 
     protected bool CanBehavior()
@@ -57,10 +64,11 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
         blackLayerImg.enabled = false;
         coolTimeDisplayTxt.text = string.Empty;
     }
-    protected void UseAllCost()
+    public void UseAllCost()
     {
         cost = 0f;
-        StartCoroutine(DisplayCost());
+        if(null == displayCostCoroutine)
+            displayCostCoroutine = StartCoroutine(DisplayCost());
     }
     // TODO : 실패 시 휴대폰 진동 or 각 버튼에 맞게 알림 같은 것 추가?
     protected abstract void UseAllCostFail();
@@ -94,6 +102,7 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
                 break;
             }
         }
+        displayCostCoroutine = null;
     }
     #endregion
 }

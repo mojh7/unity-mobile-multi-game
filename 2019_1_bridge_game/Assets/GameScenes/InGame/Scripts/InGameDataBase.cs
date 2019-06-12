@@ -26,6 +26,7 @@ public class InGameDataBase : MonoBehaviourSingleton<InGameDataBase>
     }
     public Sprite GetEmoticonSprite(UBZ.Owner.CharacterInfo.EmoticonType type)
     {
+        Debug.Log("emoticon type : " + type + ", " + (int)type);
         return emoticonSprites[(int)type];
     }
     /// <summary>

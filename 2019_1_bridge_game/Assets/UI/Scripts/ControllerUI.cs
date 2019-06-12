@@ -7,23 +7,42 @@ using UnityEngine.EventSystems;    //UI 클릭시 터치 이벤트 발생 방지
 
 public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, IPointerUpHandler, IPointerDownHandler
 {
+    public delegate void UseAllCostInGroupCallBack();
+
     #region variable
     private Vector2 outPos;
     private Vector2 touchPos;
     private float screenHalfWidth;
     private bool touched;
+    private UseAllCostInGroupCallBack emoticonButtonClickedCallback;
     #endregion
 
     #region controllComponents
     [SerializeField] private MovingJoystick movingJoystick;
     [SerializeField] private SkillButton skillBtn;
-    [SerializeField] private EmoticonButton emoticonBtn;
+    [SerializeField] private EmoticonButton[] emoticonBtnList;
     #endregion
 
     #region components
     private RectTransform movingJoystickTransform;
     #endregion
 
+    #region unityFunc
+    private void Awake()
+    {
+        movingJoystickTransform = movingJoystick.GetComponent<RectTransform>();
+
+        screenHalfWidth = Screen.width * 0.5f;
+        outPos = movingJoystickTransform.position;
+        touched = false;
+        movingJoystickTransform.position = outPos;
+        foreach (EmoticonButton emoticonBtn in emoticonBtnList)
+        {
+            emoticonButtonClickedCallback += emoticonBtn.UseAllCost;
+        }
+    }
+    #endregion
+    
     #region func
     public void IsTouched()
     {
@@ -33,7 +52,11 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
     {
         movingJoystick.SetPlayer(player);
         skillBtn.SetPlayer(player);
-        emoticonBtn.SetPlayer(player);
+        foreach(EmoticonButton emoticonBtn in emoticonBtnList)
+        {
+            Debug.Log(emoticonBtn);
+            emoticonBtn.SetPlayer(player);
+        }
         controller = new PlayerController(movingJoystick);
     }
     void DrawMoveJoyStick()
@@ -46,17 +69,6 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
     }
     #endregion
 
-    #region unityFunc
-    private void Awake()
-    {
-        movingJoystickTransform = movingJoystick.GetComponent<RectTransform>();
-
-        screenHalfWidth = Screen.width * 0.5f;
-        outPos = movingJoystickTransform.position;
-        touched = false;
-        movingJoystickTransform.position = outPos;
-    }
-    #endregion
 
     #region Handler
 
@@ -83,6 +95,12 @@ public class ControllerUI : MonoBehaviourSingleton<ControllerUI>, IDragHandler, 
             touchPos = eventData.position;
             DrawMoveJoyStick();
         }
+    }
+
+
+    public void EmoticonButtonClicked()
+    {
+        emoticonButtonClickedCallback();
     }
     #endregion
 }

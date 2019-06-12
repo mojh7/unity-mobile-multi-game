@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: f74009ad2e4a3c948a7ed685e22fa5f4, type: 3}
-    totalSpriteSurfaceArea: 513451
+    totalSpriteSurfaceArea: 551345
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -52,6 +52,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 894956627dc6e0043869db01cda7f0dd, type: 3}
   - {fileID: 21300000, guid: 2d4060c2cc8b7d04ab831ff04209440a, type: 3}
   - {fileID: 21300000, guid: 6688c7d2f5541c448b0c47cd8ab3d96b, type: 3}
+  - {fileID: 21300000, guid: 0cd256334e92acf4ca1b36bf445577d6, type: 3}
   - {fileID: 21300000, guid: 724034f3465001940bca5dbda51f7020, type: 3}
   - {fileID: 21300000, guid: 4ea59f74521dc3747a1213574964c901, type: 3}
   - {fileID: 21300000, guid: 75a9ba154d6f07848abac0a81d2796fb, type: 3}
@@ -66,11 +67,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 0aafbc99612d6ce44b69f47d93640bed, type: 3}
   - {fileID: 21300000, guid: 083efe4a894fc1c44814c3b6883d5792, type: 3}
   - {fileID: 21300000, guid: aec6b66a7e957b644814cb48ca5ea77b, type: 3}
+  - {fileID: 21300000, guid: 1205ebfa98784c445b3a42e8b469d71b, type: 3}
   - {fileID: 21300000, guid: 6c957ffa2ba8cff488ba9f78b5668ac2, type: 3}
   - {fileID: 21300000, guid: a66971cbb2a991a459301ad305bd446b, type: 3}
   - {fileID: 21300000, guid: fd044a6c842426c409d2b17cbe7c2844, type: 3}
   - {fileID: 21300000, guid: a9095e1dc2b3d2242923e9a62c083c5b, type: 3}
   - {fileID: 21300000, guid: 40c8534daa11515448be7f27fd58e0f4, type: 3}
+  - {fileID: 21300000, guid: 7435d0fd0fa1c0141bd75432dbcebf45, type: 3}
   - {fileID: 21300000, guid: 77a51a4e18eaebb4498ad8393e22d616, type: 3}
   - {fileID: 21300000, guid: 307ceb2fa6762a949a87fd3347e8a983, type: 3}
   - {fileID: 21300000, guid: 17d39e7feac7c564da253e512de7ac51, type: 3}
@@ -81,6 +84,7 @@ SpriteAtlas:
   - ui_round_320
   - ui_9_pink_16
   - ui_9_purple_16
+  - emoticon_gloomy
   - ui_9_grey_16
   - ui_9_text_16_disabled
   - dash
@@ -95,11 +99,13 @@ SpriteAtlas:
   - joystick
   - ui_9_white_32
   - dash_gray
+  - emoticon_happy
   - blue_bar
   - ui_1x1
   - ui_9_white_16
   - emphasisLayer
   - diamond
+  - emoticon_sad
   - joypad
   - ui_9_pink_32
   - ui_9_text_16_normal
