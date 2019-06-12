@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 8c91c1bf7462a19469240734db360fd0, type: 3}
-    totalSpriteSurfaceArea: 4310352
+    totalSpriteSurfaceArea: 4364240
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -57,6 +57,10 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c8382dc9f43f54844993c38ac5a00c92, type: 3}
   - {fileID: 21300000, guid: 31f7c20a63aea7c4fbebfe4755e03152, type: 3}
   - {fileID: 21300000, guid: 67bdb55aa3da74a4ab9d5e3299278112, type: 3}
+  - {fileID: 21300002, guid: 0711d96bd54982148b3350a1faf76514, type: 3}
+  - {fileID: 21300000, guid: 0711d96bd54982148b3350a1faf76514, type: 3}
+  - {fileID: 21300006, guid: 0711d96bd54982148b3350a1faf76514, type: 3}
+  - {fileID: 21300004, guid: 0711d96bd54982148b3350a1faf76514, type: 3}
   - {fileID: 21300000, guid: 0958c79bd84659249a5b8ca45fbeb663, type: 3}
   - {fileID: 21300000, guid: ca26750c81f71c2418d25a9424a427a1, type: 3}
   - {fileID: 21300000, guid: 60c21d5c62c24af4a89043a485a89028, type: 3}
@@ -77,6 +81,10 @@ SpriteAtlas:
   - unbazi_animation-5
   - buff_or_debuff
   - Bridge_Logo
+  - music_notes2_1
+  - music_notes2_0
+  - music_notes2_3
+  - music_notes2_2
   - temp_title_bkg
   - temp_sheet_music
   - red_shadow_01

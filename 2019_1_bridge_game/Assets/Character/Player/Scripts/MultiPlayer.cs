@@ -173,6 +173,7 @@ namespace UBZ.Owner
             abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
             InGameManager.Instance.AddMultiPlayerInTeam(this);
+            components.NickNameText.text = photonView.Owner.NickName;
 
             Transform baseZoneTransform = null;
             if (PunTeams.Team.RED == photonView.Owner.GetTeam())

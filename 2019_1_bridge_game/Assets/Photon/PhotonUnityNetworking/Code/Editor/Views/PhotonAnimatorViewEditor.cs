@@ -28,11 +28,12 @@ namespace Photon.Pun
 
         public override void OnInspectorGUI()
         {
+            DrawDefaultInspector();
             //base.OnInspectorGUI();
 
             //EditorGUI.ObjectField("Animator", null, typeof(Animator));
-            EditorGUILayout.ObjectField("Animator", null, typeof(Animator), true);
-            EditorGUILayout.ObjectField("Object Field", null, typeof(Sprite), true);
+            EditorGUILayout.ObjectField("Animator", null, typeof(RuntimeAnimatorController), true);
+            EditorGUILayout.ObjectField("Object Field, sprite", null, typeof(Sprite), true);
             //GUILayout.Label("Object Field", EditorStyles.objectField);
             if (this.m_Animator == null)
             {

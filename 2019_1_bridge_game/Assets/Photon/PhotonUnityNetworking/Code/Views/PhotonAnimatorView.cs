@@ -136,6 +136,7 @@ namespace Photon.Pun
             this.m_StreamQueue = new PhotonStreamQueue(120);
 
             this.m_Animator = GetComponentInChildren<Animator>();
+            Debug.Log(m_PhotonView.Owner + ", " + m_Animator);
         }
 
         private void Update()
