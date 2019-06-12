@@ -27,7 +27,7 @@ public class SheetMusic : PickupItem
             //Debug.Log("I picked up something. That's a score!, " + pianoIndex.Length);
             //AudioManager.Instance.PlaySound(pianoIndex[(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % pianoIndex.Length)], SFXType.PIANO);
             // TODO : 음악에 마다 효과음 갯수 다르니 고려해서 수정해야 됨.
-            AudioManager.Instance.PlaySound(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % 23, SFXType.TEMP);
+            AudioManager.Instance.PlaySound(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % 19, SFXType.TEMP);
             PhotonNetwork.LocalPlayer.AddNumSheetMusic(numberOfAcquiredSheetMusic);
         }
         else

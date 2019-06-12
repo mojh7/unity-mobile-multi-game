@@ -23,7 +23,7 @@ SpriteAtlas:
     platformSettings:
     - serializedVersion: 2
       m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 1024
+      m_MaxTextureSize: 4096
       m_ResizeAlgorithm: 0
       m_TextureFormat: -1
       m_TextureCompression: 0
@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 8c91c1bf7462a19469240734db360fd0, type: 3}
-    totalSpriteSurfaceArea: 1315152
+    totalSpriteSurfaceArea: 4310352
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -57,11 +57,13 @@ SpriteAtlas:
   - {fileID: 21300000, guid: c8382dc9f43f54844993c38ac5a00c92, type: 3}
   - {fileID: 21300000, guid: 31f7c20a63aea7c4fbebfe4755e03152, type: 3}
   - {fileID: 21300000, guid: 67bdb55aa3da74a4ab9d5e3299278112, type: 3}
+  - {fileID: 21300000, guid: 0958c79bd84659249a5b8ca45fbeb663, type: 3}
   - {fileID: 21300000, guid: ca26750c81f71c2418d25a9424a427a1, type: 3}
   - {fileID: 21300000, guid: 60c21d5c62c24af4a89043a485a89028, type: 3}
   - {fileID: 21300000, guid: f854d19c6c349c64ead1884aaa8d1ea3, type: 3}
   - {fileID: 21300000, guid: 2c1258dd13afb4d4a80aa91357874317, type: 3}
   - {fileID: 21300000, guid: c32cd76ee6df42443af985eeb99ae180, type: 3}
+  - {fileID: 21300000, guid: 3823dd7e0a7d9194c9c202551c22a836, type: 3}
   - {fileID: 21300000, guid: ffe3a8ae1490f8747afeda8f4f772d49, type: 3}
   m_PackedSpriteNamesToIndex:
   - sheet_music_bundle
@@ -75,11 +77,13 @@ SpriteAtlas:
   - unbazi_animation-5
   - buff_or_debuff
   - Bridge_Logo
+  - temp_title_bkg
   - temp_sheet_music
   - red_shadow_01
   - sheet_music
   - temp
   - unbazi_animation-0
+  - temp_title_bkg_2
   - temp_sheet_music_bundle
   m_Tag: EtcScenes
   m_IsVariant: 0

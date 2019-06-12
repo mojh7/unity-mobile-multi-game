@@ -42,7 +42,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: f74009ad2e4a3c948a7ed685e22fa5f4, type: 3}
-    totalSpriteSurfaceArea: 551345
+    totalSpriteSurfaceArea: 640955
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -71,6 +71,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 6c957ffa2ba8cff488ba9f78b5668ac2, type: 3}
   - {fileID: 21300000, guid: a66971cbb2a991a459301ad305bd446b, type: 3}
   - {fileID: 21300000, guid: fd044a6c842426c409d2b17cbe7c2844, type: 3}
+  - {fileID: 21300000, guid: 17ec341d0695dfd45a3a5a3698e2b33d, type: 3}
   - {fileID: 21300000, guid: a9095e1dc2b3d2242923e9a62c083c5b, type: 3}
   - {fileID: 21300000, guid: 40c8534daa11515448be7f27fd58e0f4, type: 3}
   - {fileID: 21300000, guid: 7435d0fd0fa1c0141bd75432dbcebf45, type: 3}
@@ -103,6 +104,7 @@ SpriteAtlas:
   - blue_bar
   - ui_1x1
   - ui_9_white_16
+  - btn
   - emphasisLayer
   - diamond
   - emoticon_sad
