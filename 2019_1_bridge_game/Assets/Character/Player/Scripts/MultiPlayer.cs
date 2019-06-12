@@ -18,7 +18,6 @@ namespace UBZ.Owner
         
         #region variables
         [SerializeField] private PlayerController controller;    // 플레이어 컨트롤 관련 클래스
-        [SerializeField] private MultiPlayerAnimHandler AnimController;
 
         private Transform objTransform;
 
@@ -467,6 +466,7 @@ namespace UBZ.Owner
             abnormalComponents.StunEffect.SetActive(true);
             AddRetrictsMovingCount();
             AddRetrictsBehaviorCount();
+            components.AnimHandler.Idle();
             //animationHandler.Idle();
             isControlTypeAbnormalStatuses[type] = true;
             controlTypeAbnormalStatusTime[type] = 0;
@@ -499,10 +499,13 @@ namespace UBZ.Owner
             {
                 if(IsMine())
                 {
+                    // TODO : Modify Sliding animation
+                    components.AnimHandler.Walk();
                     bodyTransform.Translate(dirVector * movingSpeed * Time.fixedDeltaTime);
                 }
                 if (false == canSlide)
                 {
+                    components.AnimHandler.Idle();
                     Debug.Log("sliding 코루틴 종료");
                     break;
                 }

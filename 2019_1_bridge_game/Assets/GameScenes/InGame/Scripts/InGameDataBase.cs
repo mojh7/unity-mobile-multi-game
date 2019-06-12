@@ -8,6 +8,7 @@ public class InGameDataBase : MonoBehaviourSingleton<InGameDataBase>
     #region variables
     [SerializeField] private InGameItemData[] inGameItemDataList;
     [SerializeField] private Dictionary<string, InGameItemData> inGameItemDataDictionary;
+    [SerializeField] private Sprite[] emoticonSprites;
     #endregion
 
     #region get / set
@@ -22,6 +23,10 @@ public class InGameDataBase : MonoBehaviourSingleton<InGameDataBase>
     public InGameItemData GetInGameItemData(UBZ.Item.InGameBuffType type)
     {
         return inGameItemDataList[(int)type];
+    }
+    public Sprite GetEmoticonSprite(UBZ.Owner.CharacterInfo.EmoticonType type)
+    {
+        return emoticonSprites[(int)type];
     }
     /// <summary>
     /// 버프, 디버프 랜덤

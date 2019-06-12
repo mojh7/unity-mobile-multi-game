@@ -24,7 +24,17 @@ namespace Photon.Pun
     /// When Using Trigger Parameters, make sure the component that sets the trigger is higher in the stack of Components on the GameObject than 'PhotonAnimatorView'
     /// Triggers are raised true during one frame only.
     /// </remarks>
-    [RequireComponent(typeof(Animator))]
+
+    /// <summary>
+    /// 이 클래스는 Mecanim 애니메이션을 동기화하는 데 도움이됩니다.
+    /// 구성 요소를 게임 객체에 추가하기 만 하면됩니다.
+    /// PhotonAnimatorView가 관찰 된 구성 요소 목록에 추가됩니다.
+    /// </summary>
+    /// <remark>
+    /// 트리거 매개 변수를 사용할 때 트리거를 설정하는 구성 요소가 GameObject의 구성 요소 스택에서 'PhotonAnimatorView'보다 높은 지 확인하십시오.
+    /// 트리거는 한 프레임 동안 만 발생합니다.
+    /// </remark>
+    //[RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(PhotonView))]
     [AddComponentMenu("Photon Networking/Photon Animator View")]
     public class PhotonAnimatorView : MonoBehaviour, IPunObservable
@@ -78,7 +88,7 @@ namespace Photon.Pun
 
         #region Members
 
-        private Animator m_Animator;
+        [SerializeField] public Animator m_Animator;
 
         private PhotonStreamQueue m_StreamQueue;
 
@@ -125,7 +135,7 @@ namespace Photon.Pun
             this.m_PhotonView = GetComponent<PhotonView>();
             this.m_StreamQueue = new PhotonStreamQueue(120);
 
-            this.m_Animator = GetComponent<Animator>();
+            this.m_Animator = GetComponentInChildren<Animator>();
         }
 
         private void Update()

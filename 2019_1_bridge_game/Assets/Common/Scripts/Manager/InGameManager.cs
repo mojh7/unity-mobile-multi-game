@@ -48,7 +48,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public Text InfoText;
     [SerializeField] private Transform redTeamSpawnPoint;
     [SerializeField] private Transform blueTeamSpawnPoint;
-    [SerializeField] private Sprite[] emoticonSprites;
     public GameObject[] sheetMusicPrefabs;
     [SerializeField] private InGameItemData[] inGameItemData;
 
@@ -81,10 +80,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         }
     }
 
-    public Sprite GetEmoticonSprite(UBZ.Owner.CharacterInfo.EmoticonType type)
-    {
-        return emoticonSprites[(int)type];
-    }
     public InGameItemData GetInGameItemData(int index)
     {
         if (index > inGameItemData.Length)

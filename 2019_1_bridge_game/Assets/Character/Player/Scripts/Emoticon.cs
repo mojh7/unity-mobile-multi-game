@@ -4,25 +4,17 @@ using UnityEngine;
 
 public class Emoticon : MonoBehaviour
 {
-    [SerializeField] private SpriteRenderer emoticon;
-    [SerializeField] private SpriteRenderer speechBubble;
+    [SerializeField] private SpriteRenderer emoticonSprite;
 
     private void Awake()
     {
-        SetActiveSprites(false);
-    }
-
-    public void SetActiveSprites(bool active)
-    {
-        emoticon.enabled = active;
-        speechBubble.enabled = active;
+        emoticonSprite.enabled = false;
     }
 
     public void ShowEmoticon(UBZ.Owner.CharacterInfo.EmoticonType type)
     {
-        SetActiveSprites(true);
-
-        emoticon.sprite = InGameManager.Instance.GetEmoticonSprite(type);
-        UtilityClass.Invoke(this, ()=> { SetActiveSprites(false); }, 2f);
+        emoticonSprite.enabled = true;
+        emoticonSprite.sprite = InGameDataBase.Instance.GetEmoticonSprite(type);
+        UtilityClass.Invoke(this, ()=> { emoticonSprite.enabled = false; }, 2f);
     }
 }

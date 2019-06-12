@@ -5,11 +5,13 @@ using UnityEngine.EventSystems;
 
 public class EmoticonButton : BehaviorButtonBase
 {
+    [SerializeField] private UBZ.Owner.CharacterInfo.EmoticonType emoticonType;
+
     public override void OnPointerDown(PointerEventData ped)
     {
         if (CanBehavior())
         {
-            player.ShowEmoticon((UBZ.Owner.CharacterInfo.EmoticonType)Random.Range(0,4));
+            player.ShowEmoticon(emoticonType);
         }
     }
 

@@ -1590,7 +1590,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD3EC\uD1A4 \uD14C\uC2A4\uD2B8 \uC784\uC2DC \uB85C\uBE44"
+  m_Text: "\uC784\uC2DC \uB85C\uBE44"
 --- !u!222 &635595327
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2669,7 +2669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &963380809
 RectTransform:
   m_ObjectHideFlags: 0

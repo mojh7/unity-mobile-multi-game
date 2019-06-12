@@ -41,10 +41,9 @@ namespace UBZ.Owner
 
         public enum EmoticonType
         {
-            SMILE,
+            GLOOMY,
+            HAPPY,
             SAD,
-            FRUSTRATION,
-            QUESTION_MARK
         }
 
         //public enum AimType

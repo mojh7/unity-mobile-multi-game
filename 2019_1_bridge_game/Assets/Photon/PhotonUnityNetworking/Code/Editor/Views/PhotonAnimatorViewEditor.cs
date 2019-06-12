@@ -9,6 +9,8 @@
 // ----------------------------------------------------------------------------
 
 
+// editor Âü°í https://debuglog.tistory.com/29?category=709598
+
 namespace Photon.Pun
 {
     using System.Collections.Generic;
@@ -20,7 +22,7 @@ namespace Photon.Pun
     [CustomEditor(typeof(PhotonAnimatorView))]
     public class PhotonAnimatorViewEditor : Editor
     {
-        private Animator m_Animator;
+        [SerializeField] private Animator m_Animator;
         private PhotonAnimatorView m_Target;
         private AnimatorController m_Controller;
 
@@ -28,12 +30,16 @@ namespace Photon.Pun
         {
             //base.OnInspectorGUI();
 
+            //EditorGUI.ObjectField("Animator", null, typeof(Animator));
+            EditorGUILayout.ObjectField("Animator", null, typeof(Animator), true);
+            EditorGUILayout.ObjectField("Object Field", null, typeof(Sprite), true);
+            //GUILayout.Label("Object Field", EditorStyles.objectField);
             if (this.m_Animator == null)
             {
                 GUILayout.BeginVertical(GUI.skin.box);
                 GUILayout.Label("GameObject doesn't have an Animator component to synchronize");
                 GUILayout.EndVertical();
-                return;
+                //return;
             }
 
             this.DrawWeightInspector();
@@ -79,6 +85,9 @@ namespace Photon.Pun
 
         private RuntimeAnimatorController GetEffectiveController(Animator animator)
         {
+            if (null == animator)
+                return null;
+
             RuntimeAnimatorController controller = animator.runtimeAnimatorController;
 
             AnimatorOverrideController overrideController = controller as AnimatorOverrideController;
@@ -94,7 +103,7 @@ namespace Photon.Pun
         private void OnEnable()
         {
             this.m_Target = (PhotonAnimatorView)this.target;
-            this.m_Animator = this.m_Target.GetComponent<Animator>();
+            this.m_Animator = this.m_Target.GetComponentInChildren<Animator>();
 
             this.m_Controller = this.GetEffectiveController(this.m_Animator) as AnimatorController;
 

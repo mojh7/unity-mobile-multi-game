@@ -53,7 +53,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: d102358daa898d441b70ffbcb3a9e629, type: 3}
-    totalSpriteSurfaceArea: 664525
+    totalSpriteSurfaceArea: 527956
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -62,34 +62,19 @@ SpriteAtlas:
   - {fileID: 21300002, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
   - {fileID: 21300000, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
   - {fileID: 21300000, guid: a68eb572f9c70cf4b8cbe4be0c220d25, type: 3}
-  - {fileID: 21300014, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300012, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300010, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300008, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300006, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300004, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300002, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300000, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300018, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300016, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300024, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300026, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300020, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300022, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300032, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300034, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300028, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
-  - {fileID: 21300030, guid: 00cfb9f33310d7c40be2d480a0942762, type: 3}
   - {fileID: 21300000, guid: 2f21322487c506d4ca68f4ed5dd7e7c0, type: 3}
   - {fileID: 21300000, guid: 88d8886458b6dc243b2522092675fee2, type: 3}
   - {fileID: 21300000, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
   - {fileID: 21300000, guid: 42dc7a3623cac4a48bc4cde83f171e94, type: 3}
+  - {fileID: 21300000, guid: f57dbe86e7412044a99a2dc27cea77cf, type: 3}
   - {fileID: 21300000, guid: d626fe3738227b449893571bda159f1b, type: 3}
   - {fileID: 21300000, guid: 7111592c7993d0348babb5db76b89eb0, type: 3}
   - {fileID: 21300000, guid: ba0f512e80eb3004291f538afdc6be47, type: 3}
   - {fileID: 21300004, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300002, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300000, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
+  - {fileID: 21300000, guid: cc3f831fe6a946245ae09d6073c7357e, type: 3}
+  - {fileID: 21300000, guid: 2098764f434468a428d86167625786d6, type: 3}
   - {fileID: 21300000, guid: 3a4c41afead654645bec475fa5e79ad3, type: 3}
   m_PackedSpriteNamesToIndex:
   - S_WALK_3
@@ -97,34 +82,19 @@ SpriteAtlas:
   - S_WALK_1
   - S_WALK_0
   - temp_skill_icon
-  - 136214-emoticon-set_7
-  - 136214-emoticon-set_6
-  - 136214-emoticon-set_5
-  - 136214-emoticon-set_4
-  - 136214-emoticon-set_3
-  - 136214-emoticon-set_2
-  - 136214-emoticon-set_1
-  - 136214-emoticon-set_0
-  - 136214-emoticon-set_9
-  - 136214-emoticon-set_8
-  - 136214-emoticon-set_12
-  - 136214-emoticon-set_13
-  - 136214-emoticon-set_10
-  - 136214-emoticon-set_11
-  - 136214-emoticon-set_16
-  - 136214-emoticon-set_17
-  - 136214-emoticon-set_14
-  - 136214-emoticon-set_15
   - circleShadow
   - tempEmoticon
   - F_WALK
   - S_STAND_0
+  - cha_emoticon_sad
   - SpeechBubble
   - temp_skill_icon2
   - Sliding
   - Old enemies_2
   - Old enemies_1
   - Old enemies_0
+  - cha_emoticon_gloomy
+  - cha_emoticon_happy
   - F_BREATHE
   m_Tag: Character
   m_IsVariant: 0
