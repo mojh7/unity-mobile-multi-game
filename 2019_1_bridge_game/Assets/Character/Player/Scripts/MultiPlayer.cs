@@ -325,9 +325,9 @@ namespace UBZ.Owner
         }
 
         #region abnormalStatusFunc
-        protected override bool IsControlTypeAbnormal()
+        protected override bool IsControlTypeAbnormal(ControlTypeAbnormalStatus abnormalStatusType)
         {
-            return isControlTypeAbnormalStatuses[(int)ControlTypeAbnormalStatus.STUN];
+            return isControlTypeAbnormalStatuses[(int)abnormalStatusType];
         }
 
         // 여러 상태이상, 단일 상태이상 중첩 시 공격, 이동 제한을 한 곳에서 관리하기 위해서

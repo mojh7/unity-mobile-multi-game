@@ -5,12 +5,9 @@ using UnityEngine.EventSystems;
 
 public class SkillButton : BehaviorButtonBase
 {
-    public override void OnPointerDown(PointerEventData ped)
+    protected override bool Behavior()
     {
-        if(CanBehavior())
-        {
-            player.OnSkill();
-        }
+        return player.OnSkill();
     }
 
     protected override void UseAllCostFail()

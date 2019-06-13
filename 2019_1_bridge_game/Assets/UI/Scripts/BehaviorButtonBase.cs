@@ -38,24 +38,32 @@ public abstract class BehaviorButtonBase : MonoBehaviour, IPointerDownHandler
         FillCostMax();
     }
 
-    public abstract void OnPointerDown(PointerEventData ped);
-
-    protected bool CanBehavior()
+    public void OnPointerDown(PointerEventData ped)
     {
         if (false == InGameUIManager.Instance.GetControllable())
-            return false;
+        {
+            Debug.Log("UI Controll False");
+            return;
+        }
 
         if (cost < costFullRecoveryTime)
         {
             UseAllCostFail();
-            return false;
         }
         else
         {
-            UseAllCost();
-            return true;
+            if(Behavior())
+            {
+                UseAllCost();
+            }
+            else
+            {
+                Debug.Log("버튼 사용 cost는 충분하나 행동 불가");
+            }
         }
     }
+
+    protected abstract bool Behavior();
 
     protected void FillCostMax()
     {

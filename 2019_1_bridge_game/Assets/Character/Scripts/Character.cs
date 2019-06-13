@@ -183,10 +183,19 @@ namespace UBZ.Owner
 
 
         // TODO : skill 임시로 대시로 적용, 나중에는 캐릭터 마다 스킬 적용 해야 할 수도?
-        public void OnSkill()
+        public bool OnSkill()
         {
-            Dash(750, 120);
-            Debug.Log("스킬(대시) 사용");
+            if(!IsControlTypeAbnormal(ControlTypeAbnormalStatus.SLIDING) && !IsControlTypeAbnormal(ControlTypeAbnormalStatus.STUN))
+            {
+                Dash(750, 120);
+                Debug.Log("스킬(대시) 사용");
+                return true;
+            }
+            else
+            {
+                Debug.Log("스킬(대시) 사용 실패");
+                return false;
+            }
         }
 
         public virtual void Dash(float dashSpeed, float distance)
@@ -226,7 +235,7 @@ namespace UBZ.Owner
         }
 
         #region AbnormalStatusFunc
-        protected abstract bool IsControlTypeAbnormal();
+        protected abstract bool IsControlTypeAbnormal(ControlTypeAbnormalStatus abnormalStatusType);
 
         protected void InitStatusEffects()
         {

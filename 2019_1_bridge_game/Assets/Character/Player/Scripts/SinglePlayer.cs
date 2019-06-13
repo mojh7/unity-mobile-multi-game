@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UBZ.Owner
 {
+    // TODO : 멀티 인 게임 외의 only 싱글 로직인 씬에서 사용 할 Player Class
     public class SinglePlayer : Character
     {
         protected override void AddRetrictsBehaviorCount()
@@ -16,7 +17,7 @@ namespace UBZ.Owner
             throw new System.NotImplementedException();
         }
 
-        protected override bool IsControlTypeAbnormal()
+        protected override bool IsControlTypeAbnormal(ControlTypeAbnormalStatus abnormalStatusType)
         {
             throw new System.NotImplementedException();
         }

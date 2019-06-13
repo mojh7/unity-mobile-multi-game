@@ -7,13 +7,11 @@ public class EmoticonButton : BehaviorButtonBase
 {
     [SerializeField] private UBZ.Owner.CharacterInfo.EmoticonType emoticonType;
 
-    public override void OnPointerDown(PointerEventData ped)
+    protected override bool Behavior()
     {
-        if (CanBehavior())
-        {
-            ControllerUI.Instance.EmoticonButtonClicked();
-            player.ShowEmoticon(emoticonType);
-        }
+        ControllerUI.Instance.EmoticonButtonClicked();
+        player.ShowEmoticon(emoticonType);
+        return true;
     }
 
     protected override void UseAllCostFail()
