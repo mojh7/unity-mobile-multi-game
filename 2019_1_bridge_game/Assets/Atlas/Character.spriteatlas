@@ -23,7 +23,7 @@ SpriteAtlas:
     platformSettings:
     - serializedVersion: 2
       m_BuildTarget: DefaultTexturePlatform
-      m_MaxTextureSize: 2048
+      m_MaxTextureSize: 8192
       m_ResizeAlgorithm: 0
       m_TextureFormat: -1
       m_TextureCompression: 0
@@ -34,18 +34,29 @@ SpriteAtlas:
       m_AndroidETC2FallbackOverride: 0
     - serializedVersion: 2
       m_BuildTarget: Android
-      m_MaxTextureSize: 512
+      m_MaxTextureSize: 4096
       m_ResizeAlgorithm: 0
-      m_TextureFormat: 12
+      m_TextureFormat: 4
       m_TextureCompression: 1
       m_CompressionQuality: 50
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
       m_Overridden: 1
       m_AndroidETC2FallbackOverride: 0
+    - serializedVersion: 2
+      m_BuildTarget: Standalone
+      m_MaxTextureSize: 4096
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: 4
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
     packingSettings:
       serializedVersion: 2
-      padding: 4
+      padding: 2
       blockOffset: 1
       allowAlphaSplitting: 0
       enableRotation: 1
@@ -53,7 +64,7 @@ SpriteAtlas:
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: d102358daa898d441b70ffbcb3a9e629, type: 3}
-    totalSpriteSurfaceArea: 527956
+    totalSpriteSurfaceArea: 324993
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
@@ -63,12 +74,12 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 9628e0422543fce4bb19c079988f0e3d, type: 3}
   - {fileID: 21300000, guid: a68eb572f9c70cf4b8cbe4be0c220d25, type: 3}
   - {fileID: 21300000, guid: 2f21322487c506d4ca68f4ed5dd7e7c0, type: 3}
-  - {fileID: 21300000, guid: 88d8886458b6dc243b2522092675fee2, type: 3}
   - {fileID: 21300000, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
+  - {fileID: 21300002, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
+  - {fileID: 21300004, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
+  - {fileID: 21300006, guid: 86522606f5852fe419b5b28aec6732ad, type: 3}
   - {fileID: 21300000, guid: 42dc7a3623cac4a48bc4cde83f171e94, type: 3}
   - {fileID: 21300000, guid: f57dbe86e7412044a99a2dc27cea77cf, type: 3}
-  - {fileID: 21300000, guid: d626fe3738227b449893571bda159f1b, type: 3}
-  - {fileID: 21300000, guid: 7111592c7993d0348babb5db76b89eb0, type: 3}
   - {fileID: 21300000, guid: ba0f512e80eb3004291f538afdc6be47, type: 3}
   - {fileID: 21300004, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
   - {fileID: 21300002, guid: 8c41abbe0d5523c4ab88191333886d1f, type: 3}
@@ -76,6 +87,7 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cc3f831fe6a946245ae09d6073c7357e, type: 3}
   - {fileID: 21300000, guid: 2098764f434468a428d86167625786d6, type: 3}
   - {fileID: 21300000, guid: 3a4c41afead654645bec475fa5e79ad3, type: 3}
+  - {fileID: 21300002, guid: 3a4c41afead654645bec475fa5e79ad3, type: 3}
   m_PackedSpriteNamesToIndex:
   - S_WALK_3
   - S_WALK_2
@@ -83,18 +95,19 @@ SpriteAtlas:
   - S_WALK_0
   - temp_skill_icon
   - circleShadow
-  - tempEmoticon
-  - F_WALK
+  - F_WALK_0
+  - F_WALK_1
+  - F_WALK_2
+  - F_WALK_3
   - S_STAND_0
   - cha_emoticon_sad
-  - SpeechBubble
-  - temp_skill_icon2
   - Sliding
   - Old enemies_2
   - Old enemies_1
   - Old enemies_0
   - cha_emoticon_gloomy
   - cha_emoticon_happy
-  - F_BREATHE
+  - F_BREATHE_0
+  - F_BREATHE_1
   m_Tag: Character
   m_IsVariant: 0

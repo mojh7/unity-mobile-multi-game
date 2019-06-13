@@ -245,16 +245,13 @@ MonoBehaviour:
   uiSfxList:
   - {fileID: 8300000, guid: bc8ba3d31bf20a14d8f08c7fc6009fce, type: 3}
   pianoSfxList:
-  - {fileID: 8300000, guid: 29f05ce84f076214588595a0000d75d4, type: 3}
   - {fileID: 8300000, guid: 25c52c3d0955773448fd257bd7048ff1, type: 3}
   - {fileID: 8300000, guid: 68788e6dda9e38e4aaa0ed225cf0c2a4, type: 3}
   - {fileID: 8300000, guid: fb2261e402558b74e9d7790ed718be0b, type: 3}
   - {fileID: 8300000, guid: b1f0209da8aefd14b928cdca41cdc45d, type: 3}
   - {fileID: 8300000, guid: a288f912c05511e46b0f4897dc9ef1ab, type: 3}
   - {fileID: 8300000, guid: dff2009bf896a504b9fdcfd0028b1cd8, type: 3}
-  - {fileID: 8300000, guid: 069b3ba6e14a28848a7b73d18a9d3706, type: 3}
   - {fileID: 8300000, guid: 3a6e91e95d048964f8136dba3897b2cb, type: 3}
-  - {fileID: 8300000, guid: 7e2307e2a278e3647950503892265cb2, type: 3}
   tempList:
   - {fileID: 8300000, guid: 89950de127c057548b23d5542decf750, type: 3}
   - {fileID: 8300000, guid: 28b5c921be34d064f939bbf8453731cb, type: 3}
