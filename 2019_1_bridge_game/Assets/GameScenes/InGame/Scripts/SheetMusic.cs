@@ -29,6 +29,7 @@ public class SheetMusic : PickupItem
             // TODO : 음악에 마다 효과음 갯수 다르니 고려해서 수정해야 됨.
             AudioManager.Instance.PlaySound(PhotonNetwork.LocalPlayer.GetNumSheetMusic() % 19, SFXType.TEMP);
             PhotonNetwork.LocalPlayer.AddNumSheetMusic(numberOfAcquiredSheetMusic);
+            InGameManager.Instance.GetMultiPlayer().UpdateCurrentSheetMusicCount();
         }
         else
         {

@@ -172,7 +172,7 @@ namespace UBZ.Owner
             ownerType = CharacterInfo.OwnerType.PLAYER;
             abnormalImmune = 0;
             directionVector = new Vector3(1, 0, 0);
-            InGameManager.Instance.AddMultiPlayerInTeam(this);
+            InGameManager.Instance.AddMultiPlayer(this);
             components.NickNameText.text = photonView.Owner.NickName;
 
             Transform baseZoneTransform = null;
@@ -302,6 +302,16 @@ namespace UBZ.Owner
                 photonView.RPC(DISPLAY_EFFECT, RpcTarget.AllViaServer, BehaviorState.DASH, false, 0f);
             }
             return result;
+        }
+
+        public void UpdateCurrentSheetMusicCount()
+        {
+            photonView.RPC("PunUpdateCurrentSheetMusicCount", RpcTarget.All);
+        }
+        [PunRPC]
+        public void PunUpdateCurrentSheetMusicCount()
+        {
+            components.SheetMusicCountTextMesh.text = GetUser().GetNumSheetMusic().ToString();
         }
         public void ShowEmoticon(EmoticonType type)
         {
@@ -442,7 +452,6 @@ namespace UBZ.Owner
         // TODO : .
         public void HitDash(Vector2 pos, Vector2 dir, Photon.Realtime.Player dashOwner)
         {
-            //Debug.Log(photonView.Owner.ActorNumber);
             photonView.RPC("PunHitDash", RpcTarget.AllViaServer, pos, dir, dashOwner);
         }
         [PunRPC]
@@ -452,9 +461,12 @@ namespace UBZ.Owner
             Stun(1f, 1f);
             if(photonView.IsMine)
             {
-                int stolenSheetMusicCount = Mathf.CeilToInt((photonView.Owner.GetNumSheetMusic()) * InGameManager.DASH_OPPONENT_TEAM_STEALING_RATIO);
-                photonView.Owner.AddNumSheetMusic(-stolenSheetMusicCount);
+                int stolenSheetMusicCount = Mathf.CeilToInt((GetUser().GetNumSheetMusic()) * InGameManager.DASH_OPPONENT_TEAM_STEALING_RATIO);
+                GetUser().AddNumSheetMusic(-stolenSheetMusicCount);
                 user.AddNumSheetMusic(stolenSheetMusicCount);
+                InGameManager.Instance.GetMultiPlayer(user.ActorNumber).UpdateCurrentSheetMusicCount();
+                UpdateCurrentSheetMusicCount();
+                
             }
         }
         #endregion

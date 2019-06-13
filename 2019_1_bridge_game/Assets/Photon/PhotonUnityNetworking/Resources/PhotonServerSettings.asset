@@ -41,5 +41,6 @@ MonoBehaviour:
   - RemoveInGameItem
   - RespawnSpaceship
   - SetInGameBuffType
+  - PunUpdateCurrentSheetMusicCount
   DisableAutoOpenWizard: 1
   ShowSettings: 0

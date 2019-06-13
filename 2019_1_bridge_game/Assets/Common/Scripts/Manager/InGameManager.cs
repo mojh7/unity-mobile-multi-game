@@ -48,15 +48,13 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     public Text InfoText;
     [SerializeField] private Transform redTeamSpawnPoint;
     [SerializeField] private Transform blueTeamSpawnPoint;
-    public GameObject[] sheetMusicPrefabs;
-    [SerializeField] private InGameItemData[] inGameItemData;
 
     public Text text;
 
     public static Dictionary<PunTeams.Team, List<MultiPlayer>> multiPlayersPerTeam;
+    public static Dictionary<int, MultiPlayer> multiPlayersDictionary;
 
     // 이후 랜덤한 위치를 유동적으로 대입
-    [SerializeField] private Transform baseTowns;
     private UBZ.Owner.MultiPlayer multiPlayer;
     
     #endregion
@@ -65,7 +63,6 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
 
     public Transform GetRedTeamBaseZone() { return redTeamSpawnPoint; }
     public Transform GetBlueTeamBaseZone() { return blueTeamSpawnPoint; }
-    public Transform GetBaseTown() { return baseTowns; }
     public static bool IsRedTeam(int playerNumber)
     {
         return (playerNumber % 2) == 0;
@@ -80,15 +77,14 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
         }
     }
 
-    public InGameItemData GetInGameItemData(int index)
-    {
-        if (index > inGameItemData.Length)
-            return null;
-        return inGameItemData[index];
-    }
     public UBZ.Owner.MultiPlayer GetMultiPlayer()
     {
         return multiPlayer;
+    }
+
+    public UBZ.Owner.MultiPlayer GetMultiPlayer(int actorNumber)
+    {
+        return multiPlayersDictionary[actorNumber];
     }
 
     public List<UBZ.Owner.MultiPlayer> GetMultiPlayersPerTeam(PunTeams.Team team)
@@ -107,6 +103,7 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     {
         Instance = this;
         multiPlayersPerTeam = new Dictionary<PunTeams.Team, List<MultiPlayer>>();
+        multiPlayersDictionary = new Dictionary<int, MultiPlayer>();
         Array enumVals = Enum.GetValues(typeof(PunTeams.Team));
         foreach (var enumVal in enumVals)
         {
@@ -157,9 +154,10 @@ public class InGameManager : Photon.Pun.MonoBehaviourPunCallbacks
     #endregion
 
     #region func
-    public void AddMultiPlayerInTeam(MultiPlayer multiPlayer)
+    public void AddMultiPlayer(MultiPlayer multiPlayer)
     {
         multiPlayersPerTeam[multiPlayer.GetTeam()].Add(multiPlayer);
+        multiPlayersDictionary[multiPlayer.GetUser().ActorNumber] = multiPlayer;
     }
 
 

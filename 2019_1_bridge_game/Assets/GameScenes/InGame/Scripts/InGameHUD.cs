@@ -18,6 +18,7 @@ public class InGameHUD : MonoBehaviourSingleton<InGameHUD>
 
     private Dictionary<int, GameObject> playerListEntries;
 
+    /*
     private void OnGUI()
     {
         PunTeams.Team teamName = PunTeams.Team.RED;
@@ -45,6 +46,24 @@ public class InGameHUD : MonoBehaviourSingleton<InGameHUD>
         }
         guiStyle.normal.textColor = Color.white;
         //GUILayout.Label("팀 점수 Red : " + redTeamScore + ", Blue : " + blueTeamScore, guiStyle);
+        UpdateTeamScoreGauge(redTeamScore, blueTeamScore);
+    }
+    */
+
+    private void Update()
+    {
+        int redTeamScore = 0, blueTeamScore = 0;
+        List<Player> redTeamPlayers = PunTeams.PlayersPerTeam[PunTeams.Team.RED];
+        foreach (Player player in redTeamPlayers)
+        {
+            redTeamScore += player.GetScore();
+        }
+
+        List<Player> blueTeamPlayers = PunTeams.PlayersPerTeam[PunTeams.Team.BLUE];
+        foreach (Player player in blueTeamPlayers)
+        {
+            blueTeamScore += player.GetScore();
+        }
         UpdateTeamScoreGauge(redTeamScore, blueTeamScore);
     }
 

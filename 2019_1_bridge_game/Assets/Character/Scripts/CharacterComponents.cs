@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CharacterComponents : MonoBehaviour
 {
@@ -14,7 +15,8 @@ public class CharacterComponents : MonoBehaviour
     [SerializeField] private TextMesh nickNameText;
     [SerializeField] private DashEffect dashEffect;
     [SerializeField] private Emoticon emoticon;
-    
+    [SerializeField] private TextMeshPro sheetMusicCountTextMesh;
+
     #endregion
 
     #region parameter
@@ -87,6 +89,14 @@ public class CharacterComponents : MonoBehaviour
     public Rigidbody2D Rigidbody2D { get; private set; }
     public DirectionArrow DirectionArrow { get; private set; }
     //public AIController AIController { get; private set; }
+
+    public TextMeshPro SheetMusicCountTextMesh
+    {
+        get
+        {
+            return sheetMusicCountTextMesh;
+        }
+    }
     #endregion
 
     private void Awake()

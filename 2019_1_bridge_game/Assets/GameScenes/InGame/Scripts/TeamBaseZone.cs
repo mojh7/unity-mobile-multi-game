@@ -19,6 +19,7 @@ public class TeamBaseZone : MonoBehaviour
             }
             PhotonNetwork.LocalPlayer.AddScore(numSheetMusic);
             PhotonNetwork.LocalPlayer.SetNumSheetMusic(0);
+            InGameManager.Instance.GetMultiPlayer().UpdateCurrentSheetMusicCount();
             Debug.Log("악보를 모았다 : " + numSheetMusic + " (개), 개인 점수 : " + PhotonNetwork.LocalPlayer.GetScore());
         }
     }
