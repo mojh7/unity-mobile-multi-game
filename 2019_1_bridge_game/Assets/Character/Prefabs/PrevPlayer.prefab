@@ -107,7 +107,7 @@ SpriteRenderer:
   m_Size: {x: 0.2, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1115311901475566
@@ -332,6 +332,7 @@ GameObject:
   - component: {fileID: 1010957338601700066}
   - component: {fileID: 7083108332031963045}
   - component: {fileID: 4885479087945231599}
+  - component: {fileID: 8508754752144261220}
   m_Layer: 9
   m_Name: PrevPlayer
   m_TagString: Player
@@ -407,10 +408,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 361dde234b0ba7f4e82f084cb99d16df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  statsEffectsManager: {fileID: 0}
   movingSpeed: 5
   sprite: {fileID: 0}
   movingSpeedOriginal: 5
   itemAcquisitionRangeOriginal: {x: 0, y: 0}
+  redTemaRing: {fileID: 0}
+  blueTemaRing: {fileID: 0}
 --- !u!114 &2229958685411066148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,14 +429,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 212996303362089752}
   spriteTransform: {fileID: 4172594114710642}
-  animator: {fileID: 0}
+  animHandler: {fileID: 0}
   itemAcquisitionCollider: {fileID: 58011598732478186}
-  circleCollider2D: {fileID: 0}
-  hitBox: {fileID: 4194384749232524592}
-  shadowTransform: {fileID: 4172594114710642}
+  shadowRenderer: {fileID: 0}
   nickNameText: {fileID: 0}
   dashEffect: {fileID: 0}
   emoticon: {fileID: 0}
+  sheetMusicCountTextMesh: {fileID: 0}
 --- !u!114 &1010957338601700066
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -485,6 +488,21 @@ MonoBehaviour:
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
   m_TeleportIfDistanceGreaterThan: 3
+--- !u!114 &8508754752144261220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1860083801054866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 280d879322d6bdf4bb06b9f8fe53378d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sortingOrderBase: 1000
+  offset: 0
+  runOnlyOnce: 0
 --- !u!1 &2711640994439989182
 GameObject:
   m_ObjectHideFlags: 0

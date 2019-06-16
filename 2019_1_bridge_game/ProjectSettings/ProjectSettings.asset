@@ -728,10 +728,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: cb40b26c-daae-4026-b9a6-65d4e0f6335b
+  cloudProjectId: 3894e6af-363a-4cb5-be39-caa94091c38f
   framebufferDepthMemorylessMode: 0
-  projectName: 2019_1_bridge_game
-  organizationId: k_nua
+  projectName: "\uC74C\uC545\uC774\uB2E4! \uC804\uC7C1\uC774\uB2E4!"
+  organizationId: kkwoo94517
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

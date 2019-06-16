@@ -7,9 +7,11 @@ public class PositionSorterObject : MonoBehaviour
     [SerializeField] private int sortingOrderBase = 1000;
     [SerializeField] private int offset = 0;
     [SerializeField] private bool runOnlyOnce = false;
+    [SerializeField] private Transform orderTransform;
 
     private float timer;
     private float timerMax = 0.1f;
+    private int sortingOrder;
     private SpriteRenderer render;
 
     private void Awake()
@@ -23,7 +25,9 @@ public class PositionSorterObject : MonoBehaviour
         if (timer <= 0.0f)
         {
             timer = timerMax;
-            render.sortingOrder = (int)(sortingOrderBase - (transform.position.y * 100) - offset);
+            sortingOrder = (int)(sortingOrderBase - (orderTransform.position.y * 100) - offset);
+
+            if (sortingOrder >= 0) render.sortingOrder = sortingOrder;
 
             if (runOnlyOnce) Destroy(this);
         }

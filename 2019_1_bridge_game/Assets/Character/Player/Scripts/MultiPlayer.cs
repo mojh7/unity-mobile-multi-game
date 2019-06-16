@@ -61,8 +61,8 @@ namespace UBZ.Owner
             if (false == InGameUIManager.Instance.GetControllable())
                 return;
 
-            if(null != bodyTransform)
-                components.SpriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
+            //if(null != bodyTransform)
+            //    components.SpriteRenderer.sortingOrder = -Mathf.RoundToInt(bodyTransform.position.y * 100);
 
             if (IsBehavioring(BehaviorState.DASH))
                 return;
